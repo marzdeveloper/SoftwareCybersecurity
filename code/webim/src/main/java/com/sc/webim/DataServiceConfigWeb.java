@@ -19,13 +19,17 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.sc.webim.db.LoadData;
+
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@ComponentScan(basePackages = { "com.sc.webim.model" })
+@ComponentScan(basePackages = { "com.sc.webim.model" },
+	excludeFilters  = {@ComponentScan.Filter(
+		type = FilterType.ASSIGNABLE_TYPE, classes = {LoadData.class})})
 @EnableTransactionManagement
 public class DataServiceConfigWeb {
 	
@@ -35,8 +39,8 @@ public class DataServiceConfigWeb {
 	public DataSource dataSource() {
 		try {DriverManagerDataSource ds = new DriverManagerDataSource();
 			ds.setDriverClassName(com.mysql.cj.jdbc.Driver.class.getName());
-		    ds.setUrl("jdbc:mysql://localhost:3306/WebIm?createDatabaseIfNotExist=true");
-		    ds.setUsername("root");
+		    ds.setUrl("jdbc:mysql://localhost:3306/WebIm?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
+		    ds.setUsername("Daniele");
 		    //ds.setPassword("p@ssw0rd");
 		    return ds;
 		} catch (Exception e) {
