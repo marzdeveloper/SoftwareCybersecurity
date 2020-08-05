@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.web3j.abi.EventValues;
 import org.web3j.protocol.core.DefaultBlockParameterName;
@@ -45,7 +47,7 @@ public class ThreadController {
     3. Subscribe to and extract all send message events from Quorum (event sendMessage in thread contract)
     4. Persist event parameters in ThreadModel instances. ThreadModel object is identified based on participants returned by sendMessage event
     */
-    @GetMapping("/threads")
+    @RequestMapping(value="/threads", method=RequestMethod.GET)
     public String showThreads(Model model) {
 
         allThreads = new HashMap<String, ThreadModel>();
@@ -101,7 +103,7 @@ public class ThreadController {
         });
 
         model.addAttribute("threadModels", allThreads);
-        return "threads";
+        return "threads/index";
     }
 
     /*Handle new thread creation request:
@@ -123,7 +125,10 @@ public class ThreadController {
         3.g Call the sendContractAddress event in thread contract to inform participants of new thread. Parameters sent - contract address, participants
         3.h Call the sendMessage event in thread contract to inform participants of new message in this thread. Parameters sent - participants, message, sender
     */
-    @PostMapping("/threads")
+    
+    
+    
+    @RequestMapping(value="/threads", method=RequestMethod.POST)
     public String createNewThread(@RequestParam("message") String message,@RequestParam("threadParticipants") ArrayList<String> threadParticipants, Model model) throws Exception {
 
         //Check if node has included itself in participant list
@@ -189,7 +194,7 @@ public class ThreadController {
         3.c Load the thread contract based on contract address
         3.d Call the sendMessage event in the contract to inform participants of new message in this thread. Parameters sent - participants, message, sender
      */
-    @PostMapping("/updateThreads")
+    @RequestMapping(value="/updateThreads", method=RequestMethod.POST)
     public String sendNewMessageToExistingThread(@RequestParam("newMessage") String newMessage, @RequestParam("contractAddress") String contractAddress, @RequestParam("threadParticipants") String threadParticipants, Model model) throws Exception {
 
         //Check if message is empty

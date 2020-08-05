@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
 	@RequestMapping("/")
-	public String index() {
-		return "Greetings from Spring Boot!";
+	public String index(Model model) {
+		model.addAttribute("tittle", "WebIm");
+		model.addAttribute("app_css", "login.css");
+		return "login";
 	}
 	
 	@RequestMapping("/login1")
