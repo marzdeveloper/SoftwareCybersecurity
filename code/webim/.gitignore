@@ -32,4 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-/src/main/java/com/sc/webim/DataServiceConfigWeb.java
+src/main/java/com/sc/webim/DataServiceConfigWeb.java
