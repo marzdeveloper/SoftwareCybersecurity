@@ -48,4 +48,4 @@ public class QuorumConnection {
         return quorum;
     }
 
-}//prova
+}
