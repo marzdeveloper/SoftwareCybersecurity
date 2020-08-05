@@ -83,4 +83,4 @@ public class DataServiceConfigWeb {
 		return new HibernateTransactionManager(sessionFactory());
 	}
 	
-}
+} //prova
