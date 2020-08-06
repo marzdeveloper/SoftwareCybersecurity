@@ -28,6 +28,8 @@ public class LoadData {
 			WorkstationDao workstationDao = ctx.getBean(WorkstationDao.class);
 		    LocationDao locationDao = ctx.getBean(LocationDao.class);
 			PositioningDao positioningDao = ctx.getBean(PositioningDao.class);*/
+			ImageDao imageDao = ctx.getBean(ImageDao.class);
+			MeasureDao measureDao = ctx.getBean(MeasureDao.class);
 			RoleDao roleDao = ctx.getBean(RoleDao.class);
 			UserDetailsDao userDao = ctx.getBean(UserDetailsDao.class);
 			

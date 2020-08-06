@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import com.sc.webim.model.entities.Role;
 
 public interface RoleDao {
+	
 	Session getSession();
 	
 	public void setSession(Session session);

@@ -82,7 +82,7 @@ public class Measure implements Serializable{
 	//Relationdhips
 	
 	//One measure has many images
-	@OneToMany(mappedBy="Measure")
+	@OneToMany(mappedBy="measure_id")
 	public Set<Image> getImages() {
 		return this.images;
 	}
