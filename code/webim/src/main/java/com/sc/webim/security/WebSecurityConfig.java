@@ -28,18 +28,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().
 			antMatchers("/login").permitAll().
 			antMatchers("/threads/**").permitAll().
-			antMatchers("/user").hasAnyRole("ADMIN").
-			antMatchers("/sender").hasAnyRole("USER", "ADMIN").
-			antMatchers("/team/**").hasAnyRole("USER", "ADMIN").
-			antMatchers("/dispositivi/**").hasAnyRole("USER", "ADMIN").
-			antMatchers("/employee/**").hasAnyRole("USER", "ADMIN").
-			antMatchers("/positioning").hasAnyRole("USER", "ADMIN").
-			antMatchers("/positioning/**").hasAnyRole("USER", "ADMIN").
-			antMatchers("/location/**").hasAnyRole("USER", "ADMIN").
+			antMatchers("/user").hasAnyRole("DIRETTORE").
+			antMatchers("/direttore/**").hasAnyRole("DIRETTORE").
 			antMatchers("/css/**").permitAll().
 			antMatchers("/images/**").permitAll().
 			antMatchers("/").permitAll().
-			antMatchers("/**").hasAnyRole("USER", "ADMIN").
+			antMatchers("/**").hasAnyRole("DRONE", "DIRETTORE").
 				and().formLogin().loginPage("/login").defaultSuccessUrl("/threads", true)
 					.successForwardUrl("/threads")
 					.defaultSuccessUrl("/threads")

@@ -3,42 +3,27 @@
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page session="true"%>
 
-<sec:authorize access="hasRole('ADMIN')" var="isAdmin" />
+<sec:authorize access="hasRole('DIRETTORE')" var="isDirettore" />
+<sec:authorize access="hasRole('DRONE')" var="isDrone" />
 
 <!-- Sidebar  -->
 <nav id="sidebar">
     <div class="sidebar-header">
-        <h3>Gestione Dispositivi</h3>
+        <h3>WEBIM</h3>
     </div>
     <ul class="list-unstyled components">
-    	<c:if test="${isAdmin}">
+    	<c:if test="${isDirettore}">
 	    	<li>
-	            <a href="<c:url value="/user" />">Users</a>
+	            <a href="<c:url value="/user" />">Utenti</a>
 	        </li>
+	       	<li>
+            	<a href="<c:url value="/direttore" />">Gestione Blockchain</a>
+        	</li>
 	    </c:if>
-	    <li>
-            <a href="<c:url value="/dispositivi" />">Devices</a>
-        </li>
-	    <li>
-	        <a href="<c:url value="/sender" />">Senders</a>
-	    </li>
-	    <li>
-            <a href="<c:url value="/employee" />">Employees</a>
-        </li>
-        <li>
-            <a href="<c:url value="/team" />">Teams</a>
-        </li>
-        <li>
-			<a href="<c:url value="/job" />">Jobs</a>
-		</li>
-		<li>
-            <a href="<c:url value="/location" />">Locations</a>
-        </li>
-	    <li>
-	        <a href="<c:url value="/positioning" />">Positionings</a>
-	    </li>
-		<li>
-            <a href="<c:url value="/workstation" />">Workstations</a>
-        </li>
+	    <c:if test="${isDrone}">
+	       	<li>
+            	<a href="<c:url value="/drone/upload" />">Caricamento Immagini</a>
+        	</li>
+	    </c:if>
 	</ul>
 </nav>

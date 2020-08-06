@@ -10,14 +10,14 @@ public class HomeController {
 
 	@RequestMapping("/")
 	public String index(Model model) {
-		model.addAttribute("tittle", "WebIm");
+		model.addAttribute("title", "WebIm");
 		model.addAttribute("app_css", "login.css");
 		return "login";
 	}
 	
 	@RequestMapping("/login1")
 	public String login(Model model) {
-		model.addAttribute("tittle", "WebIm");
+		model.addAttribute("title", "WebIm");
 		model.addAttribute("app_css", "login.css");
 		return "login";
 	}

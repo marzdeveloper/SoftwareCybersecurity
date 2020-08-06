@@ -28,7 +28,6 @@ public class SecurityController
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("appName", appName);
         model.addAttribute("title", "Login");
-        
         model.addAttribute("app_css", "login.css");
         return "login";
     }

@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<sec:authorize access="hasRole('ADMIN')" var="isAdmin" />
+<sec:authorize access="hasRole('DIRETTORE')" var="isDirettore" />
 <sec:authorize access="isAuthenticated()" var="isAuth" />
     
 <!-- Font Awesome JS -->

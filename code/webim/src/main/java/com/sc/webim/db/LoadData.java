@@ -221,15 +221,15 @@ public class LoadData {
 				
 				session.beginTransaction();
 				//creo dei roles
-				Role r1 = roleDao.create("USER");
-				Role r2 = roleDao.create("ADMIN");
+				Role r1 = roleDao.create("DRONE");
+				Role r2 = roleDao.create("DIRETTORE");
 				
 				session.getTransaction().commit();
 				
 				session.beginTransaction();
 				//creo degli users
-				User u1 = userDao.create("user1", "password", true, r1);				
-				User u2 = userDao.create("user2", "password", true, r2);
+				User u1 = userDao.create("drone", "password", true, r1);				
+				User u2 = userDao.create("direttore", "password", true, r2);
 				
 				userDao.update(u1);
 				userDao.update(u2);

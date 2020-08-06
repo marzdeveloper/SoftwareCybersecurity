@@ -24,5 +24,5 @@
 
 <script>
 if(${isAuth})
-window.location.replace("/WebIm/Threads");
+window.location.replace("/threads");
 </script>
