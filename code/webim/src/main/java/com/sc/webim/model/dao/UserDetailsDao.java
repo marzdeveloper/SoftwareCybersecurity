@@ -7,8 +7,8 @@ import org.hibernate.Session;
 import com.sc.webim.model.entities.Role;
 import com.sc.webim.model.entities.User;
 
-
 public interface UserDetailsDao {
+	
 	Session getSession();
 	
 	public void setSession(Session session);
@@ -24,4 +24,5 @@ public interface UserDetailsDao {
 	public String encryptPassword(String password);
 	
 	List<User> findAll();
+	
 }

@@ -68,4 +68,5 @@ public class UserDetailsDaoDefault extends DefaultDao implements UserDetailsDao 
 			createQuery("from User u", User.class).
 			getResultList();
 	}
+	
 }

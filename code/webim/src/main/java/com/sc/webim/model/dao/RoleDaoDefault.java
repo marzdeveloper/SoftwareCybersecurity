@@ -52,4 +52,5 @@ public class RoleDaoDefault extends DefaultDao implements RoleDao {
 	public Role findRoleById(long id) {
 		return getSession().find(Role.class, id);
 	}
+	
 }

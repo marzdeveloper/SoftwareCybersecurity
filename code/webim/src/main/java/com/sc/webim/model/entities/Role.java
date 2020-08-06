@@ -35,6 +35,7 @@ public class Role implements Serializable {
     }
     
     public boolean isAdmin() {
-    	return this.name.equals("DIRETTORE");
+    	return this.name.equals("Direttore");
     }
+    
 }
