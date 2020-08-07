@@ -51,17 +51,26 @@ public class DroneController {
 	@RequestMapping(value = "/uploadImage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, headers="Accept=application/json")
 	public String uploadImage(@RequestParam("imageFiles") MultipartFile[] imageFiles, RedirectAttributes redirectAttributes) {
 		String msg = "";
+		boolean rsp = false;
+		int count = 0;
 		try {
-			List<String> fileNames = new ArrayList<>();
-			Arrays.asList(imageFiles).stream().forEach(file -> {
-				try {
-					droneService.saveImage(file);
-				} catch (Exception e) {
-					e.printStackTrace();
+			List<String> fileNamesDuplicate = new ArrayList<>();
+			List<MultipartFile> images = Arrays.asList(imageFiles);
+			for(MultipartFile file:images) {
+				droneService.saveImage(file, rsp);
+				if(!rsp) {
+					count++;
+					fileNamesDuplicate.add(file.getOriginalFilename());
 				}
-		        fileNames.add(file.getOriginalFilename());
-		      });
-			msg = "\"Images save successfully\"";
+		        rsp = false;
+				}
+
+			if(count==0) {
+				msg = "\"Images save successfully\"";
+			}
+			else {
+				msg = Integer.toString(count) + "\"Images not saved successfully : " + fileNamesDuplicate.toString() + "\"";
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			msg = "\"An unexpected error occurred\"";

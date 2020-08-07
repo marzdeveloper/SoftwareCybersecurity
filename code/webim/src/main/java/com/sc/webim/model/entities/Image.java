@@ -52,7 +52,7 @@ public class Image implements Serializable{
 		this.data_caricamento = data_caricamento;
 	}
 
-	@Column(name = "User_id", nullable = false, unique = true)
+	@Column(name = "User_id", nullable = false)
 	public String getUser_id() {
 		return this.user_id;
 	}

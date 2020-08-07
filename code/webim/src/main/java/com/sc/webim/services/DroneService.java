@@ -6,5 +6,5 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface DroneService {
 	
-	void saveImage(MultipartFile img) throws Exception;
+	void saveImage(MultipartFile img, boolean rsp);
 }
