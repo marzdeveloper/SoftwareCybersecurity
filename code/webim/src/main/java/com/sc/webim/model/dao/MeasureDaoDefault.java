@@ -33,7 +33,7 @@ public class MeasureDaoDefault extends DefaultDao implements MeasureDao{
 
 	@Override
 	@Transactional
-	public Measure create(int user_id, Date data_caricamento, String measure_hash) {
+	public Measure create(String user_id, Date data_caricamento, String measure_hash) {
 		Measure measure = new Measure();
 		measure.setUser_id(user_id);
 		measure.setData_caricamento(data_caricamento);

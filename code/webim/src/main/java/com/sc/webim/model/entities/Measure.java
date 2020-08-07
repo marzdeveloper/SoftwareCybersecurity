@@ -25,7 +25,7 @@ public class Measure implements Serializable{
 	private int measure_id;
 	private String measure_hash;
 	private Date data_caricamento;
-	private int user_id;
+	private String user_id;
 	// aggiungere gps
 	
 	private Set<Image> images = new HashSet<Image>();
@@ -33,7 +33,7 @@ public class Measure implements Serializable{
 	//Get and Set
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "Measure_id")
 	public int getMeasure_id() {
 		return this.measure_id;
@@ -62,12 +62,12 @@ public class Measure implements Serializable{
 		this.data_caricamento = data_caricamento;
 	}
 
-	@Column(name = "User_id", nullable = false, unique = true)
-	public int getUser_id() {
+	@Column(name = "User_id", nullable = false)
+	public String getUser_id() {
 		return this.user_id;
 	}
 
-	public void setUser_id(int user_id) {
+	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
 
