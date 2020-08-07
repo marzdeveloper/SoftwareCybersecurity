@@ -23,7 +23,7 @@ public class Image implements Serializable{
 	
     private int image_id;
 	private Date data_caricamento;
-    private int user_id;
+    private String user_id;
     private String image_hash;
     // aggiungere gps
     
@@ -32,7 +32,7 @@ public class Image implements Serializable{
     //Get and Set
     
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "Image_id")
 	public int getImage_id() {
 		return this.image_id;
@@ -53,11 +53,11 @@ public class Image implements Serializable{
 	}
 
 	@Column(name = "User_id", nullable = false, unique = true)
-	public int getUser_id() {
+	public String getUser_id() {
 		return this.user_id;
 	}
 
-	public void setUser_id(int user_id) {
+	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
 

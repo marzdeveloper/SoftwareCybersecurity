@@ -2,6 +2,7 @@ package com.sc.webim.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sc.webim.model.dao.ImageDao;
 import com.sc.webim.services.DroneService;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/drone")
 public class DroneController {
 	private DroneService droneService;
+	private ImageDao 	imageDao;
 
 	@RequestMapping()
 	public String index(Model model, @RequestParam(value = "msg", required = false) String msg) {

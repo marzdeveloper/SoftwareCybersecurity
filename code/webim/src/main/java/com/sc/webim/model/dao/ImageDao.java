@@ -18,7 +18,7 @@ public interface ImageDao {
 	
 	Image findById(int id);
 	
-	Image create(int user_id, Date data_caricamento, String image_hash, Measure measure_id);
+	Image create(String user_id, Date data_caricamento, String image_hash, Measure measure_id);
 	
 	Image update(Image image);
 	

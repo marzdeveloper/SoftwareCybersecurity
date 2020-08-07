@@ -1,4 +1,3 @@
-
 pragma solidity ^0.4.24;  /*specifico versione */
 pragma experimental ABIEncoderV2; /*aggiunto per poter stampare la struct, togliere dopo il debug */
 
@@ -6,13 +5,10 @@ contract Journal{
    
 
   struct Job{
-    
     bytes32   []workers;
     bytes32   []measures;
     bytes32   []images;
-    uint jobID;
-
-        
+    uint jobID;   
     }
     
     bytes32   []  worker;

@@ -18,9 +18,7 @@ public class ImageDaoDefault extends DefaultDao implements ImageDao{
 	@Override
 	@Transactional(readOnly = true)
 	public List<Image> findAll() {
-		return getSession().
-			createQuery("from Image i", Image.class).
-			getResultList();
+		return getSession().createQuery("from Image i", Image.class).getResultList();
 	}
 
 	@Override
@@ -37,7 +35,7 @@ public class ImageDaoDefault extends DefaultDao implements ImageDao{
 
 	@Override
 	@Transactional
-	public Image create(int user_id, Date data_caricamento, String image_hash, Measure measure_id){
+	public Image create(String user_id, Date data_caricamento, String image_hash, Measure measure_id){
 		Image image = new Image();
 		image.setUser_id(user_id);
 		image.setData_caricamento(data_caricamento);

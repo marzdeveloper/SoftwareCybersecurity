@@ -37,6 +37,10 @@ public class LoadData {
 			
 			try (Session session = sf.openSession()) {
 				
+				
+				imageDao.setSession(session);
+				roleDao.setSession(session);
+				userDao.setSession(session);
 				/*senderDao.setSession(session);
 				deviceDao.setSession(session);
 				jobDao.setSession(session);
@@ -235,6 +239,12 @@ public class LoadData {
 				
 				userDao.update(u1);
 				userDao.update(u2);
+				session.getTransaction().commit();
+				
+				session.beginTransaction();
+				Image img = imageDao.create("drone", null, "1234",null); //prova
+				imageDao.update(img);
+				//session.refresh(img);
 				session.getTransaction().commit();
 			}
 		}
