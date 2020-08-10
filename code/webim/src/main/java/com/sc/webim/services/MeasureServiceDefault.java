@@ -28,8 +28,8 @@ public class MeasureServiceDefault implements MeasureService {
 	}
 
 	@Override
-	public Measure create(String user_id, Date data_caricamento, String measure_hash) {
-		return this.measureRepository.create(user_id, data_caricamento, measure_hash);
+	public Measure create(String user_id, Date data_caricamento, String measure_hash, String gps, String name) {
+		return this.measureRepository.create(user_id, data_caricamento, measure_hash, gps, name);
 	}
 
 	@Override
