@@ -192,10 +192,10 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			
-			<plugin>
-                <groupId>org.web3j</groupId>
-                <artifactId>web3j-maven-plugin</artifactId>
-                <version>4.2.0</version>
+        <plugin>
+            <groupId>org.web3j</groupId>
+            <artifactId>web3j-maven-plugin</artifactId>
+            <version>4.5.11</version>
                 <executions>
                     <execution>
                         <configuration>
