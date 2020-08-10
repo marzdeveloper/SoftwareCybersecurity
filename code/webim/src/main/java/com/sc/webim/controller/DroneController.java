@@ -51,31 +51,48 @@ public class DroneController {
 	@RequestMapping(value = "/uploadImage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, headers="Accept=application/json")
 	public String uploadImage(@RequestParam("imageFiles") MultipartFile[] imageFiles, RedirectAttributes redirectAttributes) {
 		String msg = "";
-		boolean rsp = false;
+		int resp = 0;
+		String msg_temp = "";
+		int code = 0;
 		int count = 0;
 		try {
-			List<String> fileNamesDuplicate = new ArrayList<>();
 			List<MultipartFile> images = Arrays.asList(imageFiles);
 			for(MultipartFile file:images) {
-				droneService.saveImage(file, rsp);
-				if(!rsp) {
+				msg_temp = "";
+				code = droneService.saveImage(file);
+				switch (code) {
+					case -1:
+						msg_temp += "The file is not an image: -> " + file.getOriginalFilename() + "\\n";
+						break;
+					case -2:
+						msg_temp += "The image has no GPS metadata: -> " + file.getOriginalFilename() + "\\n";
+						break;
+					case -3:
+						msg_temp += "The image has already been saved on the DB: -> " + file.getOriginalFilename() + "\\n";
+						break;
+					case -9:
+						msg_temp += "An unexpected error occurred: -> " + file.getOriginalFilename() + "\\n";
+						break;
+				}
+				
+				if(code < 0) {
 					count++;
-					fileNamesDuplicate.add(file.getOriginalFilename());
 				}
-		        rsp = false;
-				}
+			}
 
-			if(count==0) {
+			if(count == 0) {
 				msg = "\"Images save successfully\"";
+				resp = 1;
 			}
 			else {
-				msg = Integer.toString(count) + "\"Images not saved successfully : " + fileNamesDuplicate.toString() + "\"";
+				msg = "\"" +  count + "/" + images.size() + " image/s cant be saved \"";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			msg = "\"An unexpected error occurred\"";
 		}
 		redirectAttributes.addAttribute("msg", msg);
+		redirectAttributes.addAttribute("resp", resp);
 		return "redirect:/drone";
 	}
 	

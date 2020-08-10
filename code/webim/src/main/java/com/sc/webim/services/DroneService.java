@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface DroneService {
 	
-	int saveImage(MultipartFile img, int code);
+	int saveImage(MultipartFile img);
 	
 	void metadataExample(String fileName) throws ImageReadException, IOException;
 }

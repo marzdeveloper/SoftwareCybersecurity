@@ -46,6 +46,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.sc.webim.Utils;
 import com.sc.webim.model.dao.ImageDao;
 import com.sc.webim.model.entities.Image;
 
@@ -59,7 +60,8 @@ public class DroneServiceDefault implements DroneService {
 	private ImageDao imageRepository;
 	
 	@Override
-	public int saveImage(MultipartFile image, int code) {
+	public int saveImage(MultipartFile image) {
+		int code = 0;
 		try {
 			byte[] bytes = image.getBytes();
 			
@@ -98,7 +100,7 @@ public class DroneServiceDefault implements DroneService {
 	    					if (code >= 0) {
 	    						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
 	    					    Date date = new Date();
-	    					    Date dataCreazione = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(formatter.format(date));
+	    					    Date dataCreazione = Utils.date(formatter.format(date));
 	    						
 	    						Image img = imageRepository.create("drone", dataCreazione, hash, image.getOriginalFilename(), latitude + "," + longitude);
 	    						imageRepository.update(img);

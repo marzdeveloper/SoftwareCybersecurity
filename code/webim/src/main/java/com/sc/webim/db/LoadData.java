@@ -98,7 +98,7 @@ public class LoadData {
 				session.beginTransaction();
 				
 				//creo delle immagini
-				Image image = imageDao.create("drone", Utils.date("2020-08-31"), "1234",null);
+				Image image = imageDao.create("drone", Utils.date("2020-08-31 10:10:10"), "1234", "name", "gps");
 				
 				imageDao.update(image);
 				session.getTransaction().commit();
@@ -106,7 +106,7 @@ public class LoadData {
 				session.beginTransaction();
 				
 				//creo delle misure
-				Measure measure = measureDao.create("drone", Utils.date("2020-08-31"), "5678", "gps", "name");
+				Measure measure = measureDao.create("drone", Utils.date("2020-08-31 10:10:10"), "5678", "gps", "name");
 				
 				measureDao.update(measure);
 				
