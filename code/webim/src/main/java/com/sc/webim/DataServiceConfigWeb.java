@@ -39,8 +39,8 @@ public class DataServiceConfigWeb {
 	public DataSource dataSource() {
 		try {DriverManagerDataSource ds = new DriverManagerDataSource();
 			ds.setDriverClassName(com.mysql.cj.jdbc.Driver.class.getName());
-		    ds.setUrl("jdbc:mysql://localhost:3306/WebIm?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
-		    ds.setUsername("Daniele");
+		    ds.setUrl("jdbc:mysql://localhost:3306/WebIm?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Rome");
+		    ds.setUsername("root");
 		    //ds.setPassword("p@ssw0rd");
 		    return ds;
 		} catch (Exception e) {
@@ -63,8 +63,8 @@ public class DataServiceConfigWeb {
 		hibernateProp.put("hibernate.max_fetch_depth", 3);
 		hibernateProp.put("hibernate.jdbc.batch_size", 10);
 		hibernateProp.put("hibernate.jdbc.fetch_size", 50);
-		hibernateProp.put("javax.persistence.schema-generation.database.action", "none"); // importante, altrimenti si aspetta il DB gia` "strutturato"
-		//mettere create la prima volta
+		hibernateProp.put("javax.persistence.schema-generation.database.action", "drop-and-create"); //mettere drop-and-create la prima volta
+		//hibernateProp.put("javax.persistence.schema-generation.database.action", "none");
 		return hibernateProp;
 	}
 		   
