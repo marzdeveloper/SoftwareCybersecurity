@@ -32,7 +32,7 @@ public class DroneController {
 
 	@RequestMapping()
 	public String index(Model model, @RequestParam(value = "msg", required = false) String msg) {
-		model.addAttribute("tittle", "Drone");
+		model.addAttribute("title", "Drone");
 		model.addAttribute("alertMsg", msg);
 		
 		return "drone/index";

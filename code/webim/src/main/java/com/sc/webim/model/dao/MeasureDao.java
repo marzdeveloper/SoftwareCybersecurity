@@ -19,7 +19,7 @@ public interface MeasureDao {
 	
 	Measure findById(int id);
 
-	Measure create(String user_id, Date data_caricamento, String measure_hash);
+	Measure create(String user_id, Date data_caricamento, String measure_hash, String gps, String name);
 	
 	Measure update(Measure measure);
 	
