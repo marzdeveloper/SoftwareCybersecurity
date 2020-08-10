@@ -5,8 +5,14 @@
 <script type="text/javascript">
 	$(document).ready( function () {
 	    var alert = ${alertMsg} + "";
+	    var type = ${typeMsg} + "";
+	    console.log(type);
 	    if (alert) {
-		    var $alertMsg1 = $('<div id="alert_error" class="alert alert-success alert-flotante temp_alert">' + alert + '</div>');
+	    	if (type > 0) {
+			    var $alertMsg1 = $('<div id="alert_error" class="alert alert-success alert-flotante temp_alert">' + alert + '</div>');	    		
+	    	} else {
+	    		var $alertMsg1 = $('<div id="alert_error" class="alert alert-danger alert-flotante temp_alert">' + alert + '</div>');
+	    	}
 	    	$('.msg_alert').append($alertMsg1);
 	    	setTimeout(function() {
 	    		$alertMsg1.fadeOut( "slow", function() {

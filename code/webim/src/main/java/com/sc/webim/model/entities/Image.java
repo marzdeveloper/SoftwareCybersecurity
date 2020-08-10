@@ -25,7 +25,8 @@ public class Image implements Serializable{
 	private Date data_caricamento;
     private String user_id;
     private String image_hash;
-    // aggiungere gps
+    private String name;
+    private String gps;
     
     private Measure measure_id;
 
@@ -43,7 +44,7 @@ public class Image implements Serializable{
 	}
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "Data_caricamento", nullable = true)
+	@Column(name = "Data_caricamento", nullable = false)
 	public Date getData_caricamento() {
 		return this.data_caricamento;
 	}
@@ -69,13 +70,32 @@ public class Image implements Serializable{
 	public void setImage_hash(String image_hash) {
 		this.image_hash = image_hash;
 	}
+	
+	@Column(name = "GPS", nullable = false)
+	public String getGPS() {
+		return this.gps;
+	}
 
+	public void setGPS(String gps) {
+		this.gps = gps;
+	}
+
+	@Column(name = "Name", nullable = false, unique = true)
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	//toString
 	
 	@Override
 	public String toString() {
-		return "Image - Id: " + image_id + ", User - Id: " + user_id +
-				", Data caricamento: " + data_caricamento + ", Hash immagine: " + image_hash;
+		return "Image - Id: " + image_id + ", User - Id: " + user_id + ", Name: " + name
+				+ ", Data caricamento: " + data_caricamento + ", Hash immagine: " + image_hash
+				+ ", GPS: " + gps;
 	}
 	
 	//Relationships

@@ -1,10 +1,14 @@
 package com.sc.webim.services;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.sanselan.ImageReadException;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface DroneService {
 	
-	void saveImage(MultipartFile img, boolean rsp);
+	int saveImage(MultipartFile img, int code);
+	
+	void metadataExample(String fileName) throws ImageReadException, IOException;
 }
