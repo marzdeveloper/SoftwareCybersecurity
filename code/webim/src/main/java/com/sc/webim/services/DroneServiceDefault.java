@@ -56,7 +56,7 @@ import net.sf.jmimemagic.Magic;
 @Transactional
 @Service("droneService")
 public class DroneServiceDefault implements DroneService {
-	private final Path root = Paths.get("uploads");
+	private final Path root = Paths.get("src/main/webapp/WEB-INF/uploads/images");
 	private ImageDao imageRepository;
 	
 	@Override
@@ -98,7 +98,7 @@ public class DroneServiceDefault implements DroneService {
 	    						}
 	    					}
 	    					if (code >= 0) {
-	    						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+	    						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
 	    					    Date date = new Date();
 	    					    Date dataCreazione = Utils.date(formatter.format(date));
 	    						

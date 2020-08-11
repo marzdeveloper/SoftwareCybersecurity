@@ -6,7 +6,6 @@
 	$(document).ready( function () {
 	    var alert = ${alertMsg} + "";
 	    var type = ${typeMsg} + "";
-	    console.log(type);
 	    if (alert) {
 	    	if (type > 0) {
 			    var $alertMsg1 = $('<div id="alert_error" class="alert alert-success alert-flotante temp_alert">' + alert + '</div>');	    		
@@ -34,7 +33,7 @@
 
 	function showAlertMsg(response) {
 		if(response.success) {
-			window.location.replace(window.location.origin + window.location.pathname + '?msg="' + response.msg + '"');
+			window.location.replace(window.location.origin + window.location.pathname + '?msg="' + response.msg + '"' + '&resp=1');
 		} else {
 			var $alertMsg = $('<div id="alert_error" class="alert alert-danger alert-flotante temp_alert">' + response.msg + '</div>');
 			$('.msg_alert').append($alertMsg);

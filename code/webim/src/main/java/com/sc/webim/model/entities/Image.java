@@ -107,8 +107,8 @@ public class Image implements Serializable{
 		return this.measure_id;
 	}
 
-	public void setMeasure_id(Measure measure_id) {
-		this.measure_id = measure_id;
+	public void setMeasure_id(Measure measure) {
+		this.measure_id = measure;
 	}
     
 }
