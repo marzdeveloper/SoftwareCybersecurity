@@ -99,5 +99,3 @@ contract Journal{
     
     
 }
-
-
