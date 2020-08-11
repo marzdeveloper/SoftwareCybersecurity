@@ -1,4 +1,4 @@
-pragma solidity ^0.5.11;
+pragma solidity ^0.4.24 ; /*specifico versione */
 
 contract Thread{
     string public participants;
