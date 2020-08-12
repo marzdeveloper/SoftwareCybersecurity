@@ -3,14 +3,15 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <sec:authorize access="isAuthenticated()" var="isAuth" />
+<sec:authorize access="hasRole('DIRETTORE')" var="isDirettore" />
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <c:if test="${isAuth}">
-        <button type="button" id="sidebarCollapse" class="btn btn-info">
-            <i class="fas fa-align-left"></i>
-            <span>Menu</span>
-        </button>
-            </c:if>
+        <c:if test="${isDirettore}">
+	        <button type="button" id="sidebarCollapse" class="btn btn-info">
+	            <i class="fas fa-align-left"></i>
+	            <span>Menu</span>
+	        </button>
+        </c:if>
         <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-align-justify"></i>
         </button>

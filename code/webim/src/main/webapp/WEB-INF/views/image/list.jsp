@@ -8,7 +8,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" ></script>
 <h2>
 	${title}
-	<button onclick="measureImages()" type="button" class="btn btn-primary btn-circle"><i class="fa fa-up"></i>Measure</button>
 </h2>
 <div>
    	<table id="tableImage" class="table table-striped table-bordered" style="width:100%">
@@ -17,9 +16,8 @@
                 <th>Name</th>
                 <th>Date</th>
                 <th>GPS</th>
-                <th>Measures</th>
                 <th></th>
-                <th></th>
+                <th style="text-align:center;">Measures <button onclick="measureImages()" type="button" class="btn btn-primary btn-circle"><i class="fa fa-plus"></i>Measure</button></th>
                 <th></th>
             </tr>
         </thead>
@@ -29,13 +27,15 @@
 	                <td>${i.name}</td>
 	                <td>${i.data_caricamento}</td>
 	                <td>${i.GPS}</td>
-	                <td style="text-align:center;">
-	                	<c:if test="${empty i.measure_id.measure_id}">
-	                		<button onclick="getMeasure(${${i.measure_id.measure_id}})" type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#measureModal"><i class="fa fa-edit"></i></button>
-                		</c:if>
-               		</td>
 	                <td style="text-align:center;"><button onclick="getDetails(${i.image_id})" type="button" class="btn btn-info btn-circle" data-toggle="modal" data-target="#viewModal"><i class="fa fa-eye"></i></button></td>
-	                <td style="text-align:center;"><span class="form-check"><input class="form-check-input" type="checkbox" value="${i.image_id}" id="check_${i.image_id}" /></span></td>
+                	<c:if test="${not empty i.measure_id.measure_id}">
+		                <td style="text-align:center;">
+                			<button onclick="getMeasure(${i.measure_id.measure_id})" type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#measureModal"><i class="fa fa-eye"></i></button>
+	               		</td>
+               		</c:if>
+               		<c:if test="${empty i.measure_id.measure_id}">
+	               		<td style="text-align:center;"><span class="form-check"><input class="form-check-input" type="checkbox" value="${i.image_id}" id="check_${i.image_id}" /></span></td>
+               		</c:if>
 	                <td style="text-align:center;"><button onclick="deleteData(${i.image_id})" type="button" class="btn btn-danger btn-circle"><i class="fa fa-trash"></i></button></td>
 	            </tr>
 			</c:forEach>
@@ -45,9 +45,8 @@
                 <th>Name</th>
                 <th>Date</th>
                 <th>GPS</th>
+                <th></th>
                 <th>Measures</th>
-                <th></th>
-                <th></th>
                 <th></th>
             </tr>
         </tfoot>
@@ -56,21 +55,14 @@
      	
 <!-- Modal Image -->
 <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
+	<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
     	<div class="modal-content modal-content-image"></div>
 	</div>
 </div>
 
-<!-- Modal New -->
-<div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-    	<div class="modal-content modal-content-new"></div>
-  	</div>
-</div>
-
 <!-- Modal Measure -->
-<div class="modal fade modal-xl" id="measureModal" tabindex="-1" role="dialog" aria-labelledby="measureModalLabel" aria-hidden="true">
-  	<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade" id="measureModal" tabindex="-1" role="dialog" aria-labelledby="measureModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     	<div class="modal-content modal-content-measure"></div>
   	</div>
 </div>
@@ -80,7 +72,7 @@
 	$(document).ready( function () {
 	    $('#tableImage').DataTable({
 	    	"columnDefs": [
-	    		{ "orderable": false, "targets": [4, 5, 6] }
+	    		{ "orderable": false, "targets": [3, 4, 5] }
 	    	  ]
 	    });
 	} );

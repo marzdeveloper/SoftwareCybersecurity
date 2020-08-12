@@ -50,7 +50,7 @@ public class ImageController {
 	@RequestMapping(value = "/getMeasure/{id}", method = RequestMethod.GET)
 	public String getMeasure(Locale locale, Model model, @PathVariable("id") int id) {
 		Measure measure = measureService.findById(id);
-		model.addAttribute("measure", measure.getName());
+		model.addAttribute("name", measure.getName());
 		
 		return "image/modal_measure";
 	}

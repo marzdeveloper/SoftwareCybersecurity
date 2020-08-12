@@ -19,44 +19,26 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	
-	
 	<!-- Bootstrap CSS CDN -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" crossorigin="anonymous" />
 	
 	<!-- CSS Local -->
-	<c:if test="${isAuth}">
+	<!-- <c:if test="${isAuth}">
 		<spring:url value="/css/global.css" var="global_css_url" />
 		<link href="${global_css_url}" rel="stylesheet" />
-	</c:if>
+	</c:if> -->
 	
-	<c:if test="${not empty app_css}">
-		<spring:url value="/css/${app_css}" var="app_css_url" />
-		<link rel="stylesheet" type="text/css" media="screen" href="${app_css_url}" />
-	</c:if>
-	
-	<c:if test="${isAuth}">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css" />
-	</c:if>
-	
-	<!-- DataTable -->
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css" />
 </head>
 <body>
 	<div id="headerBlock">
 		<tiles:insertAttribute name="header" ignore="false" />
 	</div>
-	<div class="wrapper">
-		<c:if test="${isDirettore}">
-			<div id="menuBlock">
-				<tiles:insertAttribute name="menu" ignore="false" />
-			</div>
-		</c:if>
-		<div id="content">			
-			<div id="mainBlock">
-				<c:if test="${isAuth}"> <tiles:insertAttribute name="hmenu" /> </c:if>
-				<tiles:insertAttribute name="body" />
-				<div class="msg_alert" role="alert"></div>
-			</div>
+	<div id="content">			
+		<div id="mainBlock">
+			<tiles:insertAttribute name="hmenu" />
+			<tiles:insertAttribute name="body" />
+			<div class="msg_alert" role="alert"></div>
 		</div>
 	</div>
 	<div id="footerBlock">
