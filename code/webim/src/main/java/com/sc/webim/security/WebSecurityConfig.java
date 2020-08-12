@@ -25,6 +25,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
+		http.headers().frameOptions().sameOrigin();
+		
 		http.authorizeRequests().
 			antMatchers("/login").permitAll().
 			antMatchers("/threads/**").permitAll().
@@ -46,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 														// /login?logout
 					.invalidateHttpSession(true).permitAll().
 			and().csrf().disable();
+		
 	}
 
 	@Bean
