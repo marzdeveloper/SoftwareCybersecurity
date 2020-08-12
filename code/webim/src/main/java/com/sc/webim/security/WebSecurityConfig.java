@@ -28,10 +28,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().
 			antMatchers("/login").permitAll().
 			antMatchers("/threads/**").permitAll().
-			antMatchers("/drone").permitAll().
-			antMatchers("/drone/*").permitAll().
-			antMatchers("/uploads").permitAll().
-			antMatchers("/uploads/*").permitAll().
+			antMatchers("/drone").hasAnyRole("DRONE").
+			antMatchers("/drone/*").hasAnyRole("DRONE").
+			antMatchers("/uploads").hasAnyRole("DIRETTORE").
+			antMatchers("/uploads/*").hasAnyRole("DIRETTORE").
 			antMatchers("/image").hasAnyRole("DIRETTORE").
 			antMatchers("/image/*").hasAnyRole("DIRETTORE").
 			antMatchers("/user").hasAnyRole("DIRETTORE").
@@ -40,9 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			antMatchers("/images/**").permitAll().
 			antMatchers("/").permitAll().
 			antMatchers("/**").hasAnyRole("DRONE", "DIRETTORE").
-				and().formLogin().loginPage("/login").defaultSuccessUrl("/image", true)
-					.successForwardUrl("/image")
-					.defaultSuccessUrl("/image")
+				and().formLogin().loginPage("/login").defaultSuccessUrl("/direttore", true)
+					.successForwardUrl("/direttore")
+					.defaultSuccessUrl("/direttore")
 					.failureUrl("/login?error=true").permitAll().
 				and().logout().logoutSuccessUrl("/") // NB se commentiamo
 														// questa riga,

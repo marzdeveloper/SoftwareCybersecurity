@@ -3,7 +3,7 @@
    Foundation//DTD Tiles  Configuration 3.0//EN"
    "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
-  <definition extends="default" name="drone/index">
+  <definition extends="none" name="drone/index">
    <put-attribute name="body" value="/WEB-INF/views/drone/index.jsp" />
   </definition>
 </tiles-definitions>

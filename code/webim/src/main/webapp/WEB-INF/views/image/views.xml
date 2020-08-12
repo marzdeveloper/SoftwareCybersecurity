@@ -9,8 +9,8 @@
   <definition extends="none" name="image/modal">
    <put-attribute name="body" value="/WEB-INF/views/image/modal.jsp" />
 </definition>
-  <definition extends="none" name="image/modal_new">
-  	<put-attribute name="body" value="/WEB-INF/views/image/modal_new.jsp"></put-attribute></definition>
+  <definition extends="none" name="image/modal_measure">
+  	<put-attribute name="body" value="/WEB-INF/views/image/modal_measure.jsp"></put-attribute></definition>
   <definition extends="none" name="image/modal_edit">
   	<put-attribute name="body" value="/WEB-INF/views/image/modal_edit.jsp"></put-attribute></definition>
 </tiles-definitions>

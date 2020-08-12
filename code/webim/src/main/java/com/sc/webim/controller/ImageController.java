@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sc.webim.model.dao.ImageDao;
 import com.sc.webim.model.entities.Image;
+import com.sc.webim.model.entities.Measure;
 import com.sc.webim.services.ImageService;
+import com.sc.webim.services.MeasureService;
 
 @Controller
 @RequestMapping("/image")
 public class ImageController {
 	private ImageService imageService;
+	private MeasureService measureService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String images(Locale locale, Model model, @RequestParam(value = "msg", required = false) String msg, 
@@ -40,12 +43,16 @@ public class ImageController {
 	@RequestMapping(value = "/getDetails/{id}", method = RequestMethod.GET)
 	public String getDetails(Locale locale, Model model, @PathVariable("id") int id) {
 		Image img = imageService.findById(id);
-		String path = imageService.getPathImage(img.getName());
-		
 		model.addAttribute("name", img.getName());
-		model.addAttribute("path", path);
-		
 		return "image/modal";
+	}
+	
+	@RequestMapping(value = "/getMeasure/{id}", method = RequestMethod.GET)
+	public String getMeasure(Locale locale, Model model, @PathVariable("id") int id) {
+		Measure measure = measureService.findById(id);
+		model.addAttribute("measure", measure.getName());
+		
+		return "image/modal_measure";
 	}
 	
 	@RequestMapping(value = "/deleteData", method = RequestMethod.POST, produces = "application/json", headers="Accept=application/json")
@@ -181,7 +188,8 @@ public class ImageController {
 	*/
 	
 	@Autowired
-	public void setServices(ImageService imageService) {
+	public void setServices(ImageService imageService, MeasureService measureService) {
 		this.imageService = imageService;
+		this.measureService = measureService;
 	}
 }

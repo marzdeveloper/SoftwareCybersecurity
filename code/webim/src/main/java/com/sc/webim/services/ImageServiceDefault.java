@@ -218,8 +218,7 @@ public class ImageServiceDefault implements ImageService {
 					//Assegniamo la misura alle immagini
 					for (int i = 0; i < list.size(); i++) {
 						Image img = list.get(i);
-						Measure img_m = img.getMeasure_id();
-						img.setMeasure_id(img_m);
+						img.setMeasure_id(m.get(0));
 						this.imageRepository.update(img);
 					}
 					resp = true;

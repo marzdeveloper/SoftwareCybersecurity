@@ -4,7 +4,7 @@
 <%@ page session="false"%>
 <!-- Modal -->
 <div class="modal-header">
-  	<h5 class="modal-title" id="editModalLabel">${device.brand} ${device.model} - ${device.serialNumber}</h5>
+  	<h5 class="modal-title" id="measureModalLabel">${device.brand} ${device.model} - ${device.serialNumber}</h5>
   	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
     	<span aria-hidden="true">&times;</span>
   	</button>
@@ -60,43 +60,5 @@
 	</div>
 </div>
 <div class="modal-footer">
- 	<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveData(${device.id})">Save</button>
  	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 </div>
-<script type="text/javascript">
-	$(document).ready( function () {
-	    $('#dev-reason').val('${device.reason}');
-	} );
-
-    $( function() {
-    	$("#dev-checkIn").datepicker({
-	    	closeText: 'Close',
-	    	prevText: 'Prev',
-	    	nextText: 'Next',
-	    	currentText: 'Today',
-	    	monthNames: ['January','February','March','April','May','June','July','August','September','October','November','December'],
-	    	monthNamesShort: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-	    	dayNames: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
-	    	dayNamesShort: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
-	    	dayNamesMin: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
-	    	dateFormat: 'yy-mm-dd',
-	    	firstDay: 1
-    	});
-
-    	$("#dev-checkOut").datepicker({
-	    	closeText: 'Close',
-	    	prevText: 'Prev',
-	    	nextText: 'Next',
-	    	currentText: 'Today',
-	    	monthNames: ['January','February','March','April','May','June','July','August','September','October','November','December'],
-	    	monthNamesShort: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-	    	dayNames: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
-	    	dayNamesShort: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
-	    	dayNamesMin: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
-	    	dateFormat: 'yy-mm-dd',
-	    	firstDay: 1
-    	});
-    	
-   		$.datepicker.setDefaults($.datepicker.regional['it']);
-   	} );
-</script>
