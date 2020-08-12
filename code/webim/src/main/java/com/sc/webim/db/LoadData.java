@@ -4,6 +4,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -97,8 +99,11 @@ public class LoadData {
 				
 				session.beginTransaction();
 				
-				//creo delle immagini
-				Image image = imageDao.create("drone", Utils.date("2020-08-31 10:10:10"), "1234", "name", "gps");
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
+			    Date date = new Date();
+			    
+			    //creo delle immagini
+				Image image = imageDao.create("drone", Utils.date(formatter.format(date)), "1234", "name", "43.58566251841667,13.513204693083333");
 				
 				imageDao.update(image);
 				session.getTransaction().commit();
@@ -106,7 +111,7 @@ public class LoadData {
 				session.beginTransaction();
 				
 				//creo delle misure
-				Measure measure = measureDao.create("drone", Utils.date("2020-08-31 10:10:10"), "5678", "gps", "name");
+				Measure measure = measureDao.create("drone", Utils.date(formatter.format(date)), "5678", "gps", "example.pdf");
 				
 				measureDao.update(measure);
 				

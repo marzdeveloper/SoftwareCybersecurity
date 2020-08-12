@@ -32,15 +32,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			antMatchers("/threads/**").permitAll().
 			antMatchers("/drone").permitAll().
 			antMatchers("/drone/*").permitAll().
+			antMatchers("/uploads").permitAll().
+			antMatchers("/uploads/*").permitAll().
+			antMatchers("/image").hasAnyRole("DIRETTORE").
+			antMatchers("/image/*").hasAnyRole("DIRETTORE").
 			antMatchers("/user").hasAnyRole("DIRETTORE").
 			antMatchers("/direttore/**").hasAnyRole("DIRETTORE").
 			antMatchers("/css/**").permitAll().
 			antMatchers("/images/**").permitAll().
 			antMatchers("/").permitAll().
 			antMatchers("/**").hasAnyRole("DRONE", "DIRETTORE").
-				and().formLogin().loginPage("/login").defaultSuccessUrl("/threads", true)
-					.successForwardUrl("/threads")
-					.defaultSuccessUrl("/threads")
+				and().formLogin().loginPage("/login").defaultSuccessUrl("/image", true)
+					.successForwardUrl("/image")
+					.defaultSuccessUrl("/image")
 					.failureUrl("/login?error=true").permitAll().
 				and().logout().logoutSuccessUrl("/") // NB se commentiamo
 														// questa riga,

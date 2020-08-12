@@ -28,12 +28,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/drone")
 public class DroneController {
 	private DroneService droneService;
-	private ImageDao 	imageDao;
+	private ImageDao imageDao;
 
 	@RequestMapping()
-	public String index(Model model, @RequestParam(value = "msg", required = false) String msg) {
+	public String index(Model model, @RequestParam(value = "msg", required = false) String msg, 
+			@RequestParam(value = "resp", required = false) String resp) {
 		model.addAttribute("title", "Drone");
 		model.addAttribute("alertMsg", msg);
+		model.addAttribute("typeMsg", resp);
 		
 		return "drone/index";
 	}
