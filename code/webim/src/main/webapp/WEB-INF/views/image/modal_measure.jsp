@@ -9,9 +9,10 @@
     	<span aria-hidden="true">&times;</span>
   	</button>
 </div>
+
 <div class="modal-body">
 	<div class="modal-iframe" style="width:100%; height:75vh;">
-		<iframe src="../uploads/measures/${name}#toolbar=0" width="100%" height="100%" ></iframe>
+		<iframe src="../uploads/measures/${name}#toolbar=0" width="100%" height="100%"></iframe>
 	</div>
 </div>
 <div class="modal-footer">
