@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sc.webim.model.dao.ImageDao;
 import com.sc.webim.services.DroneService;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -51,7 +52,7 @@ public class DroneController {
 	}*/
 	
 	@RequestMapping(value = "/uploadImage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, headers="Accept=application/json")
-	public String uploadImage(@RequestParam("imageFiles") MultipartFile[] imageFiles, RedirectAttributes redirectAttributes) {
+	public String uploadImage(Principal principal, @RequestParam("imageFiles") MultipartFile[] imageFiles, RedirectAttributes redirectAttributes) {
 		String msg = "";
 		int resp = 0;
 		String msg_temp = "";
@@ -61,7 +62,7 @@ public class DroneController {
 			List<MultipartFile> images = Arrays.asList(imageFiles);
 			for(MultipartFile file:images) {
 				msg_temp = "";
-				code = droneService.saveImage(file);
+				code = droneService.saveImage(principal.getName(), file);
 				switch (code) {
 					case -1:
 						msg_temp += "The file is not an image: -> " + file.getOriginalFilename() + "\\n";

@@ -60,7 +60,7 @@ public class DroneServiceDefault implements DroneService {
 	private ImageDao imageRepository;
 	
 	@Override
-	public int saveImage(MultipartFile image) {
+	public int saveImage(String user, MultipartFile image) {
 		int code = 0;
 		try {
 			byte[] bytes = image.getBytes();
@@ -102,7 +102,7 @@ public class DroneServiceDefault implements DroneService {
 	    					    Date date = new Date();
 	    					    Date dataCreazione = Utils.date(formatter.format(date));
 	    						
-	    						Image img = imageRepository.create("drone", dataCreazione, hash, image.getOriginalFilename(), latitude + "," + longitude);
+	    						Image img = imageRepository.create(user, dataCreazione, hash, image.getOriginalFilename(), latitude + "," + longitude);
 	    						imageRepository.update(img);
 	    						
 	    						Path path = Paths.get(root + "/" + image.getOriginalFilename());
