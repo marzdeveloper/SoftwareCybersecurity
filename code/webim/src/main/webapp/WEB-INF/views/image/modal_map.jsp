@@ -4,7 +4,7 @@
 <%@ page session="false"%>
 <!-- Modal -->
 <div class="modal-header">
-  	<h5 class="modal-title" id="measureModalLabel">${name}</h5>
+  	<h5 class="modal-title" id="mapModalLabel">${name}</h5>
   	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
     	<span aria-hidden="true">&times;</span>
   	</button>
@@ -12,7 +12,7 @@
 
 <div class="modal-body">
 	<div class="modal-iframe" style="width:100%; height:75vh;">
-		<iframe src="../uploads/measures/${name}#toolbar=0" width="100%" height="100%"></iframe>
+		<iframe src="https://maps.google.com/maps?t=k&q=${latitude},${longitude}&hl=it&z=18&amp;output=embed" width="100%" height="100%"></iframe>
 	</div>
 </div>
 <div class="modal-footer">

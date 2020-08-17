@@ -13,4 +13,6 @@
   	<put-attribute name="body" value="/WEB-INF/views/image/modal_measure.jsp"></put-attribute></definition>
   <definition extends="none" name="image/modal_edit">
   	<put-attribute name="body" value="/WEB-INF/views/image/modal_edit.jsp"></put-attribute></definition>
+  	<definition extends="none" name="image/modal_map">
+  	<put-attribute name="body" value="/WEB-INF/views/image/modal_map.jsp"></put-attribute></definition>
 </tiles-definitions>

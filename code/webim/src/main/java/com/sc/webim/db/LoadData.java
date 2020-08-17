@@ -111,7 +111,7 @@ public class LoadData {
 				session.beginTransaction();
 				
 				//creo delle misure
-				Measure measure = measureDao.create("drone", Utils.date(formatter.format(date)), "5678", "gps", "example.pdf");
+				Measure measure = measureDao.create("drone", Utils.date(formatter.format(date)), "5678", "example.pdf");
 				
 				measureDao.update(measure);
 				

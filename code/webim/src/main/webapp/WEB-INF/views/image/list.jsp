@@ -16,7 +16,6 @@
                 <th>Name</th>
                 <th>Date</th>
                 <th>GPS</th>
-                <th></th>
                 <th style="text-align:center;">Measures <button onclick="measureImages()" type="button" class="btn btn-primary btn-circle"><i class="fa fa-plus"></i>Measure</button></th>
                 <th></th>
             </tr>
@@ -24,10 +23,9 @@
         <tbody>
 	        <c:forEach items="${images}" var="i">
 	        	<tr>
-	                <td>${i.name}</td>
+	                <td><button onclick="getDetails(${i.image_id})" type="button" class="btn btn-info btn-circle" data-toggle="modal" data-target="#viewModal"><i class="fa fa-eye"></i></button> ${i.name} </td>
 	                <td>${i.data_caricamento}</td>
-	                <td>${i.GPS}</td>
-	                <td style="text-align:center;"><button onclick="getDetails(${i.image_id})" type="button" class="btn btn-info btn-circle" data-toggle="modal" data-target="#viewModal"><i class="fa fa-eye"></i></button></td>
+	                <td><button onclick="getMap(${i.image_id})" type="button" class="btn btn-info btn-circle" data-toggle="modal" data-target="#mapModal"><i class="fa fa-eye"></i></button> ${i.GPS} </td>
                 	<c:if test="${not empty i.measure_id.measure_id}">
 		                <td style="text-align:center;">
                 			<button onclick="getMeasure(${i.measure_id.measure_id})" type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#measureModal"><i class="fa fa-eye"></i></button>
@@ -45,7 +43,6 @@
                 <th>Name</th>
                 <th>Date</th>
                 <th>GPS</th>
-                <th></th>
                 <th>Measures</th>
                 <th></th>
             </tr>
@@ -67,12 +64,19 @@
   	</div>
 </div>
 
+<!-- Modal Map -->
+<div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    	<div class="modal-content modal-content-map"></div>
+  	</div>
+</div>
+
 <script type="text/javascript">
 	var quale_link = 1;
 	$(document).ready( function () {
 	    $('#tableImage').DataTable({
 	    	"columnDefs": [
-	    		{ "orderable": false, "targets": [3, 4, 5] }
+	    		{ "orderable": false, "targets": [3, 4] }
 	    	  ]
 	    });
 	} );
@@ -88,6 +92,14 @@
     	$(".modal-content-measure").empty();
        	$.get("<c:url value="/${title}/getMeasure/"/>"+id, function(data, status){
    	    	$(".modal-content-measure").append(data);
+   	    });
+    }
+    
+    
+    function getMap(id) {
+    	$(".modal-content-map").empty();
+       	$.get("<c:url value="/${title}/getMap/"/>"+id, function(data, status){
+   	    	$(".modal-content-map").append(data);
    	    });
     }
 
@@ -126,4 +138,8 @@
             }
         });
     }
+    
+    document.addEventListener("contextmenu", function (e) {
+           e.preventDefault();
+       }, false);
 </script>
