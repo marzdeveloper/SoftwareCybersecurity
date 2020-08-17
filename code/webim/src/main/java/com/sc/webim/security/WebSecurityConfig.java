@@ -18,6 +18,8 @@ import com.sc.webim.services.UserDetailsServiceDefault;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Autowired
+    CustomSuccessHandler customSuccessHandler;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -42,9 +44,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			antMatchers("/images/**").permitAll().
 			antMatchers("/").permitAll().
 			antMatchers("/**").hasAnyRole("DRONE", "DIRETTORE").
-				and().formLogin().loginPage("/login").defaultSuccessUrl("/direttore", true)
-					.successForwardUrl("/direttore")
-					.defaultSuccessUrl("/direttore")
+				and().formLogin().loginPage("/login").successHandler(customSuccessHandler)
+					//.defaultSuccessUrl("/direttore", true)
+					//.successForwardUrl("/direttore")
+					//.defaultSuccessUrl("/direttore")
 					.failureUrl("/login?error=true").permitAll().
 				and().logout().logoutSuccessUrl("/") // NB se commentiamo
 														// questa riga,
