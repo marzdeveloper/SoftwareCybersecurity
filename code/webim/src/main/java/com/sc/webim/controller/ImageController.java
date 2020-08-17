@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sc.webim.model.dao.ImageDao;
 import com.sc.webim.model.entities.Image;
 import com.sc.webim.model.entities.Measure;
 import com.sc.webim.services.ImageService;
@@ -53,6 +52,19 @@ public class ImageController {
 		model.addAttribute("name", measure.getName());
 		
 		return "image/modal_measure";
+	}
+	
+	
+	@RequestMapping(value = "/getMap/{id}", method = RequestMethod.GET)
+	public String getMap(Locale locale, Model model, @PathVariable("id") int id) {
+		Image image = imageService.findById(id);
+		String[] gps = image.getGPS().split(",", 2);
+		String latitude = gps[0];
+		String longitude = gps[1];
+		model.addAttribute("name", image.getName());
+		model.addAttribute("longitude", longitude);
+		model.addAttribute("latitude", latitude);
+		return "image/modal_map";
 	}
 	
 	@RequestMapping(value = "/deleteData", method = RequestMethod.POST, produces = "application/json", headers="Accept=application/json")
