@@ -18,6 +18,8 @@ import com.sc.webim.services.UserDetailsServiceDefault;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Autowired
+    CustomSuccessHandler customSuccessHandler;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -25,20 +27,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
+		http.headers().frameOptions().sameOrigin();
+		
 		http.authorizeRequests().
 			antMatchers("/login").permitAll().
 			antMatchers("/threads/**").permitAll().
-			antMatchers("/drone").permitAll().
-			antMatchers("/drone/*").permitAll().
+			antMatchers("/drone").hasAnyRole("DRONE").
+			antMatchers("/drone/*").hasAnyRole("DRONE").
+			antMatchers("/uploads").hasAnyRole("DIRETTORE").
+			antMatchers("/uploads/*").hasAnyRole("DIRETTORE").
+			antMatchers("/image").hasAnyRole("DIRETTORE").
+			antMatchers("/image/*").hasAnyRole("DIRETTORE").
 			antMatchers("/user").hasAnyRole("DIRETTORE").
 			antMatchers("/direttore/**").hasAnyRole("DIRETTORE").
 			antMatchers("/css/**").permitAll().
 			antMatchers("/images/**").permitAll().
 			antMatchers("/").permitAll().
 			antMatchers("/**").hasAnyRole("DRONE", "DIRETTORE").
-				and().formLogin().loginPage("/login").defaultSuccessUrl("/threads", true)
-					.successForwardUrl("/threads")
-					.defaultSuccessUrl("/threads")
+				and().formLogin().loginPage("/login").successHandler(customSuccessHandler)
+					//.defaultSuccessUrl("/direttore", true)
+					//.successForwardUrl("/direttore")
+					//.defaultSuccessUrl("/direttore")
 					.failureUrl("/login?error=true").permitAll().
 				and().logout().logoutSuccessUrl("/") // NB se commentiamo
 														// questa riga,
@@ -46,6 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 														// /login?logout
 					.invalidateHttpSession(true).permitAll().
 			and().csrf().disable();
+		
 	}
 
 	@Bean

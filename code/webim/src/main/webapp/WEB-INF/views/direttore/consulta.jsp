@@ -18,5 +18,7 @@
     <div class="form-group">
          <a href="<c:url value="/direttore/inserisci" />"><button type="submit" class="btn btn-primary">Inserisci nuova transazione nel giornale</button></a>
     </div>
+    
+    <iframe src="../uploads/measures/example.pdf#toolbar=0" width="800px" height="1000px" ></iframe>
 </div>
 </body>

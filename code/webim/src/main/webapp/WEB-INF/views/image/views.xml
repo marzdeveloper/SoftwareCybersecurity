@@ -1,0 +1,18 @@
+<?xml  version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache  Software
+   Foundation//DTD Tiles  Configuration 3.0//EN"
+   "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+  <definition extends="default" name="image/list">
+   <put-attribute name="body" value="/WEB-INF/views/image/list.jsp" />
+  </definition>
+  <definition extends="none" name="image/modal">
+   <put-attribute name="body" value="/WEB-INF/views/image/modal.jsp" />
+</definition>
+  <definition extends="none" name="image/modal_measure">
+  	<put-attribute name="body" value="/WEB-INF/views/image/modal_measure.jsp"></put-attribute></definition>
+  <definition extends="none" name="image/modal_edit">
+  	<put-attribute name="body" value="/WEB-INF/views/image/modal_edit.jsp"></put-attribute></definition>
+  	<definition extends="none" name="image/modal_map">
+  	<put-attribute name="body" value="/WEB-INF/views/image/modal_map.jsp"></put-attribute></definition>
+</tiles-definitions>

@@ -13,16 +13,11 @@
     </div>
     <ul class="list-unstyled components">
     	<c:if test="${isDirettore}">
-	    	<li>
-	            <a href="<c:url value="/user" />">Utenti</a>
-	        </li>
 	       	<li>
             	<a href="<c:url value="/direttore" />">Gestione Blockchain</a>
         	</li>
-	    </c:if>
-	    <c:if test="${isDrone}">
-	       	<li>
-            	<a href="<c:url value="/drone/upload" />">Caricamento Immagini</a>
+        	<li>
+            	<a href="<c:url value="/image" />">Gestione Immagini</a>
         	</li>
 	    </c:if>
 	</ul>

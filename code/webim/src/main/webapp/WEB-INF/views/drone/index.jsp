@@ -4,9 +4,6 @@
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <sec:authorize access="hasRole('ADMIN')" var="isAdmin" />
 
-<link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet' />
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" ></script>
-
 <div class="container py-5">
     
     <header class="text-white text-center">

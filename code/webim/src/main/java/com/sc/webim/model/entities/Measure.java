@@ -27,7 +27,6 @@ public class Measure implements Serializable{
 	private Date data_caricamento;
 	private String user_id;
 	private String name;
-	private String gps;
 	
 	private Set<Image> images = new HashSet<Image>();
 	
@@ -79,15 +78,6 @@ public class Measure implements Serializable{
 	
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	@Column(name = "GPS", nullable = false)
-	public String getGps() {
-		return this.gps;
-	}
-	
-	public void setGps(String gps) {
-		this.gps = gps;
 	}
 
 	//toString

@@ -14,12 +14,5 @@ public class HomeController {
 		model.addAttribute("app_css", "login.css");
 		return "login";
 	}
-	
-	@RequestMapping("/login1")
-	public String login(Model model) {
-		model.addAttribute("title", "WebIm");
-		model.addAttribute("app_css", "login.css");
-		return "login";
-	}
 
 }

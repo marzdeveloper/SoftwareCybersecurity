@@ -56,11 +56,11 @@ import net.sf.jmimemagic.Magic;
 @Transactional
 @Service("droneService")
 public class DroneServiceDefault implements DroneService {
-	private final Path root = Paths.get("uploads");
+	private final Path root = Paths.get("src/main/webapp/WEB-INF/uploads/images");
 	private ImageDao imageRepository;
 	
 	@Override
-	public int saveImage(MultipartFile image) {
+	public int saveImage(String user, MultipartFile image) {
 		int code = 0;
 		try {
 			byte[] bytes = image.getBytes();
@@ -98,11 +98,11 @@ public class DroneServiceDefault implements DroneService {
 	    						}
 	    					}
 	    					if (code >= 0) {
-	    						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+	    						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
 	    					    Date date = new Date();
 	    					    Date dataCreazione = Utils.date(formatter.format(date));
 	    						
-	    						Image img = imageRepository.create("drone", dataCreazione, hash, image.getOriginalFilename(), latitude + "," + longitude);
+	    						Image img = imageRepository.create(user, dataCreazione, hash, image.getOriginalFilename(), latitude + "," + longitude);
 	    						imageRepository.update(img);
 	    						
 	    						Path path = Paths.get(root + "/" + image.getOriginalFilename());
