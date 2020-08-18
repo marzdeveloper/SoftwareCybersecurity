@@ -83,14 +83,14 @@
 
     function getDetails(id) {
     	$(".modal-content-image").empty();
-       	$.get("<c:url value="/${title}/getDetails/"/>"+id, function(data, status){
+       	$.get("<c:url value="/image/getDetails/"/>"+id, function(data, status){
    	    	$(".modal-content-image").append(data);
    	    });
     }
     
     function getMeasure(id) {
     	$(".modal-content-measure").empty();
-       	$.get("<c:url value="/${title}/getMeasure/"/>"+id, function(data, status){
+       	$.get("<c:url value="/image/getMeasure/"/>"+id, function(data, status){
    	    	$(".modal-content-measure").append(data);
    	    });
     }
@@ -98,7 +98,7 @@
     
     function getMap(id) {
     	$(".modal-content-map").empty();
-       	$.get("<c:url value="/${title}/getMap/"/>"+id, function(data, status){
+       	$.get("<c:url value="/image/getMap/"/>"+id, function(data, status){
    	    	$(".modal-content-map").append(data);
    	    });
     }
@@ -112,7 +112,7 @@
     	if (selected.length >= 6) {
     		$.ajax({
                 type: "POST",
-                url: "<c:url value="/${title}/measureImages"/>",
+                url: "<c:url value="/image/measureImages"/>",
                 data: { images: selected },
                 success: function (response) {
                 	showAlertMsg(response);
@@ -129,7 +129,7 @@
     function deleteData(id) {
         $.ajax({
             type: "POST",
-            url: "<c:url value="/${title}/deleteData"/>",
+            url: "<c:url value="/image/deleteData"/>",
             data: { id: id },
             success: function (response) {
             	showAlertMsg(response);

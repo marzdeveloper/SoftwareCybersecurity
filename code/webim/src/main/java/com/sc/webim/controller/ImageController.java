@@ -29,7 +29,7 @@ public class ImageController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String images(Locale locale, Model model, @RequestParam(value = "msg", required = false) String msg, 
 			@RequestParam(value = "resp", required = false) String resp) {
-		model.addAttribute("title", "image");
+		model.addAttribute("title", "Gestione Immagini");
 		
 		List<Image> list = imageService.findAll();
 		model.addAttribute("images", list);
@@ -88,7 +88,7 @@ public class ImageController {
 		boolean resp = false;
 		String msg = "Operation failed";
 		try {
-			if (images.length > 6) {
+			if (images.length >= 6) {
 				List<Image> list = imageService.findImages(images);
 				if (list != null && list.size() > 0) {
 					if (imageService.measureImages(list)) {
