@@ -228,9 +228,9 @@
 	                    </includes>
 	                </soliditySourceFiles>
 	                <outputDirectory>
-			            <java>src/main/resources/solidity/java</java>
-			            <bin>src/main/resources/solidity/bin</bin>
-			            <abi>src/main/resources/solidity/abi</abi>
+			            <java>src/temp/java</java>
+			            <bin>src/temp/bin</bin>
+			            <abi>src/temp/abi</abi>
 			        </outputDirectory>
 	                
 	            </configuration>

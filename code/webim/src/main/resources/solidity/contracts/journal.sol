@@ -1,5 +1,5 @@
 pragma solidity ^0.4.24;  /*specifico versione */
-pragma experimental ABIEncoderV2; /*aggiunto per poter stampare la struct, togliere dopo il debug */
+/*pragma experimental ABIEncoderV2; aggiunto per poter stampare la struct, togliere dopo il debug */
 
 contract Journal{
    
@@ -10,6 +10,19 @@ contract Journal{
     bytes32   []images;
     uint jobID;   
     }
+    
+    event eventJob(
+        bytes32   []  worker,
+        bytes32   []  measure,
+        bytes32   []  image,
+        uint jobId   
+        
+        
+        );
+    
+    
+    
+    
     
     bytes32   []  worker;
     bytes32   []  measure;
@@ -31,18 +44,23 @@ contract Journal{
         jobs.push(job);
         
         
+        emit eventJob(jobs[numOfJob].workers ,jobs[numOfJob].measures, jobs[numOfJob].images, numOfJob);
+        
         numOfJob++;
         
         
     }
     
     /*aggiungo una nuova immagine alla lista dei lavori*/
-    function updateJob(uint _jobID, string memory _measure, string memory _image, string memory _worker) {
+    function updateJob(uint _jobID, string memory _measure, string memory _image, string memory _worker) public{
         for(uint i = 0;i< numOfJob;i++){
                 if(jobs[i].jobID==_jobID){
                     jobs[i].measures.push(sha256(abi.encodePacked(_measure)));
                     jobs[i].images.push(sha256(abi.encodePacked(_image)));
                     jobs[i].workers.push(sha256(abi.encodePacked(_worker)));
+
+                    emit eventJob(jobs[i].workers ,jobs[i].measures, jobs[i].images, numOfJob);
+
 
                     
                 }    
@@ -57,11 +75,11 @@ contract Journal{
         return (jobs[_id].jobID,jobs[_id].measures,jobs[_id].images);
     }
 
-    
+    /*
     function getAllJobs() view public returns(Job[] memory){
         return jobs;
     }
-    
+    */
     
      function getJobByMeasure(bytes32 _measure) view public returns(uint,bytes32[],bytes32[]){
          for(uint i = 0;i< jobs.length;i++){
