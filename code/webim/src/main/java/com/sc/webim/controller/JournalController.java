@@ -3,14 +3,17 @@ package com.sc.webim.controller;
 import static org.web3j.tx.Contract.staticExtractEventParameters;
 
 import java.math.BigInteger;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,17 +25,22 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.quorum.tx.ClientTransactionManager;
 
 import com.sc.webim.connection.QuorumConnection;
-
-import org.web3j.model.Journal;
-
+import com.sc.webim.contracts.Journal;
+import com.sc.webim.model.Job;
 import com.sc.webim.model.JournalModel;
+import com.sc.webim.model.ThreadModel;
+import com.sc.webim.model.entities.Image;
+
+@Controller
+@RequestMapping("/journal")
 public class JournalController {
+	private Map<Integer,JournalModel> allJournals = new HashMap<Integer, JournalModel>();
 	
-	//QuorumConnection defines all necessary parameters for application to connect with its respective node in Quorum
+	private Map<Integer, String> allData = new HashMap<Integer, String>();
+	
     @Autowired
     QuorumConnection quorumConnection;
 
-    //Create map of all nodes names on Quorum along to the public keys of their respective accounts
     private Map<String,String> allNodeNamesToPublicKeysMap = new HashMap<String, String>(){{
         put("node1","BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=");
         put("node2","QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc=");
@@ -43,31 +51,22 @@ public class JournalController {
         put("node7","ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc=");
     }};
 
-    //Map to hold thread participants string with corresponding ThreadModel instance - holds all thread data
-    private Map<Integer,JournalModel> allJournals = new HashMap<Integer, JournalModel>();
+    @RequestMapping(method = RequestMethod.GET)
+	public String images(Locale locale, Model model, @RequestParam(value = "msg", required = false) String msg, 
+			@RequestParam(value = "resp", required = false) String resp) {
+		model.addAttribute("title", "journal");
+		
+		return "journal/list";
+	}
 
-    /*Display all threads that this node is a participant in:
-    1. Subscribe to and extract all new thread events from Quorum (event sendContractAddress in thread contract)
-    2. Create ThreadModel instances to persist extracted event parameters in application - contract address and participants
-    3. Subscribe to and extract all send message events from Quorum (event sendMessage in thread contract)
-    4. Persist event parameters in ThreadModel instances. ThreadModel object is identified based on participants returned by sendMessage event
-    */
-    @RequestMapping(value="/journals", method=RequestMethod.GET)
-    public String createNewJournal(Model model) {
-
-
-        //Keccak hash of sendContractAddress event signature defined in thread contract
+    @RequestMapping(value="/journals", method=RequestMethod.POST)
+    public String createJournal(Model model) {
         String eventJobEventTopic = "0x4cf8037dff8f2e4212332ce6a37f5353c431bfc409fe36d824e7553dbaf66b86";
         JournalModel journalModel = new JournalModel();
 
-        
-        //Create filter to extract out sendContractAddress events from all Thread contracts
-        //Keccak hash of event signature is provided as a topic to filter out specifically sendContractAddress events only i.e new threads
         EthFilter filterToExtractNewJournals = new EthFilter(DefaultBlockParameterName.EARLIEST, DefaultBlockParameterName.LATEST, Collections.emptyList()).addSingleTopic(eventJobEventTopic);
 
-        //Subscribe to all sendContractAddress events based on filter created above and read log of each event
         quorumConnection.getAdmin().ethLogFlowable(filterToExtractNewJournals).subscribe(messageLog -> {
-
             //Extract sendContractAddress event parameters defined in Thread contract
             EventValues sendContractAddressEventValues = staticExtractEventParameters(Journal.EVENTJOB_EVENT , messageLog);
 
@@ -83,63 +82,97 @@ public class JournalController {
             String image = eventJobEventResponse.image.toString();
 
             //Create new ThreadModel instance to save new thread details - contract address, participants
-            
             journalModel.addNewJob(worker, measure, image, journalModel.getJobGenerated());
             
-            
             allJournals.put(journalModel.getJobGenerated(),journalModel);
-            
-
         });
-
         
-        return("new journal has been generated, job code: "+journalModel.getJobGenerated());
-
+        System.out.println("/*********************************************************************/");
+        try {
+        	System.out.println("Prendendo il primo oggetto sulla MAP con key 0");
+        	JournalModel jour = allJournals.get(0);
+        	
+        	System.out.println("Prendendo la lista dei jobs sull journal");
+        	ArrayList<Job> list_jobs = jour.getJobs();
+        	for (int i = 0; i < list_jobs.size(); i++) {
+        		System.out.println("Iterazione: " + i);
+        		ArrayList<String> images = list_jobs.get(i).getImages();
+        		ArrayList<String> measure = list_jobs.get(i).getMeasures();
+        		ArrayList<String> workers  = list_jobs.get(i).getWorkers();
+        		
+        		System.out.println("	Tutte le immagini: " + images.toString());
+        		System.out.println("	Tutte le misure: " + measure.toString());
+        		System.out.println("	Tutti i workers: " + workers.toString());
+        	}
+        } catch (Exception e) {
+        	System.out.println("Errore:");
+        	e.printStackTrace();
+        }
+        System.out.println("/*********************************************************************/");
+        
+        model.addAttribute("title", "journal");
+        model.addAttribute("threadModels", allJournals);
+        return "journal/list";
     }
     
-    
-   
-    
-    /*Handle update thread request
-    1. Data received from update thread form (threads.html)
-        1.a New message
-        1.b Thread participants
-        1.c Contract Address of thread
-    2. Validation
-        2.a Check if message is empty
-    3. Create a sendMessage event to be sent to all thread participants
-        3.a Create list of thread participants public keys to be used as privateFor parameter.
-        3.b Create ClientTransactionManager object by passing QuorumConnection parameters and privateFor - this will handle privacy requirements
-        3.c Load the thread contract based on contract address
-        3.d Call the sendMessage event in the contract to inform participants of new message in this thread. Parameters sent - participants, message, sender
-     */
-    @RequestMapping(value="/updateJournal", method=RequestMethod.POST)
+    /*@RequestMapping(value="/updateJournal", method=RequestMethod.POST)
     public String updateExistingJournal(@RequestParam("workers") String workers, @RequestParam("measures") String measures, @RequestParam("images") String images,@RequestParam("images") Integer jobId, Model model) throws Exception {
-
     	if(jobId == null) {
-    		
             model.addAttribute("Error","Please enter job id!");
-    		
     	}
     	
     	if(workers.isEmpty() || measures.isEmpty() || images.isEmpty() ) {
-    		
             model.addAttribute("Error","Please enter worker, measure and image to update!");
-    		
     	}
-    	
     	allJournals.get(jobId).updateJob(workers, measures, images, jobId);
-    	
-
         return "updateJournal/index";
-    }
+    }*/
     
-    
-    
-    
-    
-    
-    
-    
+    @RequestMapping(value="/createJournal", method=RequestMethod.POST)
+    public String createJournal(Principal principal, Model model, @RequestParam("measure") String measure, @RequestParam("images") ArrayList<String> images) throws Exception {
+        boolean error = false;
+        //Verifico essitsa la misura
+        if(measure == null || measure.trim().equals(""))
+        {
+        	error = true;
+            System.out.println("La misura è vuota");
+        }
+        
+        //Verifico la lista delle immagini non sia vuota
+        if(images.size() == 0)
+        {
+        	error = true;
+            System.out.println("Le immagini non ci sono");
+        }
+        
+        if (!error)
+        {
+        	//Scelgo i nodi
+        	List<String> privateFor = new ArrayList<String>();
+        	privateFor.add("BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=");
+        	privateFor.add("QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc=");
+            
+            
+            ArrayList<String> list_partecipanti = new ArrayList<String>();
+            list_partecipanti.add("node1");
+            list_partecipanti.add("node2");
 
+            //Create comma separated string of participants from sorted list - this uniquely identifies a thread in the application ( participants field in ThreadModel )
+            String threadParticipantsString = String.join(",",list_partecipanti);
+        	
+        	//Create ClientTransactionManager object by passing QuorumConnection parameters and privateFor - this will handle privacy requirements
+        	ClientTransactionManager clientTransactionManager = new ClientTransactionManager(quorumConnection.getQuorum(), quorumConnection.getNodeAddress(), quorumConnection.getNodeKey(), privateFor, 100, 1000);
+            
+        	//Deploy the new thread contract. This returns a thread contract object
+        	Journal threadContract = Journal.deploy(quorumConnection.getQuorum(), clientTransactionManager, BigInteger.valueOf(0), BigInteger.valueOf(100000000)).send();
+        	
+        	//Extract contract address from thread contract object obtained in 2.d
+        	String newThreadContractAddress = threadContract.getContractAddress();
+        	
+        	//Call the sendContractAddress event in thread contract to inform participants of new thread contract address and participants
+        	TransactionReceipt startThreadTransactionReceipt = threadContract.addNewJob(principal.getName(), measure, "image").send();
+        }
+
+        return "journal/list";
+    }
 }

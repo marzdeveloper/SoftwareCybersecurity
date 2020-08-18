@@ -19,6 +19,9 @@
         	<li>
             	<a href="<c:url value="/image" />">Gestione Immagini</a>
         	</li>
+        	<li>
+            	<a href="<c:url value="/journal" />">Temp</a>
+        	</li>
 	    </c:if>
 	</ul>
 </nav>

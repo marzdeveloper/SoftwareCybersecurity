@@ -40,6 +40,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			antMatchers("/image/*").hasAnyRole("DIRETTORE").
 			antMatchers("/user").hasAnyRole("DIRETTORE").
 			antMatchers("/direttore/**").hasAnyRole("DIRETTORE").
+			antMatchers("/journal").hasAnyRole("DIRETTORE").
+			antMatchers("/journal/*").hasAnyRole("DIRETTORE").
 			antMatchers("/css/**").permitAll().
 			antMatchers("/images/**").permitAll().
 			antMatchers("/").permitAll().

@@ -5,59 +5,41 @@ import java.util.List;
 import java.util.Map;
 
 public class JournalModel {
-	
-	
 	ArrayList<Job> jobs;	
     public static int jobGenerated=0;
        
     public JournalModel() {
-    	
     	this.jobs = new ArrayList<Job>();
-
     }
-    
     
     public void addNewJob(String _worker, String _measure, String _image,int _jobId) {
-    	
     	Job job = new Job(_worker,  _measure,  _image,  _jobId);
         this.jobs.add(job);
-
         jobGenerated++;
-
     }
     
-    
-    
     /*update job : metto una nuova immagine-misura nel job scelto tramite id*/ 
-	
 	public void updateJob(String _worker, String _measure, String _image, int _jobId) {
         for(int i=0;i< this.jobs.size();i++) {
     		if(this.jobs.get(i).getJobID() == _jobId) {
-    			
     			this.jobs.get(i).workers.add(_worker);
     			this.jobs.get(i).measures.add(_measure);
     			this.jobs.get(i).images.add(_image);
     		}
-    		
         }
-		
 	}
-
 
 	public ArrayList<Job> getJobs() {
 		return jobs;
 	}
 
-
 	public void setJobs(ArrayList<Job> jobs) {
 		this.jobs = jobs;
 	}
 
-
 	public static int getJobGenerated() {
 		return jobGenerated;
 	}
-
 
 	
 	/*

@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Job {
-	
-	
 	ArrayList<String> workers ;
 	ArrayList<String> measures;
 	ArrayList<String> images;
@@ -22,10 +20,7 @@ public class Job {
 		this.measures.add(_measure);
 		this.images.add(_image);
 		this.jobID = _jobID;
-
 	}
-	
-
 	
 	public ArrayList<String> getWorkers() {
 		return workers;
@@ -51,5 +46,4 @@ public class Job {
 	public void setJobID(int jobID) {
 		this.jobID = jobID;
 	}
-
 }
