@@ -5,34 +5,34 @@ import java.util.List;
 import java.util.Map;
 
 public class Job {
-	ArrayList<String> workers ;
-	ArrayList<String> measures;
+	String worker;
+	String measure;
 	ArrayList<String> images;
 	int jobID;
 	
 	/*create new job*/
-	public Job(String _worker, String _measure, String _image, int _jobID) {
-		this.workers = new ArrayList<String>();
-		this.measures = new ArrayList<String>();
-		this.images = new ArrayList<String>();
+	public Job(String _worker, String _measure, ArrayList<String> _images, int _jobID) {
+		//this.images = new ArrayList<String>();
 		
-		this.workers.add(_worker);
-		this.measures.add(_measure);
-		this.images.add(_image);
+		this.worker=_worker;
+		this.measure=_measure;
+		for(String img:_images) {
+			this.images.add(img);
+		}
 		this.jobID = _jobID;
 	}
 	
-	public ArrayList<String> getWorkers() {
-		return workers;
+	public String getWorker() {
+		return worker;
 	}
-	public void setWorkers(ArrayList<String> workers) {
-		this.workers = workers;
+	public void setWorker(String worker) {
+		this.worker = worker;
 	}
-	public ArrayList<String> getMeasures() {
-		return measures;
+	public String getMeasure() {
+		return measure;
 	}
-	public void setMeasures(ArrayList<String> measures) {
-		this.measures = measures;
+	public void setMeasure(String measure) {
+		this.measure = measure;
 	}
 	public ArrayList<String> getImages() {
 		return images;

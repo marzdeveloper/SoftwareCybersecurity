@@ -1,37 +1,47 @@
-pragma solidity ^0.4.24;  /*specifico versione */
-/*pragma experimental ABIEncoderV2; aggiunto per poter stampare la struct, togliere dopo il debug */
+pragma solidity >=0.6.0;  /*specifico versione */
+pragma experimental ABIEncoderV2; /*aggiunto per poter stampare la struct, togliere dopo il debug */
 
 contract Journal{
-   
 
   struct Job{
-    bytes32   []workers;
-    bytes32   []measures;
-    bytes32   []images;
+    address   worker;
+    string   measure;
+    string   []images;
     uint jobID;   
     }
     
     event eventJob(
-        bytes32   []  worker,
-        bytes32   []  measure,
-        bytes32   []  image,
+        address  worker,
+        string  measure,
+        string   []images,
         uint jobId   
-        
-        
         );
     
-    
-    
-    
-    
-    bytes32   []  worker;
-    bytes32   []  measure;
-    bytes32   []  image;
+    address   worker;
+   
 
     uint numOfJob = 0;
-    Job[] public jobs;
+    Job[]  public jobs;
+    
+    constructor() public {
+    	worker = msg.sender;
+    	
+    }
+    
+    
+    
+    
+    function addNewJob(string memory measure, string[] memory images) public {
+    	worker = msg.sender;
+    	
+
+    	Job memory job = Job(worker,measure,images,numOfJob);   
+    	jobs.push(job);
+        emit eventJob(jobs[numOfJob].worker ,jobs[numOfJob].measure, jobs[numOfJob].images, numOfJob);
+        numOfJob++;
+    }
   
-    /*aggiungo un nuovo lavoro alla lista dei lavori */
+    /*aggiungo un nuovo lavoro alla lista dei lavori 
     function addNewJob(string memory _worker, string memory _measure, string memory _image)  public {
        
 
@@ -49,9 +59,9 @@ contract Journal{
         numOfJob++;
         
         
-    }
+    } */
     
-    /*aggiungo una nuova immagine alla lista dei lavori*/
+    /*aggiungo una nuova immagine alla lista dei lavori
     function updateJob(uint _jobID, string memory _measure, string memory _image, string memory _worker) public{
         for(uint i = 0;i< numOfJob;i++){
                 if(jobs[i].jobID==_jobID){
@@ -67,12 +77,12 @@ contract Journal{
         
 
     }
-    }
+    } */
     
         /* prendo tutti i dati relativi a un job */
 
-    function getJobById(uint _id) view public returns(uint,bytes32[],bytes32[]){
-        return (jobs[_id].jobID,jobs[_id].measures,jobs[_id].images);
+    function getJobById(uint _id) view public returns(uint ,string memory,string[] memory){
+        return (jobs[_id].jobID,jobs[_id].measure,jobs[_id].images);
     }
 
     /*
@@ -81,6 +91,8 @@ contract Journal{
     }
     */
     
+    
+    /*
      function getJobByMeasure(bytes32 _measure) view public returns(uint,bytes32[],bytes32[]){
          for(uint i = 0;i< jobs.length;i++){
              for(uint k=0; k< jobs[i].measures.length;k++){
@@ -91,12 +103,12 @@ contract Journal{
              }
              
          }
-    }
+    }  */
     
     
    
     
-            
+            /*
     function getJobByImage(bytes32 _image) view public returns(uint, bytes32[] ,bytes32[] ){
         for(uint i = 0;i< jobs.length;i++){
             for(uint j =0; j<jobs[i].images.length;j++)
@@ -108,7 +120,7 @@ contract Journal{
         }
         
     
-            }       
+            }       */
 
     
     

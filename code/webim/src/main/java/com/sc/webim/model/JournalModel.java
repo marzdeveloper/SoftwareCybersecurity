@@ -12,13 +12,13 @@ public class JournalModel {
     	this.jobs = new ArrayList<Job>();
     }
     
-    public void addNewJob(String _worker, String _measure, String _image,int _jobId) {
-    	Job job = new Job(_worker,  _measure,  _image,  _jobId);
+    public void addNewJob(String _worker, String _measure, ArrayList<String> _image) {
+    	Job job = new Job(_worker,  _measure,  _image,  jobGenerated);
         this.jobs.add(job);
         jobGenerated++;
     }
     
-    /*update job : metto una nuova immagine-misura nel job scelto tramite id*/ 
+    /*update job : metto una nuova immagine-misura nel job scelto tramite id
 	public void updateJob(String _worker, String _measure, String _image, int _jobId) {
         for(int i=0;i< this.jobs.size();i++) {
     		if(this.jobs.get(i).getJobID() == _jobId) {
@@ -27,7 +27,7 @@ public class JournalModel {
     			this.jobs.get(i).images.add(_image);
     		}
         }
-	}
+	} */
 
 	public ArrayList<Job> getJobs() {
 		return jobs;
