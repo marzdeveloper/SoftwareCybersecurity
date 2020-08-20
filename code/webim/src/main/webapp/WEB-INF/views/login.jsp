@@ -5,6 +5,8 @@
 
 <sec:authorize access="isAuthenticated()" var="isAuth" />
 <sec:authorize access="hasRole('DIRETTORE')" var="isDirettore" />
+<sec:authorize access="hasRole('DRONE')" var="isDrone" />
+
 
 <c:if test="${not empty errorMessage}">
 	<div class="alert alert-danger alert-flotante" role="alert">
@@ -26,6 +28,6 @@
 <script>
 if(${isDirettore})
 	window.location.replace("/direttore");
-else
+if(${isDrone})
 	window.location.replace("/drone");
 </script>
