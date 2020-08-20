@@ -175,13 +175,13 @@
 		<dependency>
             <groupId>org.web3j</groupId>
             <artifactId>core</artifactId>
-            <version>4.2.0</version>
+            <version>4.6.2</version>
         </dependency>
 
         <dependency>
             <groupId>org.web3j</groupId>
             <artifactId>quorum</artifactId>
-            <version>4.0.6</version>
+            <version>4.5.16</version>
         </dependency>
         
         <!-- Gson -->
@@ -204,6 +204,18 @@
 		    <artifactId>jmimemagic</artifactId>
 		    <version>0.1.5</version>
 		</dependency>
+		
+	<!-- http3 -->
+	<dependency>
+      	<groupId>com.squareup.okhttp3</groupId>
+      		<artifactId>okhttp</artifactId>
+      			<version>4.3.1</version>
+	</dependency>
+	<dependency>
+      	<groupId>com.squareup.okhttp3</groupId>
+      		<artifactId>logging-interceptor</artifactId>
+      			<version>4.3.1</version>
+	</dependency>
 	</dependencies>
 
 	<build>
@@ -215,14 +227,14 @@
         <plugin>
             <groupId>org.web3j</groupId>
             <artifactId>web3j-maven-plugin</artifactId>
-            <version>4.2.0</version>
+            <version>4.5.11</version>
               
 	            <configuration>
 	                <sourceDestination>src/main/java</sourceDestination>
 	                <nativeJavaType>true</nativeJavaType>
 	                <outputFormat>java,bin,abi</outputFormat>
 	                <soliditySourceFiles>
-						<directory>src/main/resources/solidity/contracts</directory>
+						<directory>/home/lor/Scrivania/prova</directory>
 	                    <includes>
 	                        <include>*.sol</include>
 	                    </includes>

@@ -20,21 +20,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.web3j.abi.EventValues;
 import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.RemoteFunctionCall;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.quorum.tx.ClientTransactionManager;
+import org.web3j.tuples.generated.Tuple3;
 
 import com.sc.webim.connection.QuorumConnection;
 import com.sc.webim.contracts.Journal;
 import com.sc.webim.model.Job;
 import com.sc.webim.model.JournalModel;
-import com.sc.webim.model.ThreadModel;
-import com.sc.webim.model.entities.Image;
+
 
 @Controller
 @RequestMapping("/journal")
 public class JournalController {
-	private Map<Integer,JournalModel> allJournals = new HashMap<Integer, JournalModel>();
+	private Map<Integer,Job> transactions = new HashMap<Integer, Job>();
 	
 	private Map<Integer, String> allData = new HashMap<Integer, String>();
 	
@@ -59,11 +60,10 @@ public class JournalController {
 		return "journal/list";
 	}
 
-    @RequestMapping(value="/journals", method=RequestMethod.POST)
-    public String createJournal(Model model) {
+    @RequestMapping(value="/journals", method=RequestMethod.GET)
+    public String showJournal(Model model) {
         String eventJobEventTopic = "0x4cf8037dff8f2e4212332ce6a37f5353c431bfc409fe36d824e7553dbaf66b86";
         JournalModel journalModel = new JournalModel();
-
         EthFilter filterToExtractNewJournals = new EthFilter(DefaultBlockParameterName.EARLIEST, DefaultBlockParameterName.LATEST, Collections.emptyList()).addSingleTopic(eventJobEventTopic);
 
         quorumConnection.getAdmin().ethLogFlowable(filterToExtractNewJournals).subscribe(messageLog -> {
@@ -73,36 +73,39 @@ public class JournalController {
             //Create sendContractAddress event response object to store individual parameter values
             Journal.EventJobEventResponse eventJobEventResponse = new Journal.EventJobEventResponse();
             
-            eventJobEventResponse.worker = (List)sendContractAddressEventValues.getNonIndexedValues().get(0).getValue();
-            eventJobEventResponse.measure = (List)sendContractAddressEventValues.getNonIndexedValues().get(1).getValue();
-            eventJobEventResponse.image = (List)sendContractAddressEventValues.getNonIndexedValues().get(2).getValue();
+
+
+            eventJobEventResponse.worker = (String)sendContractAddressEventValues.getNonIndexedValues().get(0).getValue();
+            eventJobEventResponse.measure = (String)sendContractAddressEventValues.getNonIndexedValues().get(1).getValue();
+            eventJobEventResponse.images = (ArrayList<String>)sendContractAddressEventValues.getNonIndexedValues().get(2).getValue();
 
             String worker = eventJobEventResponse.worker.toString();
             String measure = eventJobEventResponse.measure.toString();
-            String image = eventJobEventResponse.image.toString();
+            ArrayList<String> images = (ArrayList<String>) eventJobEventResponse.images;  //da ricontrollare
 
             //Create new ThreadModel instance to save new thread details - contract address, participants
-            journalModel.addNewJob(worker, measure, image, journalModel.getJobGenerated());
+            journalModel.addNewJob(worker, measure, images);
             
-            allJournals.put(journalModel.getJobGenerated(),journalModel);
+            int i=0;
+            for(Job j:journalModel.getJobs()) {
+                transactions.put(i,j);
+                i++;
+            }
         });
         
         System.out.println("/*********************************************************************/");
         try {
-        	System.out.println("Prendendo il primo oggetto sulla MAP con key 0");
-        	JournalModel jour = allJournals.get(0);
+        	System.out.println(transactions.size());
         	
-        	System.out.println("Prendendo la lista dei jobs sull journal");
-        	ArrayList<Job> list_jobs = jour.getJobs();
-        	for (int i = 0; i < list_jobs.size(); i++) {
+        	for (int i = 0; i < transactions.size(); i++) {
         		System.out.println("Iterazione: " + i);
-        		ArrayList<String> images = list_jobs.get(i).getImages();
-        		ArrayList<String> measure = list_jobs.get(i).getMeasures();
-        		ArrayList<String> workers  = list_jobs.get(i).getWorkers();
+        		ArrayList<String> images = transactions.get(i).getImages();
+        		String measure = transactions.get(i).getMeasure();
+        		String worker  = transactions.get(i).getWorker();
         		
         		System.out.println("	Tutte le immagini: " + images.toString());
         		System.out.println("	Tutte le misure: " + measure.toString());
-        		System.out.println("	Tutti i workers: " + workers.toString());
+        		System.out.println("	Tutti i workers: " + worker.toString());
         	}
         } catch (Exception e) {
         	System.out.println("Errore:");
@@ -111,7 +114,7 @@ public class JournalController {
         System.out.println("/*********************************************************************/");
         
         model.addAttribute("title", "journal");
-        model.addAttribute("threadModels", allJournals);
+        model.addAttribute("threadModels", transactions);
         return "journal/list";
     }
     
@@ -124,7 +127,7 @@ public class JournalController {
     	if(workers.isEmpty() || measures.isEmpty() || images.isEmpty() ) {
             model.addAttribute("Error","Please enter worker, measure and image to update!");
     	}
-    	allJournals.get(jobId).updateJob(workers, measures, images, jobId);
+    	transactions.get(jobId).updateJob(workers, measures, images, jobId);
         return "updateJournal/index";
     }*/
     
@@ -153,26 +156,26 @@ public class JournalController {
         	privateFor.add("QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc=");
             
             
-            ArrayList<String> list_partecipanti = new ArrayList<String>();
+            /*ArrayList<String> list_partecipanti = new ArrayList<String>();
             list_partecipanti.add("node1");
             list_partecipanti.add("node2");
 
             //Create comma separated string of participants from sorted list - this uniquely identifies a thread in the application ( participants field in ThreadModel )
-            String threadParticipantsString = String.join(",",list_partecipanti);
+            String threadParticipantsString = String.join(",",list_partecipanti); */
         	
         	//Create ClientTransactionManager object by passing QuorumConnection parameters and privateFor - this will handle privacy requirements
         	ClientTransactionManager clientTransactionManager = new ClientTransactionManager(quorumConnection.getQuorum(), quorumConnection.getNodeAddress(), quorumConnection.getNodeKey(), privateFor, 100, 1000);
             
         	//Deploy the new thread contract. This returns a thread contract object
-        	Journal threadContract = Journal.deploy(quorumConnection.getQuorum(), clientTransactionManager, BigInteger.valueOf(0), BigInteger.valueOf(100000000)).send();
+			Journal threadContract = Journal.deploy(quorumConnection.getQuorum(), clientTransactionManager, BigInteger.valueOf(0), BigInteger.valueOf(100000000)).send();
         	
         	//Extract contract address from thread contract object obtained in 2.d
         	String newThreadContractAddress = threadContract.getContractAddress();
         	
         	//Call the sendContractAddress event in thread contract to inform participants of new thread contract address and participants
-        	TransactionReceipt startThreadTransactionReceipt = threadContract.addNewJob(principal.getName(), measure, "image").send();
+        	TransactionReceipt startThreadTransactionReceipt = threadContract.addNewJob(measure, images).send();
         }
-
-        return "journal/list";
+        
+        return "redirect:/journal/journals";
     }
 }

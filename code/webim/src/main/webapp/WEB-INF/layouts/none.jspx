@@ -8,6 +8,12 @@
 	doctype-system="about:legacy-compat" />
 <jsp:directive.page contentType="text/html;charset=UTF-8" />
 <jsp:directive.page pageEncoding="UTF-8" />
+<head>
+	<title>${title}</title>
+	<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+</head>
 <body>
 	<tiles:insertAttribute name="body" />
 </body>
