@@ -4,6 +4,7 @@
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <sec:authorize access="isAuthenticated()" var="isAuth" />
+<sec:authorize access="hasRole('DIRETTORE')" var="isDirettore" />
 
 <c:if test="${not empty errorMessage}">
 	<div class="alert alert-danger alert-flotante" role="alert">
@@ -23,6 +24,8 @@
 </div>
 
 <script>
-if(${isAuth})
-window.location.replace("/threads");
+if(${isDirettore})
+	window.location.replace("/direttore");
+else
+	window.location.replace("/drone");
 </script>
