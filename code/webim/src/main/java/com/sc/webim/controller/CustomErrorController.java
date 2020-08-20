@@ -14,8 +14,8 @@ import com.sc.webim.services.DroneService;
 public class CustomErrorController implements ErrorController{
 
 	@RequestMapping()
-	public String index() {
-		
+	public String index(Model model) {
+		model.addAttribute("title", "Error");
 		return "error/index";
 	}
 
