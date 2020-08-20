@@ -2,13 +2,13 @@ package com.sc.webim.db;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.sc.webim.DataServiceConfigWeb;
 import com.sc.webim.Utils;
@@ -35,49 +35,6 @@ public class LoadData {
 				measureDao.setSession(session);
 				roleDao.setSession(session);
 				userDao.setSession(session);
-								
-//				session.refresh(sender1);
-//				session.refresh(sender2);
-//				session.refresh(sender3);
-//
-//				assert sender1.getDevices().size()==0;
-//				assert sender2.getDevices().size()==2;
-//				assert sender3.getDevices().size()==1;
-//				assert sender4.getDevices().size()==0;
-//							
-//				assert device4.getPositionings().contains(positioning4);
-//				assert location3.getPositionings().contains(positioning4);
-//				assert positioning4.getLocation().equals(location3);
-//
-//				List<Device> allDevices = deviceDao.findAll();
-//				
-//				System.out.println("Number of devices: " + allDevices.size());
-//				for (Device d : allDevices) {
-//					System.out.println(" - " + d.getBrand() + " : " + d.getCheckIn() + " : " + d.getCheckOut() + " : " + d.getDocument()+ 
-//							" : " + d.getModel() + " : " + d.getReason()+ " : " + d.getSerialNumber()+ " : " + d.getSender());
-//					
-//					Set<Job> jobs = deviceDao.getJobs(d);
-//					System.out.println("Number of job: " + jobs.size());
-//					for (Job j : jobs) {
-//						System.out.println("  - " + j.getDescription());					
-//					}
-//				}
-//				
-//				List<Employee> allEmployees = employeeDao.findAll();
-//				System.out.println("Number of employees: " + allEmployees.size());
-//				for (Employee em : allEmployees) {
-//					System.out.println(" - " + em.getName()+ " : " + em.getSurname() + " : "+ em.getPositionings() + " : "+ em.getWorkstations());
-//					Set<Team> teams = em.getTeams();
-//					
-//					if (teams == null) {
-//						teams= new HashSet<Team>();
-//					}
-//					
-//					System.out.println("Number of teams: " + teams.size());
-//					for (Team tm : teams) {
-//						System.out.println("  - " + tm.getDescription() + " - " + tm.getName() + " - " + tm.getType());
-//					}
-//				}
 				
 				session.beginTransaction();
 				
@@ -97,13 +54,59 @@ public class LoadData {
 				userDao.update(u2);
 				session.getTransaction().commit();
 				
+				//verifico gli users e i ruoli creati
+				session.beginTransaction();
+				
+				List<Role> allRoles = roleDao.findAll();
+				
+				List<User> allUsers = userDao.findAll();
+				
+				User direttore = userDao.findUserByUsername("direttore");
+				
+				User drone = userDao.findUserByUsername("drone");
+				
+				Role DIRETTORE = roleDao.findRoleByName("DIRETTORE");
+				
+				Role DRONE = roleDao.findRoleByName("DRONE");
+				
+				assert direttore.getRoles().size() == 1;
+				
+				assert direttore.getRoles().contains(DIRETTORE);
+				
+				assert drone.getRoles().size() == 1;
+				
+				assert drone.getRoles().contains(DRONE);
+				
+				System.out.println();
+				
+				System.out.println("Ruoli: " + allRoles.size());
+				for (Role r : allRoles) {
+					System.out.println("Name: " + r.getName());
+				}
+				
+				System.out.println();
+				
+				System.out.println("Utenti: " + allUsers.size());
+				for (User u : allUsers) {
+					System.out.println("Username: " + u.getUsername());
+				}
+				
+				System.out.println();
+				
+				System.out.println("La password per entrambi gli utenti è: password");
+				
+				System.out.println();
+				
+				session.getTransaction().commit();
+				
+				/*
 				session.beginTransaction();
 				
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
 			    Date date = new Date();
 			    
 			    //creo delle immagini
-				Image image = imageDao.create("drone", Utils.date(formatter.format(date)), "1234", "name", "43.58566251841667,13.513204693083333");
+				Image image = imageDao.create("drone", Utils.date(formatter.format(date)), "1234", "image.JPG", "43.58566251841667,13.513204693083333");
 				
 				imageDao.update(image);
 				session.getTransaction().commit();
@@ -111,7 +114,7 @@ public class LoadData {
 				session.beginTransaction();
 				
 				//creo delle misure
-				Measure measure = measureDao.create("drone", Utils.date(formatter.format(date)), "5678", "example.pdf");
+				Measure measure = measureDao.create("drone", Utils.date(formatter.format(date)), "5678", "measure.pdf");
 				
 				measureDao.update(measure);
 				
@@ -120,7 +123,7 @@ public class LoadData {
 				
 				imageDao.update(image);
 				session.getTransaction().commit();
-				
+				*/
 			}
 		}
 		 catch (Exception e) {
