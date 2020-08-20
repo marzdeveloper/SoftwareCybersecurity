@@ -1,6 +1,9 @@
 package com.sc.webim.controller;
 
+import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -14,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.sc.webim.Utils;
 import com.sc.webim.model.entities.Image;
 import com.sc.webim.model.entities.Measure;
 import com.sc.webim.services.ImageService;
@@ -84,24 +89,38 @@ public class ImageController {
 	}
 	
 	@RequestMapping(value = "/measureImages", method = RequestMethod.POST, produces = "application/json", headers="Accept=application/json")
-	public @ResponseBody String measureImages(Locale locale, Model uModel, @RequestParam("images[]") String[] images) {
+	public @ResponseBody String measureImages(Principal principal, Model uModel, @RequestParam("images") ArrayList<String> images, 
+			@RequestParam(value = "measure", required = false) MultipartFile measure) {
 		boolean resp = false;
 		String msg = "Operation failed";
 		try {
-			if (images.length >= 6) {
-				List<Image> list = imageService.findImages(images);
-				if (list != null && list.size() > 0) {
-					if (imageService.measureImages(list)) {
-						msg = "All images were measured";
-						resp = true;
+			if (measure != null) {
+				//Controllo siano più di 5 immagini
+				if (images.size() > 5) {
+					//Controllo esistano le immagini
+					List<Image> list = imageService.findImages(images);
+					if (list != null && list.size() > 0) {
+						//Controllo non esista la misura gia nel DB
+						int id = measureService.saveMeasure(principal.getName(), measure);
+						if (id > 0) {
+							//Associo la misura alle immagini
+							if (imageService.setMeasureImages(list, id)) {
+								msg = "All images were measured";
+								resp = true;
+							} else {
+								msg = "Could not be measured";
+							}
+						} else {
+							msg = "The measure already exist";
+						}
 					} else {
-						msg = "Could not be measured";
+						msg = "Some images were not found";
 					}
 				} else {
-					msg = "Some images were not found";
+					msg = "Not enough images";
 				}
 			} else {
-				msg = "Not enough images";
+				msg = "No measure selected";
 			}
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());

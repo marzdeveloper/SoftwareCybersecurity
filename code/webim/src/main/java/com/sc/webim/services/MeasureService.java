@@ -3,6 +3,8 @@ package com.sc.webim.services;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.sc.webim.model.entities.Measure;
 
 public interface MeasureService {
@@ -17,4 +19,5 @@ public interface MeasureService {
 	
 	void delete(Measure measure);
 	
+	int saveMeasure(String autor, MultipartFile measure);
 }

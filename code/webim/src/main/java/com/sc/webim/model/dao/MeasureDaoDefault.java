@@ -65,4 +65,16 @@ public class MeasureDaoDefault extends DefaultDao implements MeasureDao{
 		return new HashSet<Image>(q.setParameter("measure", measure).getResultList());
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public Measure findByHash(String hash) {
+		Query q = this.getSession().createQuery("from Measure m WHERE m.measure_hash = :hash", Measure.class);
+		Measure m = null;
+		try {
+			m = (Measure) q.setParameter("hash", hash).getSingleResult();
+		} catch (Exception e) {
+			//e.printStackTrace();
+		}
+		return m;
+	}
 }

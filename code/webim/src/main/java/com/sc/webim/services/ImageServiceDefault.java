@@ -173,10 +173,10 @@ public class ImageServiceDefault implements ImageService {
 	};
 	
 	@Override
-	public List<Image> findImages(String[] images) {
+	public List<Image> findImages(ArrayList<String> images) {
 		List<Image> list = new ArrayList<Image>();
-		for (int i = 0; i < images.length; i ++) {
-			int id = Integer.parseInt(images[i]);
+		for (int i = 0; i < images.size(); i ++) {
+			int id = Integer.parseInt(images.get(i));
 			Image img = findById(id);
 			if (img == null) {
 				return null;
@@ -188,21 +188,16 @@ public class ImageServiceDefault implements ImageService {
 	}
 	
 	@Override
-	public boolean measureImages(List<Image> list) {
+	public boolean setMeasureImages(List<Image> list, int id) {
 		//Debe essitere prima la Measure
 		//Questo si fa perche non c'è API
 		boolean resp = false;
 		int count = 0;
 		
-		List<Measure> m = measureRepository.findAll();
-		/*List<Image> img_list = new ArrayList<Image>();
-		for (Image x : measureRepository.getImages(m.get(0))) 
-			img_list.add(x);*/
-		
-		List<?> img_list = new ArrayList<>(measureRepository.getImages(m.get(0)));
-		
+		Measure m = measureRepository.findById(id);
 		//Controlliamo esista una misura per asegnare
-		if (m.size() > 0) {
+		if (m != null) {
+			List<?> img_list = new ArrayList<>(measureRepository.getImages(m));
 			//Controlliamo la misura non habbia gia delle immagini assegnate
 			if (img_list.size() == 0) {
 				boolean errore = false;
@@ -218,7 +213,7 @@ public class ImageServiceDefault implements ImageService {
 					//Assegniamo la misura alle immagini
 					for (int i = 0; i < list.size(); i++) {
 						Image img = list.get(i);
-						img.setMeasure_id(m.get(0));
+						img.setMeasure_id(m);
 						this.imageRepository.update(img);
 					}
 					resp = true;

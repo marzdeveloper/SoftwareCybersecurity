@@ -27,4 +27,5 @@ public interface MeasureDao {
 	
 	Set<Image> getImages(Measure measure);
 
+	Measure findByHash(String hash);
 }

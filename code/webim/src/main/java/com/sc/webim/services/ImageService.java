@@ -1,6 +1,7 @@
 package com.sc.webim.services;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public interface ImageService {
 	
 	int saveImage(MultipartFile img);
 	
-	List<Image> findImages(String[] images);
+	List<Image> findImages(ArrayList<String> images);
 	
-	boolean measureImages(List<Image> list);
+	boolean setMeasureImages(List<Image> list, int measure);
 }
