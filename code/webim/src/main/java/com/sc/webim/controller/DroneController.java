@@ -1,0 +1,128 @@
+package com.sc.webim.controller;
+
+import org.springframework.web.bind.annotation.RestController;
+
+import com.sc.webim.model.dao.ImageDao;
+import com.sc.webim.services.DroneService;
+
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+@Controller
+@RequestMapping("/drone")
+public class DroneController {
+	private DroneService droneService;
+	private ImageDao imageDao;
+
+	@RequestMapping()
+	public String index(Model model, @RequestParam(value = "msg", required = false) String msg, 
+			@RequestParam(value = "resp", required = false) String resp) {
+		model.addAttribute("title", "Drone");
+		model.addAttribute("alertMsg", msg);
+		model.addAttribute("typeMsg", resp);
+		
+		return "drone/index";
+	}
+	
+	/*@RequestMapping(value = "/pget", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody String pruebaJsonG(Model model) {
+		return "Hola Get";
+	}
+	
+	@RequestMapping(value = "/ppost", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody String pruebaJsonP(Model model) {
+		return "Hola post";
+	}*/
+	
+	@RequestMapping(value = "/uploadImage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, headers="Accept=application/json")
+	public String uploadImage(Principal principal, @RequestParam("imageFiles") MultipartFile[] imageFiles, RedirectAttributes redirectAttributes) {
+		String msg = "";
+		int resp = 0;
+		String msg_temp = "";
+		int code = 0;
+		int count = 0;
+		try {
+			List<MultipartFile> images = Arrays.asList(imageFiles);
+			for(MultipartFile file:images) {
+				msg_temp = "";
+				code = droneService.saveImage(principal.getName(), file);
+				switch (code) {
+					case -1:
+						msg_temp += "The file is not an image: -> " + file.getOriginalFilename() + "\\n";
+						break;
+					case -2:
+						msg_temp += "The image has no GPS metadata: -> " + file.getOriginalFilename() + "\\n";
+						break;
+					case -3:
+						msg_temp += "The image has already been saved on the DB: -> " + file.getOriginalFilename() + "\\n";
+						break;
+					case -9:
+						msg_temp += "An unexpected error occurred: -> " + file.getOriginalFilename() + "\\n";
+						break;
+				}
+				
+				if(code < 0) {
+					count++;
+				}
+			}
+
+			if(count == 0) {
+				msg = "\"Images save successfully\"";
+				resp = 1;
+			}
+			else {
+				msg = "\"" +  count + "/" + images.size() + " image/s cant be saved \"";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			msg = "\"An unexpected error occurred\"";
+		}
+		redirectAttributes.addAttribute("msg", msg);
+		redirectAttributes.addAttribute("resp", resp);
+		return "redirect:/drone";
+	}
+	
+	/*@RequestMapping(value = "/uploadImages", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, headers="Accept=application/json")
+	public @ResponseBody String uploadImages(Locale locale, Model uModel,
+			@RequestParam(value = "images[]") String[] images){
+		boolean resp = false;
+		String msg = "Operation failed: one or more empty fields";
+		try {
+			if (images.length > 0) {
+				for (int i = 0; i<images.length; i++) {
+					String[] img = images[i].split("&%&");
+					//droneService.saveImage(img);
+				}
+				msg = "mmmm";
+				resp = true;				
+			}
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+			msg = "An unexpected error occurred";
+		}
+		String response = "{\"success\":" + resp + ", \"msg\":\"" + msg + "\"}";
+		return response;
+	}*/
+	
+	@Autowired
+	public void setServices(DroneService droneService) {
+		this.droneService = droneService;
+	}
+}

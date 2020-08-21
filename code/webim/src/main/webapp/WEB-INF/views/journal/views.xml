@@ -1,0 +1,9 @@
+<?xml  version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache  Software
+   Foundation//DTD Tiles  Configuration 3.0//EN"
+   "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+  <definition extends="default" name="journal/list">
+   <put-attribute name="body" value="/WEB-INF/views/journal/list.jsp" />
+  </definition>
+</tiles-definitions>
