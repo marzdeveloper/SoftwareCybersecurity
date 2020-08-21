@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.web3j.abi.EventEncoder;
 import org.web3j.abi.EventValues;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.RemoteFunctionCall;
@@ -42,16 +43,6 @@ public class JournalController {
     @Autowired
     QuorumConnection quorumConnection;
 
-    private Map<String,String> allNodeNamesToPublicKeysMap = new HashMap<String, String>(){{
-        put("node1","BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=");
-        put("node2","QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc=");
-        put("node3","1iTZde/ndBHvzhcl7V68x44Vx7pl8nwx9LqnM/AfJUg=");
-        put("node4","oNspPPgszVUFw0qmGFfWwh1uxVUXgvBxleXORHj07g8=");
-        put("node5","R56gy4dn24YOjwyesTczYa8m5xhP6hF2uTMCju/1xkY=");
-        put("node6","UfNSeSGySeKg11DVNEnqrUtxYRVor4+CvluI8tVv62Y=");
-        put("node7","ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc=");
-    }};
-
     @RequestMapping(method = RequestMethod.GET)
 	public String images(Locale locale, Model model, @RequestParam(value = "msg", required = false) String msg, 
 			@RequestParam(value = "resp", required = false) String resp) {
@@ -62,9 +53,9 @@ public class JournalController {
 
     @RequestMapping(value="/journals", method=RequestMethod.GET)
     public String showJournal(Model model) {
-        String eventJobEventTopic = "0x4cf8037dff8f2e4212332ce6a37f5353c431bfc409fe36d824e7553dbaf66b86";
+        //String eventJobEventTopic = "0xe789b4eeafbb3620234d3bd2c4767fd4e3baf0f8291ee7cb387280ce129e41d1";
         JournalModel journalModel = new JournalModel();
-        EthFilter filterToExtractNewJournals = new EthFilter(DefaultBlockParameterName.EARLIEST, DefaultBlockParameterName.LATEST, Collections.emptyList()).addSingleTopic(eventJobEventTopic);
+        EthFilter filterToExtractNewJournals = new EthFilter(DefaultBlockParameterName.EARLIEST, DefaultBlockParameterName.LATEST, Collections.emptyList()).addSingleTopic(EventEncoder.encode(Journal.EVENTJOB_EVENT));
 
         quorumConnection.getAdmin().ethLogFlowable(filterToExtractNewJournals).subscribe(messageLog -> {
             //Extract sendContractAddress event parameters defined in Thread contract
@@ -73,24 +64,23 @@ public class JournalController {
             //Create sendContractAddress event response object to store individual parameter values
             Journal.EventJobEventResponse eventJobEventResponse = new Journal.EventJobEventResponse();
             
-
-
             eventJobEventResponse.worker = (String)sendContractAddressEventValues.getNonIndexedValues().get(0).getValue();
             eventJobEventResponse.measure = (String)sendContractAddressEventValues.getNonIndexedValues().get(1).getValue();
             eventJobEventResponse.images = (ArrayList<String>)sendContractAddressEventValues.getNonIndexedValues().get(2).getValue();
 
             String worker = eventJobEventResponse.worker.toString();
             String measure = eventJobEventResponse.measure.toString();
-            ArrayList<String> images = (ArrayList<String>) eventJobEventResponse.images;  //da ricontrollare
+            ArrayList<String> images = new ArrayList<String>();
+            for(String img:eventJobEventResponse.images) {
+                images.add(img.toString());  	//da ricontrollare
+            }
 
             //Create new ThreadModel instance to save new thread details - contract address, participants
-            journalModel.addNewJob(worker, measure, images);
+            //journalModel.addNewJob(worker, measure, images);
             
-            int i=0;
-            for(Job j:journalModel.getJobs()) {
-                transactions.put(i,j);
-                i++;
-            }
+            Job job = new Job(worker, measure, images,0);
+            
+            transactions.put(0,job);
         });
         
         System.out.println("/*********************************************************************/");
@@ -152,8 +142,14 @@ public class JournalController {
         {
         	//Scelgo i nodi
         	List<String> privateFor = new ArrayList<String>();
+        	//aggiungo le public key di tutti i nodi
         	privateFor.add("BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=");
         	privateFor.add("QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc=");
+        	privateFor.add("1iTZde/ndBHvzhcl7V68x44Vx7pl8nwx9LqnM/AfJUg=");
+        	privateFor.add("oNspPPgszVUFw0qmGFfWwh1uxVUXgvBxleXORHj07g8=");
+        	privateFor.add("R56gy4dn24YOjwyesTczYa8m5xhP6hF2uTMCju/1xkY=");
+        	privateFor.add("UfNSeSGySeKg11DVNEnqrUtxYRVor4+CvluI8tVv62Y=");
+        	privateFor.add("ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc=");
             
             
             /*ArrayList<String> list_partecipanti = new ArrayList<String>();
@@ -165,7 +161,7 @@ public class JournalController {
         	
         	//Create ClientTransactionManager object by passing QuorumConnection parameters and privateFor - this will handle privacy requirements
         	ClientTransactionManager clientTransactionManager = new ClientTransactionManager(quorumConnection.getQuorum(), quorumConnection.getNodeAddress(), quorumConnection.getNodeKey(), privateFor, 100, 1000);
-            
+
         	//Deploy the new thread contract. This returns a thread contract object
 			Journal threadContract = Journal.deploy(quorumConnection.getQuorum(), clientTransactionManager, BigInteger.valueOf(0), BigInteger.valueOf(100000000)).send();
         	
