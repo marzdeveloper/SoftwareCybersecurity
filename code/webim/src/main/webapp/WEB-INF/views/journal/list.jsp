@@ -32,6 +32,30 @@
         </div>
     </form>
 </div>
+<br />
+<div>
+	<form action="<c:url value="/threads" />" method="post">
+	    <div class="form-group">
+	        <label for="threadParticipants">Select Thread Participants</label>
+	        <select id="threadParticipants" name="threadParticipants" multiple class="form-control">
+	            <option value="node1">Node1</option>
+	            <option value="node2">Node2</option>
+	            <option value="node3">Node3</option>
+	            <option value="node4">Node4</option>
+	            <option value="node5">Node5</option>
+	            <option value="node6">Node6</option>
+	            <option value="node7">Node7</option>
+	        </select>
+	    </div>
+	    <div class="form-group">
+	        <label for="message">Your message</label>
+	        <input type="text" name="message" id="message" class="form-control"/>
+	    </div>
+	    <div class="form-group">
+	        <button type="submit" class="btn btn-primary">Start Thread</button>
+	    </div>
+	</form>
+</div>
      	
 <!-- Modal Image -->
 <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
