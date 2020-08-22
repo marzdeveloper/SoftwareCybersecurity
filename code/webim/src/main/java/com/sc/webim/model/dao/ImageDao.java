@@ -28,4 +28,5 @@ public interface ImageDao {
 	
 	List<Image> findAllByMeasureId(int measure);
 	
+	Image findByHash(String hash);
 }

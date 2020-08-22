@@ -40,6 +40,7 @@ import com.sc.webim.model.JournalModel;
 import com.sc.webim.model.entities.Image;
 import com.sc.webim.model.entities.Measure;
 import com.sc.webim.services.ImageService;
+import com.sc.webim.services.JournalService;
 import com.sc.webim.services.MeasureService;
 
 
@@ -48,6 +49,8 @@ import com.sc.webim.services.MeasureService;
 public class JournalController {
 	private ImageService imageService;
 	private MeasureService measureService;
+	private JournalService journalService;
+	
 	private ArrayList<Job> transactions = new ArrayList<Job>();
     private JournalModel journalModel = new JournalModel();
 	private final Path root = Paths.get("src/main/webapp/WEB-INF/uploads/");
@@ -57,10 +60,50 @@ public class JournalController {
     QuorumConnection quorumConnection;
 
     @RequestMapping(method = RequestMethod.GET)
-	public String images(Locale locale, Model model, @RequestParam(value = "msg", required = false) String msg, 
-			@RequestParam(value = "resp", required = false) String resp) {
-		model.addAttribute("title", "journal");
+	public String images(Locale locale, Model model, @RequestParam(value = "msg", required = false) String msg, @RequestParam(value = "resp", required = false) String resp) {
+    	EthFilter filterToExtractNewJournals = new EthFilter(DefaultBlockParameterName.EARLIEST, DefaultBlockParameterName.LATEST, Collections.emptyList()).addSingleTopic(EventEncoder.encode(Journal.EVENTJOB_EVENT));
+
+        quorumConnection.getAdmin().ethLogFlowable(filterToExtractNewJournals).subscribe(messageLog -> {
+            //Extract sendContractAddress event parameters defined in Thread contract
+            EventValues sendContractAddressEventValues = staticExtractEventParameters(Journal.EVENTJOB_EVENT , messageLog);
+
+            //Create sendContractAddress event response object to store individual parameter values
+            Journal.EventJobEventResponse eventJobEventResponse = new Journal.EventJobEventResponse();
+            
+            eventJobEventResponse.worker = (String)sendContractAddressEventValues.getNonIndexedValues().get(0).getValue();
+            eventJobEventResponse.measure = (String)sendContractAddressEventValues.getNonIndexedValues().get(1).getValue();
+            eventJobEventResponse.images = (String)sendContractAddressEventValues.getNonIndexedValues().get(2).getValue();
+
+            String worker = eventJobEventResponse.worker.toString();
+            String measure = eventJobEventResponse.measure.toString();
+            String images = eventJobEventResponse.images.toString();
+
+            //Create new ThreadModel instance to save new thread details - contract address, participants
+            journalModel.addNewJob(worker, measure, images);
+            transactions= journalModel.getJobs();
+        });
+    	
+    	/*Job j1 = new Job("direttore", "7E5EEB873405F364E0236823DCA0951D155E209AB121EDEDE8406F66A96EADC8", "4921E23E36A2C27F44063D00B837BA4EED8D1935AD487A7BA9995C5A1875AA45", 1);
+    	Job j2 = new Job("direttore", "7E5EEB873405F364E0236823DCA0951D155E209AB121EDEDE8406F66A96EADC8", "8474CB5B557F78EB2DC2E7120F867EB4FA79CEF606D4B8B929D35D1FDD993851", 2);
+    	Job j3 = new Job("direttore", "7E5EEB873405F364E0236823DCA0951D155E209AB121EDEDE8406F66A96EADC8", "CEDC55F689377BE8D663CB4BE8C975076036EDAF56E5AAD0D7AED667D25AAB7C", 3);
+    	Job j4 = new Job("direttore", "7E5EEB873405F364E0236823DCA0951D155E209AB121EDEDE8406F66A96EADC8", "FC5C7BDD73F4E197201FBAF78B5A643A520788D20F13C48A3BC38161C2B65468", 4);
+    	Job j5 = new Job("direttore", "7E5EEB873405F364E0236823DCA0951D155E209AB121EDEDE8406F66A96EADC8", "6D10CA30E115AC6695E5FDD157A6F18ED851F1EC2C35EC0A2A0490DDF2D88388", 5);
+    	Job j6 = new Job("direttore", "7E5EEB873405F364E0236823DCA0951D155E209AB121EDEDE8406F66A96EADC8", "4A697D5F902CE237AF4C98BE424F984744B67B8ECEC383E0905FFDCB1D367DEB", 6);
+    	transactions.add(j1);
+    	transactions.add(j2);
+    	transactions.add(j3);
+    	transactions.add(j4);
+    	transactions.add(j5);
+    	transactions.add(j6);*/
+        
+        Map<Integer,Map<String, ArrayList<String>>> map = new HashMap<Integer, Map<String, ArrayList<String>>>();
+        for (int i = 0; i < transactions.size(); i++) {
+        	Job j = transactions.get(i);
+        	map.put(j.getJobID(), journalService.getJob(j));
+        }
 		
+        model.addAttribute("jobs", map);
+    	model.addAttribute("title", "journal");
 		return "journal/list";
 	}
     
@@ -241,8 +284,9 @@ public class JournalController {
         return "redirect:/journal/journals";
     }
     @Autowired
-	public void setServices(ImageService imageService, MeasureService measureService) {
+	public void setServices(ImageService imageService, MeasureService measureService, JournalService journalService) {
 		this.imageService = imageService;
 		this.measureService = measureService;
+		this.journalService = journalService;
 	}
 }

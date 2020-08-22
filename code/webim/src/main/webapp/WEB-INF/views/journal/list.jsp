@@ -10,39 +10,42 @@
 	${title}
 	<button onclick="console.log('cambiar vista')" type="button" class="btn btn-primary btn-circle"><i class="fa fa-plus"></i>Measure</button>
 </h2>
-<c:forEach var = "i" begin = "0" end = "1">
+<c:forEach var="m" items="${jobs}">
 	<div class="journal-div border border-primary rounded-lg">
-		<h4>Job ${i}</h4>
+		<h4>Job ${m.getKey()}</h4>
 		<div class="j-left">
 			<div class="container">
-				<div class="carousel slide" id="main-carousel-${i}">
+				<div class="carousel slide" id="main-carousel-${m.getKey()}">
 					<ol class="carousel-indicators">
-						<li data-target="#main-carousel-${i}" data-slide-to="0" class="active"></li>
-						<li data-target="#main-carousel-${i}" data-slide-to="1"></li>
-						<li data-target="#main-carousel-${i}" data-slide-to="2"></li>
-						<li data-target="#main-carousel-${i}" data-slide-to="3"></li>
+						<c:forEach var="i" items="${m.getValue()}">
+							<li data-target="#main-carousel-${m.getKey()}" data-slide-to="${loop.index}" class="active"></li>
+						</c:forEach>
 					</ol><!-- /.carousel-indicators -->
 						
 					<div class="carousel-inner">
-						<div class="carousel-item active">
-							<img class="d-block img-fluid" src="https://s19.postimg.cc/qzj5uncgj/slide1.jpg" alt="">
-						</div>
-						<div class="carousel-item">
-							<img class="d-block img-fluid" src="https://s19.postimg.cc/lmubh3h0j/slide2.jpg" alt="">
-						</div>
-						<div class="carousel-item">
-							<img class="d-block img-fluid" src="https://s19.postimg.cc/99hh9lr5v/slide3.jpg" alt="">
-						</div>
-						<div class="carousel-item">
-							<img src="https://s19.postimg.cc/nenabzsnn/slide4.jpg" alt="" class="d-block img-fluid">
-						</div>
+						<c:forEach var="m2" items="${m.value}">
+							<c:forEach var="img" items="${m2.value}" varStatus="loop">
+								<c:choose>
+								    <c:when test="${loop.index == 0}">
+								        <div class="carousel-item active">
+											<img class="d-block img-fluid" src="../uploads/images/${img}" alt="${img}">
+										</div>
+								    </c:when>    
+								    <c:otherwise>
+								        <div class="carousel-item">
+											<img class="d-block img-fluid" src="../uploads/images/${img}" alt="${img}">
+										</div>
+								    </c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</c:forEach>
 					</div><!-- /.carousel-inner -->
 						
-					<a href="#main-carousel-${i}" class="carousel-control-prev" data-slide="prev">
+					<a href="#main-carousel-${m.getKey()}" class="carousel-control-prev" data-slide="prev">
 						<span class="carousel-control-prev-icon"></span>
 						<span class="sr-only" aria-hidden="true">Prev</span>
 					</a>
-					<a href="#main-carousel-${i}" class="carousel-control-next" data-slide="next">
+					<a href="#main-carousel-${m.getKey()}" class="carousel-control-next" data-slide="next">
 						<span class="carousel-control-next-icon"></span>
 						<span class="sr-only" aria-hidden="true">Next</span>
 					</a>
@@ -60,7 +63,7 @@
 
 <style>
 	.journal-div {
-		height: 450px;
+		height: 500px;
 		width: 100%;
 		padding: 10px;
 	}
@@ -76,5 +79,10 @@
 		width: 50%;
 		height: 88%;
 		background-color: orange;
+	}
+	
+	.carousel-item {
+		height: 420px !important;
+		max-height: 420px !important;
 	}
 </style>

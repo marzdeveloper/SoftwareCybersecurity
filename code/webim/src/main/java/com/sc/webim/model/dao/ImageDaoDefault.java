@@ -67,4 +67,16 @@ public class ImageDaoDefault extends DefaultDao implements ImageDao{
 		return q.setParameter("measure", measure).getResultList();
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public Image findByHash(String hash) {
+		Query q = this.getSession().createQuery("from Image i WHERE i.image_hash = :hash", Image.class);
+		Image i = null;
+		try {
+			i = (Image) q.setParameter("hash", hash).getSingleResult();
+		} catch (Exception e) {
+			//e.printStackTrace();
+		}
+		return i;
+	}
 }
