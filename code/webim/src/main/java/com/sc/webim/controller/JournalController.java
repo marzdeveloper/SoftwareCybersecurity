@@ -37,15 +37,10 @@ import com.sc.webim.contracts.Journal;
 import com.sc.webim.contracts.Thread;
 import com.sc.webim.model.Job;
 import com.sc.webim.model.JournalModel;
-<<<<<<< HEAD
 import com.sc.webim.model.entities.Image;
 import com.sc.webim.model.entities.Measure;
 import com.sc.webim.services.ImageService;
 import com.sc.webim.services.MeasureService;
-
-=======
-import com.sc.webim.model.ThreadModel;
->>>>>>> 33425887a32dc261c91411d5f33ce6d66085684f
 
 
 @Controller
@@ -55,14 +50,9 @@ public class JournalController {
 	private MeasureService measureService;
 	private ArrayList<Job> transactions = new ArrayList<Job>();
     private JournalModel journalModel = new JournalModel();
-<<<<<<< HEAD
 	private final Path root = Paths.get("src/main/webapp/WEB-INF/uploads/");
 
-=======
-	private Map<Integer, String> allData = new HashMap<Integer, String>();
-	private Map<String,ThreadModel> allThreads;
->>>>>>> 33425887a32dc261c91411d5f33ce6d66085684f
-	
+
     @Autowired
     QuorumConnection quorumConnection;
 
@@ -73,83 +63,6 @@ public class JournalController {
 		
 		return "journal/list";
 	}
-    
-    /* *************************************************************************************************************************************************************************** */
-    @RequestMapping(value="/threads", method=RequestMethod.GET)
-    public String showThreads(Model model) {
-        allThreads = new HashMap<String, ThreadModel>();
-
-        String sendContractAddressEventTopic = "0x4cf8037dff8f2e4212332ce6a37f5353c431bfc409fe36d824e7553dbaf66b86";
-        EthFilter filterToExtractNewThreads = new EthFilter(DefaultBlockParameterName.EARLIEST, DefaultBlockParameterName.LATEST, Collections.emptyList()).addSingleTopic(sendContractAddressEventTopic);
-
-        quorumConnection.getAdmin().ethLogFlowable(filterToExtractNewThreads).subscribe(messageLog -> {
-            EventValues sendContractAddressEventValues = staticExtractEventParameters(Thread.SENDCONTRACTADDRESS_EVENT, messageLog);
-
-            Thread.SendContractAddressEventResponse sendContractAddressEventResponse = new Thread.SendContractAddressEventResponse();
-            sendContractAddressEventResponse.participants = (String)sendContractAddressEventValues.getNonIndexedValues().get(0).getValue();
-            sendContractAddressEventResponse.contractAddress = (String)sendContractAddressEventValues.getNonIndexedValues().get(1).getValue();
-
-            ThreadModel threadModel = new ThreadModel(sendContractAddressEventResponse.contractAddress,sendContractAddressEventResponse.participants);
-            allThreads.put(sendContractAddressEventResponse.participants,threadModel);
-        });
-
-
-        String sendMessageEventTopic = "0x0eabeffe119b8ffbb23292e86677821e520cbaeb5401f69cb0d565b69fae8e6f";
-        EthFilter filterToExtractNewMessagesFromExistingThreads = new EthFilter(DefaultBlockParameterName.EARLIEST, DefaultBlockParameterName.LATEST,Collections.emptyList()).addSingleTopic(sendMessageEventTopic);
-
-        quorumConnection.getAdmin().ethLogFlowable(filterToExtractNewMessagesFromExistingThreads).subscribe(messageLog -> {
-            EventValues messageEventValues = staticExtractEventParameters(Thread.SENDMEASURE_EVENT, messageLog);
-
-            Thread.SendMeasureEventResponse measureTypedResponse = new Thread.SendMeasureEventResponse();
-            measureTypedResponse.autor = (String) messageEventValues.getNonIndexedValues().get(0).getValue();
-            measureTypedResponse.image = (String) messageEventValues.getNonIndexedValues().get(1).getValue();
-            measureTypedResponse.measure = (String) messageEventValues.getNonIndexedValues().get(2).getValue();
-
-            Map<String,String> measureSenderMap = new HashMap<String, String>();
-            measureSenderMap.put(measureTypedResponse.measure,measureTypedResponse.image);
-            allThreads.get(measureTypedResponse.autor).updateThreadMessages(measureSenderMap);
-        });
-
-        model.addAttribute("threadModels", allThreads);
-        return "journal/list";
-    }
-    
-    @RequestMapping(value="/threads", method=RequestMethod.POST)
-    public String createNewThread(@RequestParam("message") String message,@RequestParam("threadParticipants") ArrayList<String> threadParticipants, Model model) throws Exception {
-        if(!threadParticipants.contains(quorumConnection.getNode()))
-        {
-            model.addAttribute("Error","Please include " + quorumConnection.getNode() + " in participants!");
-            return showThreads(model);
-        }
-
-        if(message.trim().equals("") || (message == null))
-        {
-            model.addAttribute("Error","Please enter a message!");
-            return showThreads(model);
-        }
-
-        List<String> privateFor = new ArrayList<String>();
-        for(String threadParticipant : threadParticipants)
-            privateFor.add(allNodeNamesToPublicKeysMap.get(threadParticipant));
-
-        Collections.sort(threadParticipants);
-        String threadParticipantsString = String.join(",",threadParticipants);
-
-        if(allThreads.get(threadParticipantsString)!=null)
-        {
-            model.addAttribute("Error","Thread already exists!");
-            return showThreads(model);
-        }
-
-        ClientTransactionManager clientTransactionManager = new ClientTransactionManager(quorumConnection.getQuorum(), quorumConnection.getNodeAddress(), quorumConnection.getNodeKey(), privateFor, 100, 1000);
-        Thread threadContract = Thread.deploy(quorumConnection.getQuorum(), clientTransactionManager, BigInteger.valueOf(0), BigInteger.valueOf(100000000)).send();
-        String newThreadContractAddress = threadContract.getContractAddress();
-        TransactionReceipt startThreadTransactionReceipt = threadContract.startThread(threadParticipantsString,newThreadContractAddress).send();
-        TransactionReceipt sendMessageTransactionReceipt = threadContract.sendMessageToThread(message, quorumConnection.getNode()).send();
-
-        return showThreads(model);
-    }
-    /* *************************************************************************************************************************************************************************** */
     
     @RequestMapping(value="/journals", method=RequestMethod.GET)
     public String showJournal(Model model) {
