@@ -36,8 +36,8 @@ import com.sc.webim.model.JournalModel;
 @Controller
 @RequestMapping("/journal")
 public class JournalController {
-	private Map<Integer,Job> transactions = new HashMap<Integer, Job>();
-	
+	private ArrayList<Job> transactions = new ArrayList<Job>();
+    private JournalModel journalModel = new JournalModel();
 	private Map<Integer, String> allData = new HashMap<Integer, String>();
 	
     @Autowired
@@ -54,7 +54,6 @@ public class JournalController {
     @RequestMapping(value="/journals", method=RequestMethod.GET)
     public String showJournal(Model model) {
         //String eventJobEventTopic = "0xe789b4eeafbb3620234d3bd2c4767fd4e3baf0f8291ee7cb387280ce129e41d1";
-        JournalModel journalModel = new JournalModel();
         EthFilter filterToExtractNewJournals = new EthFilter(DefaultBlockParameterName.EARLIEST, DefaultBlockParameterName.LATEST, Collections.emptyList()).addSingleTopic(EventEncoder.encode(Journal.EVENTJOB_EVENT));
 
         quorumConnection.getAdmin().ethLogFlowable(filterToExtractNewJournals).subscribe(messageLog -> {
@@ -66,21 +65,19 @@ public class JournalController {
             
             eventJobEventResponse.worker = (String)sendContractAddressEventValues.getNonIndexedValues().get(0).getValue();
             eventJobEventResponse.measure = (String)sendContractAddressEventValues.getNonIndexedValues().get(1).getValue();
-            eventJobEventResponse.images = (ArrayList<String>)sendContractAddressEventValues.getNonIndexedValues().get(2).getValue();
+            eventJobEventResponse.images = (String)sendContractAddressEventValues.getNonIndexedValues().get(2).getValue();
 
             String worker = eventJobEventResponse.worker.toString();
             String measure = eventJobEventResponse.measure.toString();
-            ArrayList<String> images = new ArrayList<String>();
+            String images = eventJobEventResponse.images.toString();
+            /*ArrayList<String> images = new ArrayList<String>();
             for(String img:eventJobEventResponse.images) {
                 images.add(img.toString());  	//da ricontrollare
-            }
+            }*/
 
             //Create new ThreadModel instance to save new thread details - contract address, participants
-            //journalModel.addNewJob(worker, measure, images);
-            
-            Job job = new Job(worker, measure, images,0);
-            
-            transactions.put(0,job);
+            journalModel.addNewJob(worker, measure, images);
+            transactions= journalModel.getJobs();
         });
         
         System.out.println("/*********************************************************************/");
@@ -168,8 +165,10 @@ public class JournalController {
         	//Extract contract address from thread contract object obtained in 2.d
         	String newThreadContractAddress = threadContract.getContractAddress();
         	
+        	String listString = String.join(",", images);
+        	
         	//Call the sendContractAddress event in thread contract to inform participants of new thread contract address and participants
-        	TransactionReceipt startThreadTransactionReceipt = threadContract.addNewJob(measure, images).send();
+        	TransactionReceipt startThreadTransactionReceipt = threadContract.addNewJob(measure, listString).send();
         }
         
         return "redirect:/journal/journals";

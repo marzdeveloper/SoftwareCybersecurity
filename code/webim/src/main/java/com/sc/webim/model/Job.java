@@ -11,13 +11,15 @@ public class Job {
 	int jobID;
 	
 	/*create new job*/
-	public Job(String _worker, String _measure, ArrayList<String> _images, int _jobID) {
+	public Job(String _worker, String _measure,String _images, int _jobID) {
 		//this.images = new ArrayList<String>();
 		
 		this.worker=_worker;
 		this.measure=_measure;
-		for(String img:_images) {
-			this.images.add(img);
+		String[] imgs = _images.split(",");
+		this.images = new ArrayList<String>();
+		for(String img:imgs) {
+			this.images.add(img.trim());
 		}
 		this.jobID = _jobID;
 	}

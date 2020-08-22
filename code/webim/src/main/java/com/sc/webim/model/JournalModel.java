@@ -12,7 +12,7 @@ public class JournalModel {
     	this.jobs = new ArrayList<Job>();
     }
     
-    public void addNewJob(String _worker, String _measure, ArrayList<String> _image) {
+    public void addNewJob(String _worker, String _measure, String _image) {
     	Job job = new Job(_worker,  _measure,  _image,  jobGenerated);
         this.jobs.add(job);
         jobGenerated++;
