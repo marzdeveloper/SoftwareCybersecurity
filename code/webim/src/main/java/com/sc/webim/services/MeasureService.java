@@ -12,6 +12,8 @@ public interface MeasureService {
 	List<Measure> findAll();
 	
 	Measure findById(int id);
+	
+	Measure findByName(String name);
 
 	Measure create(String user_id, Date data_caricamento, String measure_hash, String name);
 	

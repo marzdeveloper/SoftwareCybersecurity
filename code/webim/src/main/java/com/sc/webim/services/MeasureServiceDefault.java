@@ -35,6 +35,12 @@ public class MeasureServiceDefault implements MeasureService {
 	public Measure findById(int id) {
 		return this.measureRepository.findById(id);
 	}
+	
+	@Transactional(readOnly=true)
+	@Override
+	public Measure findByName(String name) {
+		return this.measureRepository.findByName(name);
+	}
 
 	@Override
 	public Measure create(String user_id, Date data_caricamento, String measure_hash, String name) {

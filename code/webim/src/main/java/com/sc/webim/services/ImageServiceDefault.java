@@ -73,6 +73,13 @@ public class ImageServiceDefault implements ImageService {
 	public Image findById(int id) {
 		return this.imageRepository.findById(id);
 	}
+	
+	
+	@Transactional(readOnly=true)
+	@Override
+	public Image findByName(String name) {
+		return this.imageRepository.findByName(name);
+	}
 
 	@Override
 	public Image create(String user_id, Date data_caricamento, String measure_hash, String gps, String name) {

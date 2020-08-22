@@ -30,6 +30,13 @@ public class MeasureDaoDefault extends DefaultDao implements MeasureDao{
 	public Measure findById(int id) {
 		return getSession().find(Measure.class, id);
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Measure findByName(String name) {
+		Query q = this.getSession().createQuery("from Measure m WHERE m.name = :name", Measure.class);
+		return (Measure) q.setParameter("name", name).getSingleResult();
+	}
 
 	@Override
 	@Transactional

@@ -2,7 +2,12 @@ package com.sc.webim.controller;
 
 import static org.web3j.tx.Contract.staticExtractEventParameters;
 
+import java.io.File;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.MessageDigest;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,24 +28,30 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.web3j.abi.EventEncoder;
 import org.web3j.abi.EventValues;
 import org.web3j.protocol.core.DefaultBlockParameterName;
-import org.web3j.protocol.core.RemoteFunctionCall;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.quorum.tx.ClientTransactionManager;
-import org.web3j.tuples.generated.Tuple3;
 
 import com.sc.webim.connection.QuorumConnection;
 import com.sc.webim.contracts.Journal;
 import com.sc.webim.model.Job;
 import com.sc.webim.model.JournalModel;
+import com.sc.webim.model.entities.Image;
+import com.sc.webim.model.entities.Measure;
+import com.sc.webim.services.ImageService;
+import com.sc.webim.services.MeasureService;
+
 
 
 @Controller
 @RequestMapping("/journal")
 public class JournalController {
+	private ImageService imageService;
+	private MeasureService measureService;
 	private ArrayList<Job> transactions = new ArrayList<Job>();
     private JournalModel journalModel = new JournalModel();
-	private Map<Integer, String> allData = new HashMap<Integer, String>();
+	private final Path root = Paths.get("src/main/webapp/WEB-INF/uploads/");
+
 	
     @Autowired
     QuorumConnection quorumConnection;
@@ -121,7 +134,7 @@ public class JournalController {
     @RequestMapping(value="/createJournal", method=RequestMethod.POST)
     public String createJournal(Principal principal, Model model, @RequestParam("measure") String measure, @RequestParam("images") ArrayList<String> images) throws Exception {
         boolean error = false;
-        //Verifico essitsa la misura
+        //Verifico esitsa la misura
         if(measure == null || measure.trim().equals(""))
         {
         	error = true;
@@ -134,6 +147,60 @@ public class JournalController {
         	error = true;
             System.out.println("Le immagini non ci sono");
         }
+                
+        
+        //Controllo correttezza delle immagini selezionate
+        ArrayList<Image> DbImages = new ArrayList<Image>();
+        
+        for(String image:images) {
+        	try {
+            	DbImages.add(imageService.findByName(image));
+        	}
+        	catch(Exception e) {
+        		//e.printStackTrace();
+            	error = true;
+            	throw new Exception("L'immagine non è sul database");
+        	}
+        }
+        
+        //Controllo degli hash
+        for(Image image:DbImages) {
+        	Path path = Paths.get(root + "/images/" + image.getName());
+			byte[] bytes = Files.readAllBytes(path);
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			String hash = DatatypeConverter.printHexBinary(digest.digest(bytes));  
+			
+			Image img = imageService.findByName(image.getName());
+			if(!hash.equals(img.getImage_hash())){
+				//L'immagine sul server è diversa da quella salvata nel DB
+	        	error = true;
+				throw new Exception("L'immagine nel server non coindice con quella salvata nel database");
+			}
+        }
+        
+        Measure measureDB = new Measure();
+        //Controlli sulle misure
+        try {
+        	measureDB = measureService.findByName(measure);
+    	}
+    	catch(Exception e) {
+    		//e.printStackTrace();
+        	error = true;
+			throw new Exception("La misura non è sul database");
+    	}
+        
+    	Path path = Paths.get(root + "/measures/" + measureDB.getName());
+    	byte[] bytes = Files.readAllBytes(path);
+		MessageDigest digest = MessageDigest.getInstance("SHA-256");
+		String hash = DatatypeConverter.printHexBinary(digest.digest(bytes));
+		
+		Measure ms = measureService.findByName(measureDB.getName());
+		if(!hash.equals(ms.getMeasure_hash())){
+			//L'immagine sul server è diversa da quella salvata nel DB
+        	error = true;
+			throw new Exception("La misura nel server non coindice con quella salvata nel database");
+		}
+
         
         if (!error)
         {
@@ -173,4 +240,9 @@ public class JournalController {
         
         return "redirect:/journal/journals";
     }
+    @Autowired
+	public void setServices(ImageService imageService, MeasureService measureService) {
+		this.imageService = imageService;
+		this.measureService = measureService;
+	}
 }

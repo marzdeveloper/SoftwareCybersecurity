@@ -18,6 +18,8 @@ public interface MeasureDao {
 	List<Measure> findAll();
 	
 	Measure findById(int id);
+	
+	Measure findByName(String Name);
 
 	Measure create(String user_id, Date data_caricamento, String measure_hash, String name);
 	

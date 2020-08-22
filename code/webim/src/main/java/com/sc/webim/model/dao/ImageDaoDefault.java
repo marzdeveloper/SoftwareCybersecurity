@@ -26,7 +26,14 @@ public class ImageDaoDefault extends DefaultDao implements ImageDao{
 	public Image findById(int id) {
 		return getSession().find(Image.class, id);
 	}
-
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Image findByName(String name) {
+		Query q = this.getSession().createQuery("from Image i WHERE i.name = :name", Image.class);
+		return (Image) q.setParameter("name", name).getSingleResult();
+	}
+	
 	@Override
 	@Transactional
 	public void delete(Image image) {
