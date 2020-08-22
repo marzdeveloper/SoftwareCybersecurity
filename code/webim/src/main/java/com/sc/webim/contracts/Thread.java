@@ -41,6 +41,16 @@ public class Thread extends Contract {
     public static final String FUNC_PARTICIPANTS = "participants";
 
     public static final String FUNC_SENDMESSAGETOTHREAD = "sendMessageToThread";
+    
+    /* *************************************************************************************************************************************************************************** */
+    public static final String FUNC_AUTOR = "autor";
+
+    public static final String FUNC_IMAGE = "image";
+
+    public static final String FUNC_MEASURE = "measure";
+    
+    public static final String FUNC_SENDMEASURETOTHREAD = "sendMeasureToThread";
+    /* *************************************************************************************************************************************************************************** */
 
     public static final String FUNC_STARTTHREAD = "startThread";
 
@@ -49,6 +59,12 @@ public class Thread extends Contract {
     public static final Event SENDMESSAGE_EVENT = new Event("sendMessage", 
             Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}, new TypeReference<Utf8String>() {}, new TypeReference<Utf8String>() {}));
     ;
+    
+    /* *************************************************************************************************************************************************************************** */
+    public static final Event SENDMEASURE_EVENT = new Event("sendMeasure", 
+            Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}, new TypeReference<Utf8String>() {}, new TypeReference<Utf8String>() {}));
+    ;
+    /* *************************************************************************************************************************************************************************** */
 
     public static final Event SENDCONTRACTADDRESS_EVENT = new Event("sendContractAddress", 
             Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}, new TypeReference<Address>() {}));
@@ -85,6 +101,31 @@ public class Thread extends Contract {
                 Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
+    
+    /* *************************************************************************************************************************************************************************** */
+    public RemoteCall<String> images(BigInteger param0) {
+        final Function function = new Function(FUNC_IMAGE, 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(param0)), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
+        return executeRemoteCallSingleValueReturn(function, String.class);
+    }
+
+    public RemoteCall<String> autors() {
+        final Function function = new Function(FUNC_AUTOR, 
+                Arrays.<Type>asList(), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
+        return executeRemoteCallSingleValueReturn(function, String.class);
+    }
+    
+    public RemoteCall<TransactionReceipt> sendMeasureToThread(String _image, String _measure) {
+        final Function function = new Function(
+                FUNC_SENDMEASURETOTHREAD, 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.Utf8String(_image), 
+                new org.web3j.abi.datatypes.Utf8String(_measure)), 
+                Collections.<TypeReference<?>>emptyList());
+        return executeRemoteCallTransaction(function);
+    }
+    /* *************************************************************************************************************************************************************************** */
 
     public RemoteCall<TransactionReceipt> sendMessageToThread(String _reply, String _messageSender) {
         final Function function = new Function(
@@ -145,6 +186,43 @@ public class Thread extends Contract {
         filter.addSingleTopic(EventEncoder.encode(SENDMESSAGE_EVENT));
         return sendMessageEventFlowable(filter);
     }
+    
+    /* *************************************************************************************************************************************************************************** */
+    public List<SendMeasureEventResponse> getSendMeasureEvents(TransactionReceipt transactionReceipt) {
+        List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(SENDMEASURE_EVENT, transactionReceipt);
+        ArrayList<SendMeasureEventResponse> responses = new ArrayList<SendMeasureEventResponse>(valueList.size());
+        for (Contract.EventValuesWithLog eventValues : valueList) {
+        	SendMeasureEventResponse typedResponse = new SendMeasureEventResponse();
+            typedResponse.log = eventValues.getLog();
+            typedResponse.autor = (String) eventValues.getNonIndexedValues().get(0).getValue();
+            typedResponse.image = (String) eventValues.getNonIndexedValues().get(1).getValue();
+            typedResponse.measure = (String) eventValues.getNonIndexedValues().get(2).getValue();
+            responses.add(typedResponse);
+        }
+        return responses;
+    }
+
+    public Flowable<SendMeasureEventResponse> sendMeasureEventFlowable(EthFilter filter) {
+        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, SendMeasureEventResponse>() {
+            @Override
+            public SendMeasureEventResponse apply(Log log) {
+                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(SENDMEASURE_EVENT, log);
+                SendMeasureEventResponse typedResponse = new SendMeasureEventResponse();
+                typedResponse.log = log;
+                typedResponse.autor = (String) eventValues.getNonIndexedValues().get(0).getValue();
+                typedResponse.image = (String) eventValues.getNonIndexedValues().get(1).getValue();
+                typedResponse.measure = (String) eventValues.getNonIndexedValues().get(2).getValue();
+                return typedResponse;
+            }
+        });
+    }
+
+    public Flowable<SendMeasureEventResponse> sendMeasureEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        filter.addSingleTopic(EventEncoder.encode(SENDMEASURE_EVENT));
+        return sendMeasureEventFlowable(filter);
+    }
+    /* *************************************************************************************************************************************************************************** */
 
     public List<SendContractAddressEventResponse> getSendContractAddressEvents(TransactionReceipt transactionReceipt) {
         List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(SENDCONTRACTADDRESS_EVENT, transactionReceipt);
@@ -223,6 +301,16 @@ public class Thread extends Contract {
         public String message;
 
         public String messageSender;
+    }
+    
+    public static class SendMeasureEventResponse {
+        public Log log;
+
+        public String autor;
+
+        public String image;
+
+        public String measure;
     }
 
     public static class SendContractAddressEventResponse {
