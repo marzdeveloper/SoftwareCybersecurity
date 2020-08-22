@@ -1,40 +1,35 @@
 pragma solidity >=0.6.0;  /*specifico versione */
-pragma experimental ABIEncoderV2; /*aggiunto per poter stampare la struct, togliere dopo il debug */
 
 contract Journal{
 
   struct Job{
     address   worker;
     string   measure;
-    string   []images;
+    string   images;
     uint jobID;   
     }
     
     event eventJob(
         address  worker,
         string  measure,
-        string   []images,
+        string   images,
         uint jobId   
         );
     
     address   worker;
-   
-
     uint numOfJob = 0;
     Job[]  public jobs;
     
+    
+    
     constructor() public {
     	worker = msg.sender;
-    	
     }
     
     
     
-    
-    function addNewJob(string memory measure, string[] memory images) public {
+    function addNewJob(string memory measure, string memory images) public {
     	worker = msg.sender;
-    	
-
     	Job memory job = Job(worker,measure,images,numOfJob);   
     	jobs.push(job);
         emit eventJob(jobs[numOfJob].worker ,jobs[numOfJob].measure, jobs[numOfJob].images, numOfJob);
@@ -81,7 +76,7 @@ contract Journal{
     
         /* prendo tutti i dati relativi a un job */
 
-    function getJobById(uint _id) view public returns(uint ,string memory,string[] memory){
+    function getJobById(uint _id) view public returns(uint ,string memory,string memory){
         return (jobs[_id].jobID,jobs[_id].measure,jobs[_id].images);
     }
 
