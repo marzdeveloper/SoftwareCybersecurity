@@ -40,12 +40,13 @@ public class MeasureDaoDefault extends DefaultDao implements MeasureDao{
 
 	@Override
 	@Transactional
-	public Measure create(String user_id, Date data_caricamento, String measure_hash, String name) {
+	public Measure create(String user_id, Date data_caricamento, String measure_hash, String name, boolean transactionless) {
 		Measure measure = new Measure();
 		measure.setUser_id(user_id);
 		measure.setData_caricamento(data_caricamento);
 		measure.setMeasure_hash(measure_hash);
 		measure.setName(name);
+		measure.setTransactionless(transactionless);
 		this.getSession().save(measure);
 		return measure;
 	}
@@ -56,6 +57,7 @@ public class MeasureDaoDefault extends DefaultDao implements MeasureDao{
 		Measure merged = (Measure)this.getSession().merge(measure);
 		return merged;
 	}
+	
 		
 	@Override
 	@Transactional

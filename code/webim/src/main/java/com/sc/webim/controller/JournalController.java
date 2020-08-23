@@ -158,7 +158,7 @@ public class JournalController {
         
         model.addAttribute("title", "journal");
         model.addAttribute("threadModels", transactions);
-        return "journal/list";
+        return "journal/list2";
     }
     
     /*@RequestMapping(value="/updateJournal", method=RequestMethod.POST)
@@ -237,13 +237,14 @@ public class JournalController {
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		String hash = DatatypeConverter.printHexBinary(digest.digest(bytes));
 		
-		Measure ms = measureService.findByName(measureDB.getName());
-		if(!hash.equals(ms.getMeasure_hash())){
+		//Measure ms = measureService.findByName(measureDB.getName());
+		if(!hash.equals(measureDB.getMeasure_hash())){
 			//L'immagine sul server è diversa da quella salvata nel DB
         	error = true;
 			throw new Exception("La misura nel server non coindice con quella salvata nel database");
 		}
-
+		measureDB.setTransactionless(false);
+		measureService.update(measureDB);
         
         if (!error)
         {

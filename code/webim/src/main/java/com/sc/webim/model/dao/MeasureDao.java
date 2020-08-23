@@ -21,7 +21,7 @@ public interface MeasureDao {
 	
 	Measure findByName(String Name);
 
-	Measure create(String user_id, Date data_caricamento, String measure_hash, String name);
+	Measure create(String user_id, Date data_caricamento, String measure_hash, String name, boolean transactionless);
 	
 	Measure update(Measure measure);
 	

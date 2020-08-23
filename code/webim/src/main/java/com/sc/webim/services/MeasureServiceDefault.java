@@ -43,8 +43,8 @@ public class MeasureServiceDefault implements MeasureService {
 	}
 
 	@Override
-	public Measure create(String user_id, Date data_caricamento, String measure_hash, String name) {
-		return this.measureRepository.create(user_id, data_caricamento, measure_hash, name);
+	public Measure create(String user_id, Date data_caricamento, String measure_hash, String name, boolean transactionless) {
+		return this.measureRepository.create(user_id, data_caricamento, measure_hash, name, transactionless);
 	}
 
 	@Override
@@ -56,6 +56,7 @@ public class MeasureServiceDefault implements MeasureService {
 	public void delete(Measure measure) {
 		this.measureRepository.delete(measure);
 	}
+	
 
 	@Override
 	public int saveMeasure(String autor, MultipartFile measure) {
@@ -73,7 +74,7 @@ public class MeasureServiceDefault implements MeasureService {
 			    String s1 = measure.getOriginalFilename();
 			    String[] s = s1.split("\\.");
 
-			    m = create(autor, Utils.date(formatter.format(date)), hash, "m-" + formatter2.format(date).toString() + "." + s[s.length-1]);
+			    m = create(autor, Utils.date(formatter.format(date)), hash, "m-" + formatter2.format(date).toString() + "." + s[s.length-1], true);
 			    
 			    Path path = Paths.get(root + "/" + "m-" + formatter2.format(date).toString() + "." + s[s.length-1]);
 				Files.write(path, bytes);

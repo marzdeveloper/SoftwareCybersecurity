@@ -27,7 +27,6 @@ public class Image implements Serializable{
     private String image_hash;
     private String name;
     private String gps;
-    
     private Measure measure_id;
 
     //Get and Set

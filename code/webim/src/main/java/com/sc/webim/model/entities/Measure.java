@@ -27,6 +27,7 @@ public class Measure implements Serializable{
 	private Date data_caricamento;
 	private String user_id;
 	private String name;
+	private boolean transactionless;
 	
 	private Set<Image> images = new HashSet<Image>();
 	
@@ -53,7 +54,7 @@ public class Measure implements Serializable{
 	}
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "Data_caricamento", nullable = true)
+	@Column(name = "Data_caricamento", nullable = false)
 	public Date getData_caricamento() {
 		return this.data_caricamento;
 	}
@@ -79,7 +80,17 @@ public class Measure implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
+	@Column(name = "Transactionless", nullable = false, columnDefinition = "boolean default true")
+	public boolean getTransactionless() {
+		return this.transactionless;
+	}
+	
+	public void setTransactionless(boolean transactionless) {
+		this.transactionless = transactionless;
+	}
+	
+	
 	//toString
 	
 	@Override

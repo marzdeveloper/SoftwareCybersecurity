@@ -60,6 +60,7 @@ public class DroneServiceDefault implements DroneService {
 	private ImageDao imageRepository;
 	
 	@Override
+	//prima controllare sul db che non ci siano duplicati di nome, e poi fare l'upload
 	public int saveImage(String user, MultipartFile image) {
 		int code = 0;
 		try {
