@@ -9,44 +9,40 @@
 	${title}
 	<a href="/journal/newJob" type="button" class="btn btn-primary btn-circle"><i class="fa fa-plus"></i>Measure</a>
 </h2>
-<c:forEach var="m" items="${jobs}">
+<c:forEach var="j" items="${jobs}">
 	<div class="journal-div border border-primary rounded-lg">
-		<h4>Job ${m.getKey()}</h4>
+		<h4>Job ${j.getJobID()}</h4>
 		<div class="j-left">
 			<div class="container">
-				<div class="carousel slide" id="main-carousel-${m.getKey()}">
+				<div class="carousel slide" id="main-carousel-${j.getJobID()}">
 					<ol class="carousel-indicators">
-						<c:forEach var="i1" items="${m.value}">
-							<c:forEach var="i2" items="${i1.value}" varStatus="loop">
-								<li data-target="#main-carousel-${m.getKey()}" data-slide-to="${loop.index}" class="active"></li>
-							</c:forEach>
+						<c:forEach var="i" items="${j.getImages()}" varStatus="loop">
+							<li data-target="#main-carousel-${j.getJobID()}" data-slide-to="${loop.index}" class="active"></li>
 						</c:forEach>
 					</ol><!-- /.carousel-indicators -->
 						
 					<div class="carousel-inner">
-						<c:forEach var="m2" items="${m.value}">
-							<c:forEach var="img" items="${m2.value}" varStatus="loop">
-								<c:choose>
-								    <c:when test="${loop.index == 0}">
-								        <div class="carousel-item active">
-											<img class="d-block img-fluid" src="../uploads/images/${img}" alt="${img}">
-										</div>
-								    </c:when>    
-								    <c:otherwise>
-								        <div class="carousel-item">
-											<img class="d-block img-fluid" src="../uploads/images/${img}" alt="${img}">
-										</div>
-								    </c:otherwise>
-								</c:choose>
-							</c:forEach>
+						<c:forEach var="img" items="${j.getImages()}" varStatus="loop">
+							<c:choose>
+								  <c:when test="${loop.index == 0}">
+								       <div class="carousel-item active">
+										<img class="d-block img-fluid" src="../uploads/images/${img}" alt="${img}">
+									</div>
+								   </c:when>    
+								   <c:otherwise>
+								       <div class="carousel-item">
+										<img class="d-block img-fluid" src="../uploads/images/${img}" alt="${img}">
+									</div>
+								   </c:otherwise>
+							</c:choose>
 						</c:forEach>
 					</div><!-- /.carousel-inner -->
 						
-					<a href="#main-carousel-${m.getKey()}" class="carousel-control-prev" data-slide="prev">
+					<a href="#main-carousel-${j.getJobID()}" class="carousel-control-prev" data-slide="prev">
 						<span class="carousel-control-prev-icon"></span>
 						<span class="sr-only" aria-hidden="true">Prev</span>
 					</a>
-					<a href="#main-carousel-${m.getKey()}" class="carousel-control-next" data-slide="next">
+					<a href="#main-carousel-${j.getJobID()}" class="carousel-control-next" data-slide="next">
 						<span class="carousel-control-next-icon"></span>
 						<span class="sr-only" aria-hidden="true">Next</span>
 					</a>
@@ -54,7 +50,7 @@
 			</div><!-- /.container -->
 		</div>
 		<div class="j-right">
-			<iframe src="../uploads/measures/example.pdf#toolbar=0" width="100%" height="100%"></iframe>
+			<iframe src="../uploads/measures/${j.getMeasure()}#toolbar=0" width="100%" height="100%"></iframe>
 		</div>
 	</div>
 	<br />

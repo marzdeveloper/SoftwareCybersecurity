@@ -63,22 +63,24 @@ public class JournalServiceDefault implements JournalService {
 	private MeasureDao measureRepository;
 	
 	@Override
-	public Map<String, ArrayList<String>> getJob(Job job) {
+	public Job getJobByHash(Job job) {
 		ArrayList<String> list_img = new ArrayList<String>();
 		
 		String hash_m = job.getMeasure();
 		Measure m = measureRepository.findByHash(hash_m);
 		
-		ArrayList<String> list_job_img = job.getImages();
-		for (String hash_img: list_job_img) {
+		ArrayList<String> list_hash_img = job.getImages();
+		for (String hash_img: list_hash_img) {
 			Image img = imageRepository.findByHash(hash_img);
 			list_img.add(img.getName());
 		}
 		
-		Map<String, ArrayList<String>> transaction = new HashMap<String, ArrayList<String>>();
-		transaction.put(m.getName(), list_img);
+		Job j = new Job();
+		j.setJobID(job.getJobID());
+		j.setMeasure(m.getName());
+		j.setImages(list_img);
 		
-		return transaction;
+		return j;
 	};
 	
 	@Override
