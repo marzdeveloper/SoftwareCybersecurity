@@ -1,35 +1,26 @@
 package com.sc.webim.controller;
 
-import org.springframework.web.bind.annotation.RestController;
 
-import com.sc.webim.model.dao.ImageDao;
-import com.sc.webim.services.DroneService;
+import com.sc.webim.services.ImageService;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/drone")
 public class DroneController {
-	private DroneService droneService;
-	private ImageDao imageDao;
+	private ImageService imageService;
 
 	@RequestMapping()
 	public String index(Model model, @RequestParam(value = "msg", required = false) String msg, 
@@ -62,19 +53,22 @@ public class DroneController {
 			List<MultipartFile> images = Arrays.asList(imageFiles);
 			for(MultipartFile file:images) {
 				msg_temp = "";
-				code = droneService.saveImage(principal.getName(), file);
+				code = imageService.saveImage(principal.getName(), file);
 				switch (code) {
 					case -1:
-						msg_temp += "The file is not an image: -> " + file.getOriginalFilename() + "\\n";
+						msg_temp += "The file is not an image: -> " + file.getOriginalFilename() + "\\t";
 						break;
 					case -2:
-						msg_temp += "The image has no GPS metadata: -> " + file.getOriginalFilename() + "\\n";
+						msg_temp += "The image has no GPS metadata: -> " + file.getOriginalFilename() + "\\t";
 						break;
 					case -3:
-						msg_temp += "The image has already been saved on the DB: -> " + file.getOriginalFilename() + "\\n";
+						msg_temp += "The image has already been saved on the DB: -> " + file.getOriginalFilename() + "\\t";
+						break;
+					case -4:
+						msg_temp += "An image on the DB has already the same name of the image, please change name: -> " + file.getOriginalFilename() + "\\t";
 						break;
 					case -9:
-						msg_temp += "An unexpected error occurred: -> " + file.getOriginalFilename() + "\\n";
+						msg_temp += "An unexpected error occurred: -> " + file.getOriginalFilename() + "\\t";
 						break;
 				}
 				
@@ -122,7 +116,7 @@ public class DroneController {
 	}*/
 	
 	@Autowired
-	public void setServices(DroneService droneService) {
-		this.droneService = droneService;
+	public void setServices(ImageService imageService) {
+		this.imageService = imageService;
 	}
 }
