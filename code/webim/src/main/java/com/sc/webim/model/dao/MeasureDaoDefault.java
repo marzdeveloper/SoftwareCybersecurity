@@ -82,7 +82,7 @@ public class MeasureDaoDefault extends DefaultDao implements MeasureDao{
 		try {
 			m = (Measure) q.setParameter("hash", hash).getSingleResult();
 		} catch (Exception e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 		return m;
 	}

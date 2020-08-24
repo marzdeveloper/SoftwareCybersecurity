@@ -17,8 +17,10 @@
 			<div class="container">
 				<div class="carousel slide" id="main-carousel-${m.getKey()}">
 					<ol class="carousel-indicators">
-						<c:forEach var="i" items="${m.getValue()}">
-							<li data-target="#main-carousel-${m.getKey()}" data-slide-to="${loop.index}" class="active"></li>
+						<c:forEach var="i1" items="${m.value}">
+							<c:forEach var="i2" items="${i1.value}" varStatus="loop">
+								<li data-target="#main-carousel-${m.getKey()}" data-slide-to="${loop.index}" class="active"></li>
+							</c:forEach>
 						</c:forEach>
 					</ol><!-- /.carousel-indicators -->
 						
