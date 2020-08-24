@@ -1,5 +1,6 @@
 package com.sc.webim.model.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +18,8 @@ public interface MeasureDao {
 	
 	List<Measure> findAll();
 	
+	List<Measure> findAllTransactionless();
+	
 	Measure findById(int id);
 	
 	Measure findByName(String Name);
@@ -28,6 +31,6 @@ public interface MeasureDao {
 	void delete(Measure measure);
 	
 	Set<Image> getImages(Measure measure);
-
+	
 	Measure findByHash(String hash);
 }

@@ -24,6 +24,7 @@ public class ImageDaoDefault extends DefaultDao implements ImageDao{
 	
 	@Override
 	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
 	public List<Image> findAllTransactionless() {
 		Query q = this.getSession().createQuery("SELECT distinct i from Image i, Measure m WHERE i.measure_id = null OR i.measure_id = m.measure_id AND m.transactionless = 1", Image.class);
 		return q.getResultList();

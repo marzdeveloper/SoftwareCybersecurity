@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -102,7 +103,7 @@ public class Measure implements Serializable{
 	//Relationdhips
 	
 	//One measure has many images
-	@OneToMany(mappedBy="measure_id")
+	@OneToMany(mappedBy="measure_id", fetch = FetchType.EAGER)
 	public Set<Image> getImages() {
 		return this.images;
 	}

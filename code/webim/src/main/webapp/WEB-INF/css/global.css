@@ -250,3 +250,30 @@ a.article:hover {
     z-index: 2;
     position: relative;
 }
+
+/* ---------------------------------------------------
+    CARRUSEL
+----------------------------------------------------- */
+.journal-div {
+		height: 500px;
+		width: 100%;
+		padding: 10px;
+	}
+
+	.j-left {
+		float: left;
+		height-max: 100%;
+		width: 50%;
+	}
+	
+	.j-right {
+		float: right;
+		width: 50%;
+		height: 88%;
+		background-color: orange;
+	}
+	
+	.carousel-item {
+		height: 420px !important;
+		max-height: 420px !important;
+	}

@@ -12,9 +12,11 @@ public class Job {
 	Date date;
 	
 	/*create new job*/
-	public Job(String _worker, String _measure,String _images, int _jobID, Date _date) {
-		//this.images = new ArrayList<String>();
+	public Job() {
 		
+	}
+	
+	public Job(String _worker, String _measure,String _images, int _jobID, Date _date) {
 		this.worker=_worker;
 		this.measure=_measure;
 		String[] imgs = _images.split(",");

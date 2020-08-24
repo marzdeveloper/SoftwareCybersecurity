@@ -2,13 +2,12 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<sec:authorize access="hasRole('DIRETTORE')" var="isDirettore" />
 
 <link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet' />
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" ></script>
 <h2>
 	${title}
-	<button onclick="console.log('cambiar vista')" type="button" class="btn btn-primary btn-circle"><i class="fa fa-plus"></i>Measure</button>
+	<a href="/journal/newJob" type="button" class="btn btn-primary btn-circle"><i class="fa fa-plus"></i>Measure</a>
 </h2>
 <c:forEach var="m" items="${jobs}">
 	<div class="journal-div border border-primary rounded-lg">
@@ -62,29 +61,3 @@
 	<br />
 	<br />
 </c:forEach>
-
-<style>
-	.journal-div {
-		height: 500px;
-		width: 100%;
-		padding: 10px;
-	}
-
-	.j-left {
-		float: left;
-		height-max: 100%;
-		width: 50%;
-	}
-	
-	.j-right {
-		float: right;
-		width: 50%;
-		height: 88%;
-		background-color: orange;
-	}
-	
-	.carousel-item {
-		height: 420px !important;
-		max-height: 420px !important;
-	}
-</style>

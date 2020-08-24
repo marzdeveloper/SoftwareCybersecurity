@@ -21,9 +21,11 @@ import javax.xml.bind.DatatypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.web3j.abi.EventEncoder;
 import org.web3j.abi.EventValues;
 import org.web3j.protocol.core.DefaultBlockParameterName;
@@ -88,8 +90,8 @@ public class JournalController {
             int job_id = journalModel.getJobGenerated() - 1;
             transactions.add(journalModel.getJobById(job_id));
         });
+
     	
-        
         Map<Integer,Map<String, ArrayList<String>>> map = new HashMap<Integer, Map<String, ArrayList<String>>>();
         for (int i = 0; i < transactions.size(); i++) {
         	Job j = transactions.get(i);
@@ -163,134 +165,128 @@ public class JournalController {
         return "journal/list2";
     }
     
-    /*@RequestMapping(value="/updateJournal", method=RequestMethod.POST)
-    public String updateExistingJournal(@RequestParam("workers") String workers, @RequestParam("measures") String measures, @RequestParam("images") String images,@RequestParam("images") Integer jobId, Model model) throws Exception {
-    	if(jobId == null) {
-            model.addAttribute("Error","Please enter job id!");
-    	}
+    @RequestMapping(value="/newJob", method=RequestMethod.GET)
+    public String newJob(Model model) {
+    	ArrayList<Job> list_jobs = journalService.getAllJobsDB();
     	
-    	if(workers.isEmpty() || measures.isEmpty() || images.isEmpty() ) {
-            model.addAttribute("Error","Please enter worker, measure and image to update!");
+    	model.addAttribute("title", "journal");
+    	model.addAttribute("jobs", list_jobs);
+        return "journal/newJob";
+    }
+    
+    @RequestMapping(value = "/{name}/getDetails", method = RequestMethod.GET)
+	public String getDetails(Locale locale, Model model, @PathVariable("name") String name) {
+    	Job job = new Job();
+    	Measure m = measureService.findByName(name);
+    	if (m != null) {
+    		job = journalService.getJobByMeasureId(m.getMeasure_id());    		
     	}
-    	transactions.get(jobId).updateJob(workers, measures, images, jobId);
-        return "updateJournal/index";
-    }*/
+		model.addAttribute("job", job);
+		return "journal/modal";
+	}
     
     @RequestMapping(value="/createJournal", method=RequestMethod.POST)
-    public String createJournal(Principal principal, Model model, @RequestParam("measure") String measure, @RequestParam("images") ArrayList<String> images) throws Exception {
+    public @ResponseBody String createJournal(Principal principal, Model model, @RequestParam("measure") String measure) throws Exception {
         boolean error = false;
-        //Verifico esitsa la misura
-        if(measure == null || measure.trim().equals(""))
-        {
-        	error = true;
-            System.out.println("La misura è vuota");
-        }
-        
-        //Verifico la lista delle immagini non sia vuota
-        if(images.size() == 0)
-        {
-        	error = true;
-            System.out.println("Le immagini non ci sono");
-        }
-                
-        
-        //Controllo correttezza delle immagini selezionate
-        ArrayList<Image> DbImages = new ArrayList<Image>();
-        
-        for(String image:images) {
-        	try {
-            	DbImages.add(imageService.findByName(image));
-        	}
-        	catch(Exception e) {
-        		//e.printStackTrace();
-            	error = true;
-            	throw new Exception("L'immagine non è sul database");
-        	}
-        }
-        
-        //Controllo degli hash
-        String hash_images= new String();
-        for(Image image:DbImages) {
-        	Path path = Paths.get(root + "/images/" + image.getName());
-			byte[] bytes = Files.readAllBytes(path);
-			MessageDigest digest = MessageDigest.getInstance("SHA-256");
-			String hash = DatatypeConverter.printHexBinary(digest.digest(bytes));  
-			
-			Image img = imageService.findByName(image.getName());
-			if(!hash.equals(img.getImage_hash())){
-				//L'immagine sul server è diversa da quella salvata nel DB
+		String msg = "Operation failed";
+		try {
+			//Verifico esitsa la misura
+	        if(measure != null || !measure.trim().equals(""))
+	        {
+	        	//Controllo la misura esista nel DB
+	        	Measure m = measureService.findByName(measure);
+	        	if (m != null) {
+	        		//Controllo correttezza delle immagini selezionate
+	                List<Image> DbImages = new ArrayList<>(m.getImages());
+	                //List<Image> DbImages = imageService.findByMeasure(m);
+	                
+	                //Controllo degli hash
+	                String hash_images= new String();
+	                for(Image image:DbImages) {
+	                	Path path = Paths.get(root + "/images/" + image.getName());
+	        			byte[] bytes = Files.readAllBytes(path);
+	        			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+	        			String hash = DatatypeConverter.printHexBinary(digest.digest(bytes));  
+	        			
+	        			Image img = imageService.findByName(image.getName());
+	        			if(!hash.equals(img.getImage_hash())){
+	        				//L'immagine sul server è diversa da quella salvata nel DB
+	        	        	error = true;
+	        				msg = "The image on the server does not co-index with the one saved in the database";
+	        				break;
+	        			}
+	        			hash_images += hash +",";
+	                }
+	        		
+	                if (!error) {
+	                	if(hash_images != null) {
+	                        hash_images = hash_images.substring(0, hash_images.length() -1);
+	                    }
+	                	
+	                	Path path = Paths.get(root + "/measures/" + m.getName());
+	                	byte[] bytes = Files.readAllBytes(path);
+	            		MessageDigest digest = MessageDigest.getInstance("SHA-256");
+	            		String hash = DatatypeConverter.printHexBinary(digest.digest(bytes));
+	            		
+	            		if(!hash.equals(m.getMeasure_hash())){
+	            			//L'immagine sul server è diversa da quella salvata nel DB
+	                    	error = true;
+	                    	msg =  "The measure on the server does not co-index with the one saved in the database";
+	            		} else {
+	            			String hash_measure = hash;
+	            			
+	            			//Scelgo i nodi
+	                    	List<String> privateFor = new ArrayList<String>();
+	                    	//aggiungo le public key di tutti i nodi
+	                    	privateFor.add("BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=");
+	                    	privateFor.add("QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc=");
+	                    	privateFor.add("1iTZde/ndBHvzhcl7V68x44Vx7pl8nwx9LqnM/AfJUg=");
+	                    	privateFor.add("oNspPPgszVUFw0qmGFfWwh1uxVUXgvBxleXORHj07g8=");
+	                    	privateFor.add("R56gy4dn24YOjwyesTczYa8m5xhP6hF2uTMCju/1xkY=");
+	                    	privateFor.add("UfNSeSGySeKg11DVNEnqrUtxYRVor4+CvluI8tVv62Y=");
+	                    	privateFor.add("ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc=");
+	                        
+	                        /*ArrayList<String> list_partecipanti = new ArrayList<String>();
+	                        list_partecipanti.add("node1");
+	                        list_partecipanti.add("node2");
+
+	                        //Create comma separated string of participants from sorted list - this uniquely identifies a thread in the application ( participants field in ThreadModel )
+	                        String threadParticipantsString = String.join(",",list_partecipanti); */
+	                    	
+	                    	//Create ClientTransactionManager object by passing QuorumConnection parameters and privateFor - this will handle privacy requirements
+	                    	ClientTransactionManager clientTransactionManager = new ClientTransactionManager(quorumConnection.getQuorum(), quorumConnection.getNodeAddress(), quorumConnection.getNodeKey(), privateFor, 100, 1000);
+
+	                    	//Deploy the new thread contract. This returns a thread contract object
+	            			Journal threadContract = Journal.deploy(quorumConnection.getQuorum(), clientTransactionManager, BigInteger.valueOf(0), BigInteger.valueOf(100000000)).send();
+	                    	
+	                    	//Extract contract address from thread contract object obtained in 2.d
+	                    	String newThreadContractAddress = threadContract.getContractAddress();
+	                    	
+	                    	//String listString = String.join(",", hash_im);
+	                    	
+	                    	//Call the sendContractAddress event in thread contract to inform participants of new thread contract address and participants
+	                    	TransactionReceipt startThreadTransactionReceipt = threadContract.addNewJob(hash_measure, hash_images).send();
+	                    	
+	                    	m.setTransactionless(false);
+	            			measureService.update(m);
+	            		}
+	                }
+	        	} else {
+	        		error = true;
+	        		msg = "The measure was not found";
+	        	}
+	        } else {
 	        	error = true;
-				throw new Exception("L'immagine nel server non coindice con quella salvata nel database");
-			}
-			hash_images += hash +",";
-        }
-        if(hash_images != null) {
-            hash_images = hash_images.substring(0, hash_images.length() -1);
-        }
-        
-        Measure measureDB = new Measure();
-        //Controlli sulle misure
-        try {
-        	measureDB = measureService.findByName(measure);
-    	}
-    	catch(Exception e) {
-    		//e.printStackTrace();
-        	error = true;
-			throw new Exception("La misura non è sul database");
-    	}
-        
-    	Path path = Paths.get(root + "/measures/" + measureDB.getName());
-    	byte[] bytes = Files.readAllBytes(path);
-		MessageDigest digest = MessageDigest.getInstance("SHA-256");
-		String hash = DatatypeConverter.printHexBinary(digest.digest(bytes));
-		
-		//Measure ms = measureService.findByName(measureDB.getName());
-		if(!hash.equals(measureDB.getMeasure_hash())){
-			//L'immagine sul server è diversa da quella salvata nel DB
-        	error = true;
-			throw new Exception("La misura nel server non coindice con quella salvata nel database");
+	        	msg = "The measure does not exist";
+	        }
+		}  catch (Exception e) {
+			//System.out.println("Error: " + e.getMessage());
+			error = true;
+			msg = "An unexpected error occurred";
 		}
-		String hash_measure = hash;
-		measureDB.setTransactionless(false);
-		measureService.update(measureDB);
         
-        if (!error)
-        {
-        	//Scelgo i nodi
-        	List<String> privateFor = new ArrayList<String>();
-        	//aggiungo le public key di tutti i nodi
-        	privateFor.add("BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=");
-        	privateFor.add("QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc=");
-        	privateFor.add("1iTZde/ndBHvzhcl7V68x44Vx7pl8nwx9LqnM/AfJUg=");
-        	privateFor.add("oNspPPgszVUFw0qmGFfWwh1uxVUXgvBxleXORHj07g8=");
-        	privateFor.add("R56gy4dn24YOjwyesTczYa8m5xhP6hF2uTMCju/1xkY=");
-        	privateFor.add("UfNSeSGySeKg11DVNEnqrUtxYRVor4+CvluI8tVv62Y=");
-        	privateFor.add("ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc=");
-            
-            
-            /*ArrayList<String> list_partecipanti = new ArrayList<String>();
-            list_partecipanti.add("node1");
-            list_partecipanti.add("node2");
-
-            //Create comma separated string of participants from sorted list - this uniquely identifies a thread in the application ( participants field in ThreadModel )
-            String threadParticipantsString = String.join(",",list_partecipanti); */
-        	
-        	//Create ClientTransactionManager object by passing QuorumConnection parameters and privateFor - this will handle privacy requirements
-        	ClientTransactionManager clientTransactionManager = new ClientTransactionManager(quorumConnection.getQuorum(), quorumConnection.getNodeAddress(), quorumConnection.getNodeKey(), privateFor, 100, 1000);
-
-        	//Deploy the new thread contract. This returns a thread contract object
-			Journal threadContract = Journal.deploy(quorumConnection.getQuorum(), clientTransactionManager, BigInteger.valueOf(0), BigInteger.valueOf(100000000)).send();
-        	
-        	//Extract contract address from thread contract object obtained in 2.d
-        	String newThreadContractAddress = threadContract.getContractAddress();
-        	
-        	//String listString = String.join(",", hash_im);
-        	
-        	//Call the sendContractAddress event in thread contract to inform participants of new thread contract address and participants
-        	TransactionReceipt startThreadTransactionReceipt = threadContract.addNewJob(hash_measure, hash_images).send();
-        }
-        
-        return "redirect:/journal/journals";
+        String response = "{\"success\": " + !error + ", \"msg\": \"" + msg + "\"}";
+		return response;
     }
     @Autowired
 	public void setServices(ImageService imageService, MeasureService measureService, JournalService journalService) {

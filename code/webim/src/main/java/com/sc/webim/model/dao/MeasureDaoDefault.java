@@ -1,5 +1,6 @@
 package com.sc.webim.model.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -23,6 +24,14 @@ public class MeasureDaoDefault extends DefaultDao implements MeasureDao{
 		return getSession().
 				createQuery("from Measure m", Measure.class).
 				getResultList();
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	@SuppressWarnings("unchecked")
+	public List<Measure> findAllTransactionless() {
+		Query q = this.getSession().createQuery("SELECT distinct m from Measure m, Image i WHERE m.transactionless = 1 AND m.measure_id = i.measure_id", Measure.class);
+		return q.getResultList();
 	}
 
 	@Override
