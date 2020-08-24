@@ -14,14 +14,14 @@
     <ul class="list-unstyled components">
     	<c:if test="${isDirettore}">
 	       	<li>
-            	<a href="<c:url value="/direttore" />">Gestione Blockchain</a>
+            	<a href="<c:url value="/journal" />">Gestione Blockchain</a>
         	</li>
         	<li>
             	<a href="<c:url value="/image" />">Gestione Immagini</a>
         	</li>
-        	<li>
-            	<a href="<c:url value="/journal" />">Temp</a>
-        	</li>
+        	<!-- <li>
+            	<a href="<c:url value="/direttore" />">Temp</a>
+        	</li> -->
 	    </c:if>
 	</ul>
 </nav>
