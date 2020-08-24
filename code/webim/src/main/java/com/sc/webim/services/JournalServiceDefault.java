@@ -79,6 +79,7 @@ public class JournalServiceDefault implements JournalService {
 		j.setJobID(job.getJobID());
 		j.setMeasure(m.getName());
 		j.setImages(list_img);
+		j.setdate(job.getDate());
 		
 		return j;
 	};

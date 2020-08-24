@@ -11,7 +11,7 @@
 </h2>
 <c:forEach var="j" items="${jobs}">
 	<div class="journal-div border border-primary rounded-lg">
-		<h4>Job ${j.getJobID()}</h4>
+		<h4>Job ${j.getJobID()} - ${j.getDate()}</h4>
 		<div class="j-left">
 			<div class="container">
 				<div class="carousel slide" id="main-carousel-${j.getJobID()}">
