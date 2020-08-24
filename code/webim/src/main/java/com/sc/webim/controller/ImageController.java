@@ -36,7 +36,7 @@ public class ImageController {
 			@RequestParam(value = "resp", required = false) String resp) {
 		model.addAttribute("title", "Gestione Immagini");
 		
-		List<Image> list = imageService.findAll();
+		List<Image> list = imageService.findAllTransactionless();
 		model.addAttribute("images", list);
 		model.addAttribute("alertMsg", msg);
 		model.addAttribute("typeMsg", resp);

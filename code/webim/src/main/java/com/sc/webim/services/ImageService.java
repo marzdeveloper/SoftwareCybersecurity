@@ -14,6 +14,8 @@ public interface ImageService {
 	
 	List<Image> findAll();
 	
+	List<Image> findAllTransactionless();
+	
 	Image findById(int id);
 	
 	Image findByName(String name);

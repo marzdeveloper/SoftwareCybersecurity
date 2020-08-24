@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sc.webim.model.entities.Image;
 import com.sc.webim.model.entities.Measure;
 
+
 @Transactional
 @Repository("imageDao")
 public class ImageDaoDefault extends DefaultDao implements ImageDao{
@@ -19,6 +20,13 @@ public class ImageDaoDefault extends DefaultDao implements ImageDao{
 	@Transactional(readOnly = true)
 	public List<Image> findAll() {
 		return getSession().createQuery("from Image i", Image.class).getResultList();
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<Image> findAllTransactionless() {
+		Query q = this.getSession().createQuery("SELECT distinct i from Image i, Measure m WHERE i.measure_id = null OR i.measure_id = m.measure_id AND m.transactionless = 1", Image.class);
+		return q.getResultList();
 	}
 
 	@Override

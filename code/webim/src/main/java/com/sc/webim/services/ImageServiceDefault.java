@@ -67,6 +67,11 @@ public class ImageServiceDefault implements ImageService {
 	public List<Image> findAll() {
 		return this.imageRepository.findAll();
 	}
+	
+	@Override
+	public List<Image> findAllTransactionless() {
+		return this.imageRepository.findAllTransactionless();
+	}
 
 	@Transactional(readOnly=true)
 	@Override
