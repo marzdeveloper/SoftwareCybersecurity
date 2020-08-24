@@ -13,7 +13,8 @@ contract Journal{
         address  worker,
         string  measure,
         string   images,
-        uint jobId   
+        uint jobId,
+        uint time   
         );
     
     address   worker;
@@ -32,7 +33,7 @@ contract Journal{
     	require(msg.sender == worker); //solo il direttore dei lavori deve poter aggiungere nuovi lavori nel giornale
     	Job memory job = Job(worker,measure,images,numOfJob);   
     	jobs.push(job);
-        emit eventJob(jobs[numOfJob].worker ,jobs[numOfJob].measure, jobs[numOfJob].images, numOfJob);
+        emit eventJob(jobs[numOfJob].worker ,jobs[numOfJob].measure, jobs[numOfJob].images, numOfJob, now);
         numOfJob++;
     }
   
