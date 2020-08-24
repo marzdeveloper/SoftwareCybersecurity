@@ -16,6 +16,8 @@ public interface ImageDao {
 	
 	List<Image> findAll();
 	
+	List<Image> findAllTransactionless();
+	
 	Image findById(int id);
 	
 	Image findByName(String name);

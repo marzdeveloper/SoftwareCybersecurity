@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class JournalModel {
 	ArrayList<Job> jobs;	
-    public static int jobGenerated=0;
+    public int jobGenerated=0;
        
     public JournalModel() {
     	this.jobs = new ArrayList<Job>();
@@ -37,7 +37,7 @@ public class JournalModel {
 		this.jobs = jobs;
 	}
 
-	public static int getJobGenerated() {
+	public int getJobGenerated() {
 		return jobGenerated;
 	}
 

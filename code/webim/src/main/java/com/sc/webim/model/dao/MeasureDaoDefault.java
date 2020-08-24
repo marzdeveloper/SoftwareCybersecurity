@@ -79,9 +79,11 @@ public class MeasureDaoDefault extends DefaultDao implements MeasureDao{
 	public Measure findByHash(String hash) {
 		Query q = this.getSession().createQuery("from Measure m WHERE m.measure_hash = :hash", Measure.class);
 		Measure m = null;
+		System.out.println("Cercando misura");
 		try {
 			m = (Measure) q.setParameter("hash", hash).getSingleResult();
 		} catch (Exception e) {
+			System.out.println("Errore");
 			e.printStackTrace();
 		}
 		return m;

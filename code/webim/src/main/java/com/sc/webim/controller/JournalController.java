@@ -51,8 +51,8 @@ public class JournalController {
 	private MeasureService measureService;
 	private JournalService journalService;
 	
-	private ArrayList<Job> transactions = new ArrayList<Job>();
-    private JournalModel journalModel = new JournalModel();
+	private ArrayList<Job> transactions;
+    private JournalModel journalModel;
 	private final Path root = Paths.get("src/main/webapp/WEB-INF/uploads/");
 
 
@@ -61,6 +61,9 @@ public class JournalController {
 
     @RequestMapping(method = RequestMethod.GET)
 	public String journal(Locale locale, Model model, @RequestParam(value = "msg", required = false) String msg, @RequestParam(value = "resp", required = false) String resp) {
+    	transactions = new ArrayList<Job>();
+    	journalModel = new JournalModel();
+    	
     	EthFilter filterToExtractNewJournals = new EthFilter(DefaultBlockParameterName.EARLIEST, DefaultBlockParameterName.LATEST, Collections.emptyList()).addSingleTopic(EventEncoder.encode(Journal.EVENTJOB_EVENT));
 
         quorumConnection.getAdmin().ethLogFlowable(filterToExtractNewJournals).subscribe(messageLog -> {
@@ -83,8 +86,6 @@ public class JournalController {
             transactions= journalModel.getJobs();
         });
     	
-    	/*Job j1 = new Job("direttore", "7E5EEB873405F364E0236823DCA0951D155E209AB121EDEDE8406F66A96EADC8", "4921E23E36A2C27F44063D00B837BA4EED8D1935AD487A7BA9995C5A1875AA45,8474CB5B557F78EB2DC2E7120F867EB4FA79CEF606D4B8B929D35D1FDD993851,CEDC55F689377BE8D663CB4BE8C975076036EDAF56E5AAD0D7AED667D25AAB7C,FC5C7BDD73F4E197201FBAF78B5A643A520788D20F13C48A3BC38161C2B65468,6D10CA30E115AC6695E5FDD157A6F18ED851F1EC2C35EC0A2A0490DDF2D88388,4A697D5F902CE237AF4C98BE424F984744B67B8ECEC383E0905FFDCB1D367DEB", 1);
-    	transactions.add(j1);*/
         
         Map<Integer,Map<String, ArrayList<String>>> map = new HashMap<Integer, Map<String, ArrayList<String>>>();
         for (int i = 0; i < transactions.size(); i++) {
@@ -93,7 +94,7 @@ public class JournalController {
         }
 		
         model.addAttribute("jobs", map);
-    	model.addAttribute("title", "journal");
+    	model.addAttribute("title", "Giornale dei lavori");
 		return "journal/list";
 	}
     
@@ -197,6 +198,7 @@ public class JournalController {
         }
         
         //Controllo degli hash
+        String hash_images= new String();
         for(Image image:DbImages) {
         	Path path = Paths.get(root + "/images/" + image.getName());
 			byte[] bytes = Files.readAllBytes(path);
@@ -209,6 +211,10 @@ public class JournalController {
 	        	error = true;
 				throw new Exception("L'immagine nel server non coindice con quella salvata nel database");
 			}
+			hash_images += hash +",";
+        }
+        if(hash_images != null) {
+            hash_images = hash_images.substring(0, hash_images.length() -1);
         }
         
         Measure measureDB = new Measure();
@@ -233,6 +239,7 @@ public class JournalController {
         	error = true;
 			throw new Exception("La misura nel server non coindice con quella salvata nel database");
 		}
+		String hash_measure = hash;
 		measureDB.setTransactionless(false);
 		measureService.update(measureDB);
         
@@ -266,10 +273,10 @@ public class JournalController {
         	//Extract contract address from thread contract object obtained in 2.d
         	String newThreadContractAddress = threadContract.getContractAddress();
         	
-        	String listString = String.join(",", images);
+        	//String listString = String.join(",", hash_im);
         	
         	//Call the sendContractAddress event in thread contract to inform participants of new thread contract address and participants
-        	TransactionReceipt startThreadTransactionReceipt = threadContract.addNewJob(measure, listString).send();
+        	TransactionReceipt startThreadTransactionReceipt = threadContract.addNewJob(hash_measure, hash_images).send();
         }
         
         return "redirect:/journal/journals";
