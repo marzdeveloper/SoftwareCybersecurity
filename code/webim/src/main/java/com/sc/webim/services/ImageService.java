@@ -30,7 +30,7 @@ public interface ImageService {
 	
 	String getPathImage(String imageName);
 	
-	int saveImage(MultipartFile img);
+	int saveImage(String user, MultipartFile img);
 	
 	List<Image> findImages(ArrayList<String> images);
 	

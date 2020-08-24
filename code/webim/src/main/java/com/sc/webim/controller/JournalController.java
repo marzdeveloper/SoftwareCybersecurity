@@ -2,7 +2,6 @@ package com.sc.webim.controller;
 
 import static org.web3j.tx.Contract.staticExtractEventParameters;
 
-import java.io.File;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,7 +9,6 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +34,6 @@ import org.web3j.quorum.tx.ClientTransactionManager;
 
 import com.sc.webim.connection.QuorumConnection;
 import com.sc.webim.contracts.Journal;
-import com.sc.webim.contracts.Thread;
 import com.sc.webim.model.Job;
 import com.sc.webim.model.JournalModel;
 import com.sc.webim.model.entities.Image;
@@ -85,8 +82,14 @@ public class JournalController {
 
             //Create new ThreadModel instance to save new thread details - contract address, participants
             journalModel.addNewJob(worker, measure, images);
+<<<<<<< HEAD
             transactions= journalModel.getJobs();
         });*/
+=======
+            int job_id = journalModel.getJobGenerated() - 1;
+            transactions.add(journalModel.getJobById(job_id));
+        });
+>>>>>>> 7e3cd0420adba93262dd42611d3bbe7a58b1d4cb
     	
         Map<Integer,Map<String, ArrayList<String>>> map = new HashMap<Integer, Map<String, ArrayList<String>>>();
         for (int i = 0; i < transactions.size(); i++) {

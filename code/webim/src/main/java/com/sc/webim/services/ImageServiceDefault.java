@@ -91,7 +91,7 @@ public class ImageServiceDefault implements ImageService {
 	}
 	
 	@Override
-	public int saveImage(MultipartFile image) {
+	public int saveImage(String user, MultipartFile image) {
 		int code = 0;
 		try {
 			byte[] bytes = image.getBytes();
@@ -120,6 +120,7 @@ public class ImageServiceDefault implements ImageService {
 	    					MessageDigest digest = MessageDigest.getInstance("SHA-256");
 	    					String hash = DatatypeConverter.printHexBinary(digest.digest(bytes));  
 	    					List <Image> Imagedb = this.imageRepository.findAll();
+	    					String image_name = image.getOriginalFilename();
 	    					
 	    					for(Image im:Imagedb) {
 	    						if(hash.equals(im.getImage_hash())){
@@ -127,16 +128,24 @@ public class ImageServiceDefault implements ImageService {
 	    							code = -3;
 	    							break;
 	    						}
+	    						if(image_name.equals(im.getName())) {
+	    							//L'immagine ha lo stesso nome di un'altra sul DB
+	    							code = -4;
+	    							break;
+	    						}
 	    					}
+	    					
+	    					//Controllo che non ci siano immagini con lo stesso nome nel database
+	    					
 	    					if (code >= 0) {
 	    						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
 	    					    Date date = new Date();
 	    					    Date dataCreazione = Utils.date(formatter.format(date));
 	    						
-	    						Image img = imageRepository.create("drone", dataCreazione, hash, image.getOriginalFilename(), latitude + "," + longitude);
+	    						Image img = imageRepository.create(user, dataCreazione, hash, image_name, latitude + "," + longitude);
 	    						imageRepository.update(img);
 	    						
-	    						Path path = Paths.get(root + "/" + image.getOriginalFilename());
+	    						Path path = Paths.get(root + "/" + image_name);
 	    						Files.write(path, bytes);
 	    						code = 3;
 	    					}
