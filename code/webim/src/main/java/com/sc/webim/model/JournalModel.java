@@ -1,8 +1,7 @@
 package com.sc.webim.model;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.sc.webim.model.Job;
 
 public class JournalModel {
 	ArrayList<Job> jobs;	
@@ -78,20 +77,19 @@ public class JournalModel {
     		}
 		
 	}
-	
+	    */
+
 	public Job getJobById(int _jobId) {
-		for(int i=0;i< this.jobs.size();i++) {
-
-			if(this.jobs.get(i).getJobID() == _jobId)
-				
-					return(this.jobs.get(i));
-				
-
-    		}
-		
+		Job job = null;
+		try {
+			job = jobs.get(_jobId);
+		}
+		catch(Exception e) {
+			//e.getStackTrace();
+		}
+		return job;
 	}
 	
-    */
 
 
 }
