@@ -11,6 +11,10 @@ public class Job {
 	int jobID;
 	
 	/*create new job*/
+	public Job() {
+		
+	}
+	
 	public Job(String _worker, String _measure,String _images, int _jobID) {
 		//this.images = new ArrayList<String>();
 		

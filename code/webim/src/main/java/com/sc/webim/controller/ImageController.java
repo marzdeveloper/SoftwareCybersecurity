@@ -123,100 +123,12 @@ public class ImageController {
 				msg = "No measure selected";
 			}
 		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
-			msg = "An unexpected error occurred";
-		}
-		String response = "{\"success\":" + resp + ", \"msg\":\"" + msg + "\"}";
-		return response;
-	}
-	
-	/*@RequestMapping(value = "/showNew", method = RequestMethod.GET)
-	public String showNew(Locale locale, Model model) {
-		model.addAttribute("device", new Device());
-		model.addAttribute("sender", senderService.findAll());
-		return "dispositivi/modal_new";
-	}
-	
-	@RequestMapping(value = "/showEdit/{id}", method = RequestMethod.GET)
-	public String showEdit(Locale locale, Model model, @PathVariable("id") int id) {
-		Device dev = deviceService.findById(id);
-		model.addAttribute("device", dev);
-		
-		List<Sender> lista_send_all = senderService.findAll();
-		List<String[]> lista_senders = new ArrayList<String[]>();
-		for (int i = 0; i < lista_send_all.size(); i++) {
-			String[] s = new String[3];
-			s[0] = lista_send_all.get(i).getId() + "";
-			s[1] = lista_send_all.get(i).getName();
-			s[2] = "0";
-			if (dev.getSender() != null && lista_send_all.get(i).getId() == dev.getSender().getId()) {
-				s[2] = "1";
-			}
-			lista_senders.add(s);
-		}
-		model.addAttribute("senders", lista_senders);
-		
-		return "dispositivi/modal_edit";
-	}
-	
-	@RequestMapping(value = "/saveData", method = RequestMethod.POST, produces = "application/json", headers="Accept=application/json")
-	public @ResponseBody String saveDevice(Locale locale, Model uModel,
-			@RequestParam("serialNumber") String serialNumber, @RequestParam("brand") String brand, @RequestParam("model") String model,
-			@RequestParam("reason") String reason, @RequestParam("document") String document, @RequestParam("checkIn") String checkIn, 
-			@RequestParam(value = "checkOut", required = false) String checkOut, 
-			@RequestParam("sender") String sender,
-			@RequestParam(value = "id", required = false) String id) {
-		boolean resp = false;
-		String msg = "Operation failed: one or more empty fields";
-		try {
-			if(serialNumber != null && !serialNumber.trim().isEmpty() && brand != null && !brand.trim().isEmpty() && 
-					model != null && !model.trim().isEmpty() && document != null && !document.trim().isEmpty()) {
-				Device dev = null;
-				if (id != null && !id.trim().isEmpty()) {
-					dev = deviceService.findById(Integer.parseInt(id.trim()));
-					dev.setSerialNumber(serialNumber);
-					dev.setBrand(brand);
-					dev.setModel(model);
-					dev.setReason(reason);
-					dev.setDocument(document);
-					dev.setCheckIn(Utils.date(checkIn.trim()));
-					
-					List<Job> list_jobs = jobService.findAllByDeviceId(dev.getId());
-					dev.setJobs(new HashSet<>(list_jobs));
-					
-					List<Positioning> list_pos = positioningService.findAllByDeviceId(dev.getId());
-					dev.setPositionings(new HashSet<>(list_pos));
-					msg = "Changes saved successfully";
-				} else {
-					dev = deviceService.create(serialNumber, brand, model, reason, document, Utils.date(checkIn.trim()));
-					Set<Job> listS = new HashSet<Job>();
-					dev.setJobs(listS);
-					
-					Set<Positioning> listP = new HashSet<Positioning>();
-					dev.setPositionings(listP);
-					msg = "Device created successfully";
-				}
-				if(checkIn != null && !checkIn.trim().isEmpty()) {
-					dev.setCheckIn(Utils.date(checkIn.trim()));
-				}
-				if(checkOut != null && !checkOut.trim().isEmpty()) {
-					dev.setCheckOut(Utils.date(checkOut.trim()));
-				}
-				if(sender != null && !sender.trim().isEmpty()) {
-					Sender s = senderService.findById(Integer.parseInt(sender.trim()));
-					dev.setSender(s);
-				}
-				this.deviceService.update(dev);
-				resp = true;
-			} 
-		} catch (Exception e) {
 			//System.out.println("Error: " + e.getMessage());
 			msg = "An unexpected error occurred";
 		}
 		String response = "{\"success\":" + resp + ", \"msg\":\"" + msg + "\"}";
 		return response;
 	}
-	*/
 	
 	@Autowired
 	public void setServices(ImageService imageService, MeasureService measureService) {

@@ -81,6 +81,41 @@ public class JournalServiceDefault implements JournalService {
 		return transaction;
 	};
 	
+	@Override
+	public ArrayList<Job> getAllJobsDB() {
+		ArrayList<Job> list_job = new ArrayList<Job>();
+		Job job = new Job();
+		List<Measure> list_measure = measureRepository.findAllTransactionless();
+		for (Measure m: list_measure) {
+			List<Image> list = new ArrayList<>(measureRepository.getImages(m));
+			ArrayList<String> list_img = new ArrayList<String>();			
+			for (Image i: list) {
+				list_img.add(i.getName());
+			}
+			job = new Job();
+			job.setMeasure(m.getName());
+			job.setImages(list_img);
+			list_job.add(job);
+		}
+		return list_job;
+	}
+	
+	@Override
+	public Job getJobByMeasureId(int id) {
+		Job job = new Job();
+		Measure m = measureRepository.findById(id);
+		List<Image> list = new ArrayList<>(measureRepository.getImages(m));
+		
+		ArrayList<String> list_img = new ArrayList<String>();			
+		for (Image i: list) {
+			list_img.add(i.getName());
+		}
+		
+		job.setMeasure(m.getName());
+		job.setImages(list_img);
+		return job;
+	}
+	
 	@Autowired
 	public void setImageRepository(ImageDao imageRepository, MeasureDao measureRepository) {
 		this.imageRepository = imageRepository;
