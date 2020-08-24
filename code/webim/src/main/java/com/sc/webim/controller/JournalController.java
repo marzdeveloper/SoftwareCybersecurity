@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -73,13 +74,17 @@ public class JournalController {
             eventJobEventResponse.worker = (String)sendContractAddressEventValues.getNonIndexedValues().get(0).getValue();
             eventJobEventResponse.measure = (String)sendContractAddressEventValues.getNonIndexedValues().get(1).getValue();
             eventJobEventResponse.images = (String)sendContractAddressEventValues.getNonIndexedValues().get(2).getValue();
-
+            eventJobEventResponse.time = (BigInteger)sendContractAddressEventValues.getNonIndexedValues().get(2).getValue();
+            
             String worker = eventJobEventResponse.worker.toString();
             String measure = eventJobEventResponse.measure.toString();
             String images = eventJobEventResponse.images.toString();
+            long time = eventJobEventResponse.time.longValue();
 
+            
+            Date date = new Date(time);
             //Create new ThreadModel instance to save new thread details - contract address, participants
-            journalModel.addNewJob(worker, measure, images);
+            journalModel.addNewJob(worker, measure, images, date);
             int job_id = journalModel.getJobGenerated() - 1;
             transactions.add(journalModel.getJobById(job_id));
         });
@@ -111,17 +116,22 @@ public class JournalController {
             eventJobEventResponse.worker = (String)sendContractAddressEventValues.getNonIndexedValues().get(0).getValue();
             eventJobEventResponse.measure = (String)sendContractAddressEventValues.getNonIndexedValues().get(1).getValue();
             eventJobEventResponse.images = (String)sendContractAddressEventValues.getNonIndexedValues().get(2).getValue();
+            eventJobEventResponse.time = (BigInteger)sendContractAddressEventValues.getNonIndexedValues().get(2).getValue();
 
             String worker = eventJobEventResponse.worker.toString();
             String measure = eventJobEventResponse.measure.toString();
             String images = eventJobEventResponse.images.toString();
+            long time = eventJobEventResponse.time.longValue();
+            
+            Date date = new Date(time);
+
             /*ArrayList<String> images = new ArrayList<String>();
             for(String img:eventJobEventResponse.images) {
                 images.add(img.toString());  	//da ricontrollare
             }*/
 
             //Create new ThreadModel instance to save new thread details - contract address, participants
-            journalModel.addNewJob(worker, measure, images);
+            journalModel.addNewJob(worker, measure, images, date);
             transactions= journalModel.getJobs();
         });
         
@@ -134,10 +144,13 @@ public class JournalController {
         		ArrayList<String> images = transactions.get(i).getImages();
         		String measure = transactions.get(i).getMeasure();
         		String worker  = transactions.get(i).getWorker();
+        		Date date = transactions.get(i).getDate();
         		
         		System.out.println("	Tutte le immagini: " + images.toString());
         		System.out.println("	Tutte le misure: " + measure.toString());
         		System.out.println("	Tutti i workers: " + worker.toString());
+        		System.out.println("	date: " + date.toString());
+
         	}
         } catch (Exception e) {
         	System.out.println("Errore:");

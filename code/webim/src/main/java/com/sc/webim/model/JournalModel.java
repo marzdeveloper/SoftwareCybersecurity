@@ -1,6 +1,8 @@
 package com.sc.webim.model;
 
 import java.util.ArrayList;
+import java.util.Date;
+
 import com.sc.webim.model.Job;
 
 public class JournalModel {
@@ -11,8 +13,8 @@ public class JournalModel {
     	this.jobs = new ArrayList<Job>();
     }
     
-    public void addNewJob(String _worker, String _measure, String _image) {
-    	Job job = new Job(_worker,  _measure,  _image,  jobGenerated);
+    public void addNewJob(String _worker, String _measure, String _image, Date _date) {
+    	Job job = new Job(_worker,  _measure,  _image,  jobGenerated, _date);
         this.jobs.add(job);
         jobGenerated++;
     }
