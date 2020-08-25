@@ -58,7 +58,7 @@ public class JournalController {
     QuorumConnection quorumConnection;
 
     @RequestMapping(method = RequestMethod.GET)
-	public String journal(Locale locale, Model model, @RequestParam(value = "msg", required = false) String msg, @RequestParam(value = "resp", required = false) String resp) {
+	public String showJournal(Locale locale, Model model, @RequestParam(value = "msg", required = false) String msg, @RequestParam(value = "resp", required = false) String resp) {
     	transactions = new ArrayList<Job>();
     	journalModel = new JournalModel();
     	
