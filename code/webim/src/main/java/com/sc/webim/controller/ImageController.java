@@ -1,13 +1,9 @@
 package com.sc.webim.controller;
 
 import java.security.Principal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sc.webim.Utils;
 import com.sc.webim.model.entities.Image;
 import com.sc.webim.model.entities.Measure;
 import com.sc.webim.services.ImageService;
@@ -34,9 +29,9 @@ public class ImageController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String images(Locale locale, Model model, @RequestParam(value = "msg", required = false) String msg, 
 			@RequestParam(value = "resp", required = false) String resp) {
-		model.addAttribute("title", "Gestione Immagini");
-		
 		List<Image> list = imageService.findAllTransactionless();
+		
+		model.addAttribute("title", "Gestione Immagini");
 		model.addAttribute("images", list);
 		model.addAttribute("alertMsg", msg);
 		model.addAttribute("typeMsg", resp);

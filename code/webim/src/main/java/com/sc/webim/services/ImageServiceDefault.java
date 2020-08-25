@@ -63,8 +63,8 @@ public class ImageServiceDefault implements ImageService {
 	}
 
 	@Override
-	public Image create(String user_id, Date data_caricamento, String measure_hash, String gps, String name, String dataOriginale) {
-		return this.imageRepository.create(user_id, data_caricamento, measure_hash, gps, name, dataOriginale);
+	public Image create(String user_id, Date data_caricamento, String measure_hash, String gps, String name, Date data_originale) {
+		return this.imageRepository.create(user_id, data_caricamento, measure_hash, gps, name, data_originale);
 	}
 
 	@Override
@@ -111,7 +111,9 @@ public class ImageServiceDefault implements ImageService {
 	    			TiffImageMetadata exifMetadata = jpegMetadata.getExif();
 	    			
 	    			TiffField field = jpegMetadata.findEXIFValue(ExifTagConstants.EXIF_TAG_DATE_TIME_ORIGINAL);
-	    			String dataOriginale = field.getValueDescription();
+	    			String StringDataOriginale = field.getValueDescription();
+	    			StringDataOriginale = StringDataOriginale.replace("'", "");
+	    			StringDataOriginale = StringDataOriginale.replace(":", "-");
 	    			
 	    	        if (null != exifMetadata) {
 	    	            TiffImageMetadata.GPSInfo gpsInfo = exifMetadata.getGPS();
@@ -143,10 +145,12 @@ public class ImageServiceDefault implements ImageService {
 	    					//Controllo che non ci siano immagini con lo stesso nome nel database
 	    					
 	    					if (code >= 0) {
-	    						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
+	    						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	    						SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 	    					    Date date = new Date();
 	    					    Date dataCreazione = Utils.date(formatter.format(date));
-	    						
+	    					    Date dataOriginale = formatter1.parse(StringDataOriginale);  
+	    					    
 	    						Image img = imageRepository.create(user, dataCreazione, hash, image_name, latitude + "," + longitude, dataOriginale);
 	    						imageRepository.update(img);
 	    						

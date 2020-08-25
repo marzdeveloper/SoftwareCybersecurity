@@ -43,7 +43,6 @@ import com.sc.webim.services.ImageService;
 import com.sc.webim.services.JournalService;
 import com.sc.webim.services.MeasureService;
 
-
 @Controller
 @RequestMapping("/journal")
 public class JournalController {
@@ -102,6 +101,8 @@ public class JournalController {
 		
         model.addAttribute("jobs", AllJob);
     	model.addAttribute("title", "Giornale dei lavori");
+    	model.addAttribute("alertMsg", msg);
+    	model.addAttribute("typeMsg", resp);
 		return "journal/list";
 	}
     
@@ -168,11 +169,13 @@ public class JournalController {
     }
     
     @RequestMapping(value="/newJob", method=RequestMethod.GET)
-    public String newJob(Model model) {
+    public String newJob(Model model, @RequestParam(value = "msg", required = false) String msg, @RequestParam(value = "resp", required = false) String resp) {
     	ArrayList<Job> list_jobs = journalService.getAllJobsDB();
     	
     	model.addAttribute("title", "journal");
     	model.addAttribute("jobs", list_jobs);
+    	model.addAttribute("alertMsg", msg);
+    	model.addAttribute("typeMsg", resp);
         return "journal/newJob";
     }
     
@@ -187,11 +190,11 @@ public class JournalController {
 		return "journal/modal";
 	}
     
-    @RequestMapping(value="/createJournal", method=RequestMethod.POST)
-    public @ResponseBody String createJournal(Principal principal, Model model, @RequestParam("measure") String measure) throws Exception {
+    @RequestMapping(value="/createJournal", method=RequestMethod.POST, produces = "application/json", headers="Accept=application/json")
+    public @ResponseBody String createJournal(Principal principal, Model model, @RequestParam("measure") String measure) {
         boolean error = false;
 		String msg = "Operation failed";
-		/*try {
+		try {
 			//Verifico esitsa la misura
 	        if(measure != null || !measure.trim().equals(""))
 	        {
@@ -279,11 +282,12 @@ public class JournalController {
 			//System.out.println("Error: " + e.getMessage());
 			error = true;
 			msg = "An unexpected error occurred";
-		}*/
+		}
         
-        String response = "{\"success\": " + !error + ", \"msg\": \"" + msg + "\"}";
+        String response = "{\"success\":" + !error + ", \"msg\":\"" + msg + "\"}";
 		return response;
     }
+    
     @Autowired
 	public void setServices(ImageService imageService, MeasureService measureService, JournalService journalService) {
 		this.imageService = imageService;

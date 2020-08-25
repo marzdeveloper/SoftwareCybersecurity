@@ -76,7 +76,6 @@
     		    method: 'POST',
                 type: "POST",
                 success: function (response) {
-                	console.log(response);
                 	showAlertMsg(response);
                 },
                 error: function (response) {

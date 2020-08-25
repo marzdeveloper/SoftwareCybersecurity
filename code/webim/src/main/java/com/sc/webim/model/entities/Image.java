@@ -28,6 +28,7 @@ public class Image implements Serializable{
     private String name;
     private String gps;
     private Measure measure_id;
+    private Date data_originale;
 
     //Get and Set
     
@@ -86,6 +87,15 @@ public class Image implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Column(name = "Data_Originale", nullable = false)
+	public Date getDataOriginale() {
+		return this.data_originale;
+	}
+
+	public void setDataOriginale(Date data_originale) {
+		this.data_originale = data_originale;
 	}
 	
 	//toString
