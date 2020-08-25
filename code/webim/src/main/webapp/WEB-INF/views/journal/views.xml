@@ -6,9 +6,6 @@
   <definition extends="default" name="journal/list">
    <put-attribute name="body" value="/WEB-INF/views/journal/list.jsp" />
   </definition>
-    <definition extends="default" name="journal/list2">
-   <put-attribute name="body" value="/WEB-INF/views/journal/list2.jsp" />
-  </definition>
     <definition extends="default" name="journal/newJob">
     	<put-attribute name="body" value="/WEB-INF/views/journal/newJob.jsp"></put-attribute></definition>
     <definition extends="none" name="journal/modal">

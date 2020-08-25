@@ -6,10 +6,4 @@
   <definition extends="default" name="direttore">
    <put-attribute name="body" value="/WEB-INF/views/direttore/index.jsp" />
   </definition>
-  <definition extends="default" name="direttore/inserisci">
-   <put-attribute name="body" value="/WEB-INF/views/direttore/inserisci.jsp" />
-  </definition>
-  <definition extends="default" name="direttore/consulta">
-   <put-attribute name="body" value="/WEB-INF/views/direttore/consulta.jsp" />
-  </definition>
 </tiles-definitions>
