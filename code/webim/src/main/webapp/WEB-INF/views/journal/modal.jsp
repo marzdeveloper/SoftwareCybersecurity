@@ -26,12 +26,12 @@
 							<c:choose>
 							    <c:when test="${loop.index == 0}">
 							        <div class="carousel-item active">
-										<img class="d-block img-fluid" src="../uploads/images/${img}" alt="${img}">
+										<img class="d-block img-fluid j-modal-img" src="../uploads/images/${img}" alt="${img}">
 									</div>
 							    </c:when>    
 							    <c:otherwise>
 							        <div class="carousel-item">
-										<img class="d-block img-fluid" src="../uploads/images/${img}" alt="${img}">
+										<img class="d-block img-fluid j-modal-img" src="../uploads/images/${img}" alt="${img}">
 									</div>
 							    </c:otherwise>
 							</c:choose>

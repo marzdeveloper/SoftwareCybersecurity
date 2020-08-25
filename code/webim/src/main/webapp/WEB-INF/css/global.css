@@ -277,3 +277,7 @@ a.article:hover {
 		height: 420px !important;
 		max-height: 420px !important;
 	}
+	
+.j-modal-img {
+	height: 420px !important;
+}

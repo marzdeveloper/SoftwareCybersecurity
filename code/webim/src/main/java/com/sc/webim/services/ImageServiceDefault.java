@@ -15,7 +15,9 @@ import javax.xml.bind.DatatypeConverter;
 import org.apache.sanselan.Sanselan;
 import org.apache.sanselan.common.IImageMetadata;
 import org.apache.sanselan.formats.jpeg.JpegImageMetadata;
+import org.apache.sanselan.formats.tiff.TiffField;
 import org.apache.sanselan.formats.tiff.TiffImageMetadata;
+import org.apache.sanselan.formats.tiff.constants.ExifTagConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,8 +63,8 @@ public class ImageServiceDefault implements ImageService {
 	}
 
 	@Override
-	public Image create(String user_id, Date data_caricamento, String measure_hash, String gps, String name) {
-		return this.imageRepository.create(user_id, data_caricamento, measure_hash, gps, name);
+	public Image create(String user_id, Date data_caricamento, String measure_hash, String gps, String name, Date data_originale) {
+		return this.imageRepository.create(user_id, data_caricamento, measure_hash, gps, name, data_originale);
 	}
 
 	@Override
@@ -108,6 +110,11 @@ public class ImageServiceDefault implements ImageService {
 	    			JpegImageMetadata jpegMetadata = (JpegImageMetadata) metadata;
 	    			TiffImageMetadata exifMetadata = jpegMetadata.getExif();
 	    			
+	    			TiffField field = jpegMetadata.findEXIFValue(ExifTagConstants.EXIF_TAG_DATE_TIME_ORIGINAL);
+	    			String StringDataOriginale = field.getValueDescription();
+	    			StringDataOriginale = StringDataOriginale.replace("'", "");
+	    			StringDataOriginale = StringDataOriginale.replace(":", "-");
+	    			
 	    	        if (null != exifMetadata) {
 	    	            TiffImageMetadata.GPSInfo gpsInfo = exifMetadata.getGPS();
 	    	            
@@ -138,11 +145,13 @@ public class ImageServiceDefault implements ImageService {
 	    					//Controllo che non ci siano immagini con lo stesso nome nel database
 	    					
 	    					if (code >= 0) {
-	    						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
+	    						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	    						SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 	    					    Date date = new Date();
 	    					    Date dataCreazione = Utils.date(formatter.format(date));
-	    						
-	    						Image img = imageRepository.create(user, dataCreazione, hash, image_name, latitude + "," + longitude);
+	    					    Date dataOriginale = formatter1.parse(StringDataOriginale);  
+	    					    
+	    						Image img = imageRepository.create(user, dataCreazione, hash, image_name, latitude + "," + longitude, dataOriginale);
 	    						imageRepository.update(img);
 	    						
 	    						Path path = Paths.get(root + "/" + image_name);

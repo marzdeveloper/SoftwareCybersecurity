@@ -1,6 +1,5 @@
 package com.sc.webim.controller;
 
-
 import com.sc.webim.services.ImageService;
 
 import java.security.Principal;
@@ -31,16 +30,6 @@ public class DroneController {
 		
 		return "drone/index";
 	}
-	
-	/*@RequestMapping(value = "/pget", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String pruebaJsonG(Model model) {
-		return "Hola Get";
-	}
-	
-	@RequestMapping(value = "/ppost", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String pruebaJsonP(Model model) {
-		return "Hola post";
-	}*/
 	
 	@RequestMapping(value = "/uploadImage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, headers="Accept=application/json")
 	public String uploadImage(Principal principal, @RequestParam("imageFiles") MultipartFile[] imageFiles, RedirectAttributes redirectAttributes) {
@@ -92,28 +81,6 @@ public class DroneController {
 		redirectAttributes.addAttribute("resp", resp);
 		return "redirect:/drone";
 	}
-	
-	/*@RequestMapping(value = "/uploadImages", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, headers="Accept=application/json")
-	public @ResponseBody String uploadImages(Locale locale, Model uModel,
-			@RequestParam(value = "images[]") String[] images){
-		boolean resp = false;
-		String msg = "Operation failed: one or more empty fields";
-		try {
-			if (images.length > 0) {
-				for (int i = 0; i<images.length; i++) {
-					String[] img = images[i].split("&%&");
-					//droneService.saveImage(img);
-				}
-				msg = "mmmm";
-				resp = true;				
-			}
-		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
-			msg = "An unexpected error occurred";
-		}
-		String response = "{\"success\":" + resp + ", \"msg\":\"" + msg + "\"}";
-		return response;
-	}*/
 	
 	@Autowired
 	public void setServices(ImageService imageService) {

@@ -42,7 +42,6 @@ import com.sc.webim.services.ImageService;
 import com.sc.webim.services.JournalService;
 import com.sc.webim.services.MeasureService;
 
-
 @Controller
 @RequestMapping("/journal")
 public class JournalController {
@@ -100,6 +99,8 @@ public class JournalController {
 		
         model.addAttribute("jobs", AllJob);
     	model.addAttribute("title", "Giornale dei lavori");
+    	model.addAttribute("alertMsg", msg);
+    	model.addAttribute("typeMsg", resp);
 		return "journal/list";
 	}
     
@@ -164,11 +165,13 @@ public class JournalController {
     }*/
     
     @RequestMapping(value="/newJob", method=RequestMethod.GET)
-    public String newJob(Model model) {
+    public String newJob(Model model, @RequestParam(value = "msg", required = false) String msg, @RequestParam(value = "resp", required = false) String resp) {
     	ArrayList<Job> list_jobs = journalService.getAllJobsDB();
     	
     	model.addAttribute("title", "journal");
     	model.addAttribute("jobs", list_jobs);
+    	model.addAttribute("alertMsg", msg);
+    	model.addAttribute("typeMsg", resp);
         return "journal/newJob";
     }  
     
@@ -183,8 +186,8 @@ public class JournalController {
 		return "journal/modal";
 	}
     
-    @RequestMapping(value="/createJournal", method=RequestMethod.POST)
-    public @ResponseBody String createJournal(Principal principal, Model model, @RequestParam("measure") String measure) throws Exception {
+    @RequestMapping(value="/createJournal", method=RequestMethod.POST, produces = "application/json", headers="Accept=application/json")
+    public @ResponseBody String createJournal(Principal principal, Model model, @RequestParam("measure") String measure) {
         boolean error = false;
 		String msg = "Operation failed";
 		try {
@@ -243,13 +246,6 @@ public class JournalController {
 	                    	privateFor.add("R56gy4dn24YOjwyesTczYa8m5xhP6hF2uTMCju/1xkY=");
 	                    	privateFor.add("UfNSeSGySeKg11DVNEnqrUtxYRVor4+CvluI8tVv62Y=");
 	                    	privateFor.add("ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc=");
-	                        
-	                        /*ArrayList<String> list_partecipanti = new ArrayList<String>();
-	                        list_partecipanti.add("node1");
-	                        list_partecipanti.add("node2");
-
-	                        //Create comma separated string of participants from sorted list - this uniquely identifies a thread in the application ( participants field in ThreadModel )
-	                        String threadParticipantsString = String.join(",",list_partecipanti); */
 	                    	
 	                    	//Create ClientTransactionManager object by passing QuorumConnection parameters and privateFor - this will handle privacy requirements
 	                    	ClientTransactionManager clientTransactionManager = new ClientTransactionManager(quorumConnection.getQuorum(), quorumConnection.getNodeAddress(), quorumConnection.getNodeKey(), privateFor, 100, 1000);
@@ -284,9 +280,10 @@ public class JournalController {
 			msg = "An unexpected error occurred";
 		}
         
-        String response = "{\"success\": " + !error + ", \"msg\": \"" + msg + "\"}";
+        String response = "{\"success\":" + !error + ", \"msg\":\"" + msg + "\"}";
 		return response;
     }
+    
     @Autowired
 	public void setServices(ImageService imageService, MeasureService measureService, JournalService journalService) {
 		this.imageService = imageService;
