@@ -1,7 +1,6 @@
 package com.sc.webim.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 
 public class Job {
@@ -9,14 +8,14 @@ public class Job {
 	String measure;
 	ArrayList<String> images;
 	int jobID;
-	Date date;
+	String date;
 	
 	/*create new job*/
 	public Job() {
 		
 	}
 	
-	public Job(String _worker, String _measure,String _images, int _jobID, Date _date) {
+	public Job(String _worker, String _measure,String _images, int _jobID, String _date) {
 		this.worker=_worker;
 		this.measure=_measure;
 		String[] imgs = _images.split(",");
@@ -52,10 +51,10 @@ public class Job {
 	public void setJobID(int jobID) {
 		this.jobID = jobID;
 	}
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setdate(Date date) {
+	public void setdate(String date) {
 		this.date = date;
 	}
 }

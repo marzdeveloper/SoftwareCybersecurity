@@ -32,7 +32,6 @@ import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.quorum.tx.ClientTransactionManager;
 
-import com.sc.webim.Utils;
 import com.sc.webim.connection.QuorumConnection;
 import com.sc.webim.contracts.Journal;
 import com.sc.webim.model.Job;
@@ -81,12 +80,11 @@ public class JournalController {
             String worker = eventJobEventResponse.worker.toString();
             String measure = eventJobEventResponse.measure.toString();
             String images = eventJobEventResponse.images.toString();
-            long time = eventJobEventResponse.time.longValue();
-
-            
+            long time = eventJobEventResponse.time.longValue() *1000;
+                     
             Date date = new Date(time);
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");  
-		    Date data = Utils.date(formatter.format(date));
+            SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy hh:mm:ss");  
+		    String data = formatter.format(date);
             //Create new ThreadModel instance to save new thread details - contract address, participants
             journalModel.addNewJob(worker, measure, images, data);
             int job_id = journalModel.getJobGenerated() - 1;
@@ -105,7 +103,7 @@ public class JournalController {
 		return "journal/list";
 	}
     
-    @RequestMapping(value="/journals", method=RequestMethod.GET)
+    /*@RequestMapping(value="/journals", method=RequestMethod.GET)
     public String showJournal(Model model) {
         //String eventJobEventTopic = "0xe789b4eeafbb3620234d3bd2c4767fd4e3baf0f8291ee7cb387280ce129e41d1";
         EthFilter filterToExtractNewJournals = new EthFilter(DefaultBlockParameterName.EARLIEST, DefaultBlockParameterName.LATEST, Collections.emptyList()).addSingleTopic(EventEncoder.encode(Journal.EVENTJOB_EVENT));
@@ -132,14 +130,13 @@ public class JournalController {
             /*ArrayList<String> images = new ArrayList<String>();
             for(String img:eventJobEventResponse.images) {
                 images.add(img.toString());  	//da ricontrollare
-            }*/
+            }
 
             //Create new ThreadModel instance to save new thread details - contract address, participants
             journalModel.addNewJob(worker, measure, images, date);
             transactions= journalModel.getJobs();
         });
         
-        System.out.println("/*********************************************************************/");
         try {
         	System.out.println(transactions.size());
         	
@@ -160,12 +157,11 @@ public class JournalController {
         	System.out.println("Errore:");
         	e.printStackTrace();
         }
-        System.out.println("/*********************************************************************/");
         
         model.addAttribute("title", "journal");
         model.addAttribute("threadModels", transactions);
         return "journal/list2";
-    }
+    }*/
     
     @RequestMapping(value="/newJob", method=RequestMethod.GET)
     public String newJob(Model model) {
@@ -174,7 +170,7 @@ public class JournalController {
     	model.addAttribute("title", "journal");
     	model.addAttribute("jobs", list_jobs);
         return "journal/newJob";
-    }
+    }  
     
     @RequestMapping(value = "/{name}/getDetails", method = RequestMethod.GET)
 	public String getDetails(Locale locale, Model model, @PathVariable("name") String name) {
