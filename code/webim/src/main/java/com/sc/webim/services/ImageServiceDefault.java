@@ -78,12 +78,15 @@ public class ImageServiceDefault implements ImageService {
 	}
 	
 	@Override
-	public void delete(int id) {
+	public boolean delete(int id) {
 		Image img = findById(id);
 		Path path = Paths.get(root + "/" + img.getName());
 		File file = new File(path.toString()); 
-		this.imageRepository.delete(img);
-		file.delete();
+		if(this.imageRepository.delete(img)) {
+			file.delete();
+			return true;
+		}
+		return false;
 	}
 	
 	@Override

@@ -82,7 +82,7 @@ public class JournalController {
             long time = eventJobEventResponse.time.longValue() *1000;
                      
             Date date = new Date(time);
-            SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy hh:mm:ss");  
+            SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss");  
 		    String data = formatter.format(date);
             //Create new ThreadModel instance to save new thread details - contract address, participants
             journalModel.addNewJob(worker, measure, images, data);

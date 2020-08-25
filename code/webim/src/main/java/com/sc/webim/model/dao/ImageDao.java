@@ -26,7 +26,7 @@ public interface ImageDao {
 	
 	Image update(Image image);
 	
-	void delete(Image image);
+	boolean delete(Image image);
 	
 	List<Image> findAllByMeasureId(int measure);
 	

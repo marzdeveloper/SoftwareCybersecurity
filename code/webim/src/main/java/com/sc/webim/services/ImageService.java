@@ -26,7 +26,7 @@ public interface ImageService {
 	
 	void delete(Image image);
 	
-	void delete(int id);
+	boolean delete(int id);
 	
 	String getPathImage(String imageName);
 	

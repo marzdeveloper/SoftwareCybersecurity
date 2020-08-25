@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sc.webim.model.entities.Image;
-import com.sc.webim.model.entities.Measure;
 
 
 @Transactional
@@ -25,7 +24,7 @@ public class ImageDaoDefault extends DefaultDao implements ImageDao{
 	@Override
 	@Transactional(readOnly = true)
 	public List<Image> findAllTransactionless() {
-		Query q = this.getSession().createQuery("SELECT distinct i from Image i WHERE i.measure_id IS NULL", Image.class);
+		Query q = this.getSession().createQuery("FROM Image i WHERE i.image_id in (SELECT DISTINCT i.image_id from Image i WHERE i.measure_id IS NULL) OR i.image_id in (SELECT DISTINCT i from Image i, Measure m WHERE i.measure_id = m.measure_id AND m.transactionless=1)", Image.class);
 		return q.getResultList();
 	}
 
@@ -44,8 +43,14 @@ public class ImageDaoDefault extends DefaultDao implements ImageDao{
 	
 	@Override
 	@Transactional
-	public void delete(Image image) {
-		this.getSession().delete(image);	
+	public boolean delete(Image image) {
+		//controllo che non vengano eliminate immagini che fanno parte del giornal dei lavori
+		Query q = this.getSession().createQuery("SELECT distinct i FROM Image i, Measure m WHERE i.measure_id = m.measure_id AND m.transactionless = 0", Image.class);
+		if(!q.getResultList().contains(image)) {
+			this.getSession().delete(image);
+			return true;
+		}
+		return false;
 	}
 
 	@Override

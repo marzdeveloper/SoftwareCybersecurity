@@ -72,9 +72,11 @@ public class ImageController {
 		boolean resp = false;
 		String msg = "";
 		try {
-			imageService.delete(id);
-			msg = "Image deleted successfully";
-			resp = true;
+			resp = imageService.delete(id);
+			if(resp) {
+				msg = "Image deleted successfully";
+			}
+			else msg = "Image is in Journal, is impossible to delete";
 		} catch (Exception e) {
 			//System.out.println("Error: " + e.getMessage());
 			msg = "An unexpected error occurred";
