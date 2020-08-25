@@ -29,6 +29,10 @@
 	        $('.collapse.in').toggleClass('in');
 	        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
 	    });
+	    
+	    $('.logo-home').click(function() {
+	    	window.location.replace(window.location.origin + '/direttore');
+	    });
 	} );
 
 	function showAlertMsg(response) {

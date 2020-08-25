@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -7,16 +6,25 @@
 <link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet' />
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" ></script>
 
-<body>
-<div class="container">
-    <h2>${title}</h2>
-    <br /><br />
-    <div class="form-group">
-         <a href="<c:url value="/journal" />"><button type="submit" class="btn btn-primary">Gestione Blockchain</button></a>
-   	</div>
-    <br /><br />
-    <div class="form-group">
-         <a href="<c:url value="/image" />"><button type="submit" class="btn btn-primary">Gestione Immagini</button></a>
-    </div>
+<div class="container conteiner-welcome">
+    <h1>${title}</h1>
 </div>
-</body>
+
+<style>
+#content {
+	background-image: url("../images/direttore.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	opacity: 0.8;
+}
+
+.conteiner-welcome {
+	position: absolute;
+	left: 70%;
+	top: 50%;
+	color: white;
+	transform: translate(-50%, -50%);
+	text-shadow: 2px 0 0 #000, -2px 0 0 #000, 0 2px 0 #000, 0 -2px 0 #000, 1px 1px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+}
+</style>

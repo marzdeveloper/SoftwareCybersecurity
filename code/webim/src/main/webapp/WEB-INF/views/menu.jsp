@@ -8,7 +8,7 @@
 
 <!-- Sidebar  -->
 <nav id="sidebar">
-    <div class="sidebar-header">
+    <div class="sidebar-header logo-home">
         <h3>WEBIM</h3>
     </div>
     <ul class="list-unstyled components">

@@ -31,14 +31,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.authorizeRequests().
 			antMatchers("/login").permitAll().
-			antMatchers("/threads/**").permitAll().
 			antMatchers("/drone").hasAnyRole("DRONE").
 			antMatchers("/drone/*").hasAnyRole("DRONE").
 			antMatchers("/uploads").hasAnyRole("DIRETTORE").
 			antMatchers("/uploads/*").hasAnyRole("DIRETTORE").
 			antMatchers("/image").hasAnyRole("DIRETTORE").
 			antMatchers("/image/*").hasAnyRole("DIRETTORE").
-			antMatchers("/user").hasAnyRole("DIRETTORE").
 			antMatchers("/direttore/**").hasAnyRole("DIRETTORE").
 			antMatchers("/journal").hasAnyRole("DIRETTORE").
 			antMatchers("/journal/*").hasAnyRole("DIRETTORE").

@@ -21,7 +21,7 @@ public class UserDetailsServiceDefault implements UserDetailsService {
   @Transactional(readOnly = true)
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-	  User user = userDetailsDao.findUserByUsername(username);
+	  User user = userDetailsDao.findUserByUsername(username.trim().toLowerCase());
 	  UserBuilder builder = null;
 	  if (user != null) {
 		  //qui "mappiamo" uno User della nostra app in uno User di spring
