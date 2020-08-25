@@ -51,7 +51,7 @@ public class ImageDaoDefault extends DefaultDao implements ImageDao{
 
 	@Override
 	@Transactional
-	public Image create(String user_id, Date data_caricamento, String image_hash, String name, String gps){
+	public Image create(String user_id, Date data_caricamento, String image_hash, String name, String gps, String DataOriginale){
 		Image image = new Image();
 		image.setUser_id(user_id);
 		image.setData_caricamento(data_caricamento);

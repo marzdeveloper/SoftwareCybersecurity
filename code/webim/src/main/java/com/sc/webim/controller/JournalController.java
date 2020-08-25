@@ -189,7 +189,7 @@ public class JournalController {
     public @ResponseBody String createJournal(Principal principal, Model model, @RequestParam("measure") String measure) throws Exception {
         boolean error = false;
 		String msg = "Operation failed";
-		try {
+		/*try {
 			//Verifico esitsa la misura
 	        if(measure != null || !measure.trim().equals(""))
 	        {
@@ -245,13 +245,6 @@ public class JournalController {
 	                    	privateFor.add("R56gy4dn24YOjwyesTczYa8m5xhP6hF2uTMCju/1xkY=");
 	                    	privateFor.add("UfNSeSGySeKg11DVNEnqrUtxYRVor4+CvluI8tVv62Y=");
 	                    	privateFor.add("ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc=");
-	                        
-	                        /*ArrayList<String> list_partecipanti = new ArrayList<String>();
-	                        list_partecipanti.add("node1");
-	                        list_partecipanti.add("node2");
-
-	                        //Create comma separated string of participants from sorted list - this uniquely identifies a thread in the application ( participants field in ThreadModel )
-	                        String threadParticipantsString = String.join(",",list_partecipanti); */
 	                    	
 	                    	//Create ClientTransactionManager object by passing QuorumConnection parameters and privateFor - this will handle privacy requirements
 	                    	ClientTransactionManager clientTransactionManager = new ClientTransactionManager(quorumConnection.getQuorum(), quorumConnection.getNodeAddress(), quorumConnection.getNodeKey(), privateFor, 100, 1000);
@@ -283,7 +276,7 @@ public class JournalController {
 			//System.out.println("Error: " + e.getMessage());
 			error = true;
 			msg = "An unexpected error occurred";
-		}
+		}*/
         
         String response = "{\"success\": " + !error + ", \"msg\": \"" + msg + "\"}";
 		return response;

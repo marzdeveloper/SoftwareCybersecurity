@@ -15,7 +15,9 @@ import javax.xml.bind.DatatypeConverter;
 import org.apache.sanselan.Sanselan;
 import org.apache.sanselan.common.IImageMetadata;
 import org.apache.sanselan.formats.jpeg.JpegImageMetadata;
+import org.apache.sanselan.formats.tiff.TiffField;
 import org.apache.sanselan.formats.tiff.TiffImageMetadata;
+import org.apache.sanselan.formats.tiff.constants.ExifTagConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,8 +63,8 @@ public class ImageServiceDefault implements ImageService {
 	}
 
 	@Override
-	public Image create(String user_id, Date data_caricamento, String measure_hash, String gps, String name) {
-		return this.imageRepository.create(user_id, data_caricamento, measure_hash, gps, name);
+	public Image create(String user_id, Date data_caricamento, String measure_hash, String gps, String name, String dataOriginale) {
+		return this.imageRepository.create(user_id, data_caricamento, measure_hash, gps, name, dataOriginale);
 	}
 
 	@Override
@@ -108,6 +110,9 @@ public class ImageServiceDefault implements ImageService {
 	    			JpegImageMetadata jpegMetadata = (JpegImageMetadata) metadata;
 	    			TiffImageMetadata exifMetadata = jpegMetadata.getExif();
 	    			
+	    			TiffField field = jpegMetadata.findEXIFValue(ExifTagConstants.EXIF_TAG_DATE_TIME_ORIGINAL);
+	    			String dataOriginale = field.getValueDescription();
+	    			
 	    	        if (null != exifMetadata) {
 	    	            TiffImageMetadata.GPSInfo gpsInfo = exifMetadata.getGPS();
 	    	            
@@ -142,7 +147,7 @@ public class ImageServiceDefault implements ImageService {
 	    					    Date date = new Date();
 	    					    Date dataCreazione = Utils.date(formatter.format(date));
 	    						
-	    						Image img = imageRepository.create(user, dataCreazione, hash, image_name, latitude + "," + longitude);
+	    						Image img = imageRepository.create(user, dataCreazione, hash, image_name, latitude + "," + longitude, dataOriginale);
 	    						imageRepository.update(img);
 	    						
 	    						Path path = Paths.get(root + "/" + image_name);

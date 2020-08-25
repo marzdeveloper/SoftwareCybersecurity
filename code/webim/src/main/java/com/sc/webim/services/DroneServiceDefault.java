@@ -103,7 +103,7 @@ public class DroneServiceDefault implements DroneService {
 	    					    Date date = new Date();
 	    					    Date dataCreazione = Utils.date(formatter.format(date));
 	    						
-	    						Image img = imageRepository.create(user, dataCreazione, hash, image.getOriginalFilename(), latitude + "," + longitude);
+	    						Image img = imageRepository.create(user, dataCreazione, hash, image.getOriginalFilename(), latitude + "," + longitude, "");
 	    						imageRepository.update(img);
 	    						
 	    						Path path = Paths.get(root + "/" + image.getOriginalFilename());
