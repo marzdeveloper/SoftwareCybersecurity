@@ -12,7 +12,7 @@ import org.apache.sanselan.ImageReadException;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface JournalService {
-	Map<String, ArrayList<String>> getJob(Job job);
+	Job getJobByHash(Job job);
 	
 	ArrayList<Job> getAllJobsDB();
 	

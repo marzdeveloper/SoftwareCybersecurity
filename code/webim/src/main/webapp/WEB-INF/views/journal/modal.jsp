@@ -50,7 +50,7 @@
 			</div><!-- /.container -->
 		</div>
 		<div class="j-right">
-			<iframe src="../uploads/measures/example.pdf#toolbar=0" width="100%" height="100%"></iframe>
+			<iframe src="../uploads/measures/${job.measure}#toolbar=0" width="100%" height="100%"></iframe>
 		</div>
 	</div>
 </div>

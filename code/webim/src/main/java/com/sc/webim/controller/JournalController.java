@@ -8,13 +8,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -33,6 +32,7 @@ import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.quorum.tx.ClientTransactionManager;
 
+import com.sc.webim.Utils;
 import com.sc.webim.connection.QuorumConnection;
 import com.sc.webim.contracts.Journal;
 import com.sc.webim.model.Job;
@@ -76,7 +76,7 @@ public class JournalController {
             eventJobEventResponse.worker = (String)sendContractAddressEventValues.getNonIndexedValues().get(0).getValue();
             eventJobEventResponse.measure = (String)sendContractAddressEventValues.getNonIndexedValues().get(1).getValue();
             eventJobEventResponse.images = (String)sendContractAddressEventValues.getNonIndexedValues().get(2).getValue();
-            eventJobEventResponse.time = (BigInteger)sendContractAddressEventValues.getNonIndexedValues().get(2).getValue();
+            eventJobEventResponse.time = (BigInteger)sendContractAddressEventValues.getNonIndexedValues().get(4).getValue();
             
             String worker = eventJobEventResponse.worker.toString();
             String measure = eventJobEventResponse.measure.toString();
@@ -85,20 +85,22 @@ public class JournalController {
 
             
             Date date = new Date(time);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");  
+		    Date data = Utils.date(formatter.format(date));
             //Create new ThreadModel instance to save new thread details - contract address, participants
-            journalModel.addNewJob(worker, measure, images, date);
+            journalModel.addNewJob(worker, measure, images, data);
             int job_id = journalModel.getJobGenerated() - 1;
             transactions.add(journalModel.getJobById(job_id));
         });
 
     	
-        Map<Integer,Map<String, ArrayList<String>>> map = new HashMap<Integer, Map<String, ArrayList<String>>>();
+        ArrayList<Job> AllJob = new ArrayList<Job>();        
         for (int i = 0; i < transactions.size(); i++) {
         	Job j = transactions.get(i);
-        	map.put(j.getJobID(), journalService.getJob(j));
+          	AllJob.add(journalService.getJobByHash(j));
         }
 		
-        model.addAttribute("jobs", map);
+        model.addAttribute("jobs", AllJob);
     	model.addAttribute("title", "Giornale dei lavori");
 		return "journal/list";
 	}
@@ -262,6 +264,7 @@ public class JournalController {
 	                    	
 	                    	m.setTransactionless(false);
 	            			measureService.update(m);
+	            			msg = "Operation success";
 	            		}
 	                }
 	        	} else {
