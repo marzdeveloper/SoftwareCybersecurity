@@ -1,29 +1,19 @@
 package com.sc.webim.services;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.MessageDigest;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
-import javax.activation.MimetypesFileTypeMap;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.metadata.IIOMetadata;
-import javax.imageio.metadata.IIOMetadataFormat;
-import javax.imageio.stream.ImageInputStream;
+import java.security.MessageDigest;
+
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
+import java.util.List;
+
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.sanselan.ImageReadException;
@@ -38,20 +28,17 @@ import org.apache.sanselan.formats.tiff.constants.ExifTagConstants;
 import org.apache.sanselan.formats.tiff.constants.GPSTagConstants;
 import org.apache.sanselan.formats.tiff.constants.TiffTagConstants;
 import org.apache.sanselan.formats.tiff.constants.TagInfo;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.Gson;
-import com.google.gson.internal.LinkedTreeMap;
 import com.sc.webim.Utils;
 import com.sc.webim.model.dao.ImageDao;
 import com.sc.webim.model.entities.Image;
 
 import net.sf.jmimemagic.Magic;
-
 
 @Transactional
 @Service("droneService")
@@ -66,7 +53,7 @@ public class DroneServiceDefault implements DroneService {
 		try {
 			byte[] bytes = image.getBytes();
 			
-			//Controllo il file sia una immagine
+			//Controllo che il file sia una immagine
 			String mimeType = Magic.getMagicMatch(image.getBytes(), false).getMimeType();	    
 		    String type = mimeType.split("/")[0];
 	        if(type.equals("image")) { //è una immagine
@@ -156,6 +143,7 @@ public class DroneServiceDefault implements DroneService {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void metadataExample(String fileName) throws ImageReadException, IOException {
 		// get all metadata stored in EXIF format (ie. from JPEG or TIFF).

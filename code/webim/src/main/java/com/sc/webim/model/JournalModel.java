@@ -2,8 +2,6 @@ package com.sc.webim.model;
 
 import java.util.ArrayList;
 
-import com.sc.webim.model.Job;
-
 public class JournalModel {
 	ArrayList<Job> jobs;	
     public int jobGenerated=0;
@@ -41,7 +39,6 @@ public class JournalModel {
 		return jobGenerated;
 	}
 
-	
 	/*
 	
 	public Job getJobByMeasure(String _measure) {
@@ -91,6 +88,4 @@ public class JournalModel {
 		return job;
 	}
 	
-
-
 }

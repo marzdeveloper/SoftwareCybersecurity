@@ -31,6 +31,7 @@ public class DroneController {
 		return "drone/index";
 	}
 	
+	@SuppressWarnings("unused")
 	@RequestMapping(value = "/uploadImage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, headers="Accept=application/json")
 	public String uploadImage(Principal principal, @RequestParam("imageFiles") MultipartFile[] imageFiles, RedirectAttributes redirectAttributes) {
 		String msg = "";
@@ -67,11 +68,11 @@ public class DroneController {
 			}
 
 			if(count == 0) {
-				msg = "\"Images save successfully\"";
+				msg = "\"Image/s saved successfully\"";
 				resp = 1;
 			}
 			else {
-				msg = "\"" +  count + "/" + images.size() + " image/s cant be saved \"";
+				msg = "\"Image/s can't be saved\"";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

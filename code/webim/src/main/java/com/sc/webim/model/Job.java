@@ -2,7 +2,6 @@ package com.sc.webim.model;
 
 import java.util.ArrayList;
 
-
 public class Job {
 	String worker;
 	String measure;

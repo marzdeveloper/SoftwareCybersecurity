@@ -57,4 +57,5 @@ public class UserServiceDefault implements UserService {
 	public String encryptPassword(String password) {
 		return this.userRepository.encryptPassword(password);
 	}
+	
 }

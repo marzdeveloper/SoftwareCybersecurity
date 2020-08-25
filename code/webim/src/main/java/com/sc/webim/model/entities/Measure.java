@@ -100,7 +100,7 @@ public class Measure implements Serializable{
 				", Data caricamento: " + data_caricamento + ", Hash misura: " + measure_hash;
 	}
 	
-	//Relationdhips
+	//Relationships
 	
 	//One measure has many images
 	@OneToMany(mappedBy="measure_id", fetch = FetchType.EAGER)

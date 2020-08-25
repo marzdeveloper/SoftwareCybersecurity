@@ -1,11 +1,9 @@
 package com.sc.webim.services;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.sanselan.ImageReadException;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sc.webim.model.entities.Image;

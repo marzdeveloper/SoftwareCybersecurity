@@ -19,7 +19,6 @@ public abstract class DefaultDao {
 		this.sessionFactory = sessionFactory;
 	}
 
-	
 	public Session getSession() {
 		// 1. in case a shared session exists, return it (e.g. data generation script)
 		Session session = this.session;

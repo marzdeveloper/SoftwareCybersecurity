@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sc.webim.model.entities.Image;
 import com.sc.webim.model.entities.Measure;
 
 public interface MeasureService {

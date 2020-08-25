@@ -5,4 +5,3 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 public class AppSecurityInitializer extends AbstractSecurityWebApplicationInitializer {
     //nessun codice necessario; Spring "scopre" questa istanza durante lo scan e si configura per usare la cosiddetta springSecurityFilterChain
 }
-

@@ -31,7 +31,7 @@ public class ImageController {
 			@RequestParam(value = "resp", required = false) String resp) {
 		List<Image> list = imageService.findAllTransactionless();
 		
-		model.addAttribute("title", "Gestione Immagini");
+		model.addAttribute("title", "Gestione immagini");
 		model.addAttribute("images", list);
 		model.addAttribute("alertMsg", msg);
 		model.addAttribute("typeMsg", resp);
@@ -76,7 +76,7 @@ public class ImageController {
 			if(resp) {
 				msg = "Image deleted successfully";
 			}
-			else msg = "Image is in Journal, is impossible to delete";
+			else msg = "The image is in the journal, is impossible to delete";
 		} catch (Exception e) {
 			//System.out.println("Error: " + e.getMessage());
 			msg = "An unexpected error occurred";
@@ -102,13 +102,13 @@ public class ImageController {
 						if (id > 0) {
 							//Associo la misura alle immagini
 							if (imageService.setMeasureImages(list, id)) {
-								msg = "All images were measured";
+								msg = "Images measured successfully";
 								resp = true;
 							} else {
 								msg = "Could not be measured";
 							}
 						} else {
-							msg = "The measure already exist";
+							msg = "The measure already exists";
 						}
 					} else {
 						msg = "Some images were not found";

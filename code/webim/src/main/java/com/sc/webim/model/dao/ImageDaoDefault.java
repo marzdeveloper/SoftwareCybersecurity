@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sc.webim.model.entities.Image;
 
-
 @Transactional
 @Repository("imageDao")
 public class ImageDaoDefault extends DefaultDao implements ImageDao{
@@ -21,6 +20,7 @@ public class ImageDaoDefault extends DefaultDao implements ImageDao{
 		return getSession().createQuery("from Image i", Image.class).getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
 	public List<Image> findAllTransactionless() {

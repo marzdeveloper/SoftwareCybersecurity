@@ -16,7 +16,7 @@
                 <th>Name</th>
                 <th>Date</th>
                 <th>GPS</th>
-                <th style="text-align:center;">Measures <button onclick="setMeasure()" type="button" class="btn btn-primary btn-circle"><i class="fa fa-plus"></i>Measure</button></th>
+                <th style="text-align:center;">Measures <button onclick="setMeasure()" type="button" class="btn btn-primary btn-circle"><i class="fa fa-plus"></i>Measures</button></th>
                 <th></th>
             </tr>
         </thead>
@@ -69,7 +69,7 @@
   	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     	<div class="modal-content modal-content-up-measure">
     		<div class="modal-header">
-			  	<h5 class="modal-title" id="upMeasureModalLabel">Associate Measures</h5>
+			  	<h5 class="modal-title" id="upMeasureModalLabel">Associate measure</h5>
 			  	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			    	<span aria-hidden="true">&times;</span>
 			  	</button>
@@ -81,7 +81,7 @@
 		                <input id="upload" type="file" name="measureFile" class="form-control border-0 custom-file-input">
 		                <label id="upload-label" for="upload" class="font-weight-light text-muted">Choose file</label>
 		                <div class="input-group-append">
-		                    <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-close mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
+		                    
 	                	<button onclick="measureImages()" type="button" class="btn btn-primary">Upload</button>
 		                </div>
 		            </div>

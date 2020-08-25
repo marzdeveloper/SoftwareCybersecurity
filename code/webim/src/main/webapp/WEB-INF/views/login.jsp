@@ -7,7 +7,6 @@
 <sec:authorize access="hasRole('DIRETTORE')" var="isDirettore" />
 <sec:authorize access="hasRole('DRONE')" var="isDrone" />
 
-
 <c:if test="${not empty errorMessage}">
 	<div class="alert alert-danger alert-flotante" role="alert">
 	  "${errorMessage}"

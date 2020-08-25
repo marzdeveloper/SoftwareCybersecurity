@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sc.webim.Utils;
 import com.sc.webim.model.dao.MeasureDao;
-import com.sc.webim.model.entities.Image;
 import com.sc.webim.model.entities.Measure;
 
 @Transactional

@@ -14,22 +14,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import com.sc.webim.db.LoadData;
-
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@ComponentScan(basePackages = { "com.sc.webim.model" },
-	excludeFilters  = {@ComponentScan.Filter(
-		type = FilterType.ASSIGNABLE_TYPE, classes = {LoadData.class})})
+@ComponentScan(basePackages = { "com.sc.webim.model" })
 @EnableTransactionManagement
 public class DataServiceConfigWeb {
 	
@@ -63,8 +57,9 @@ public class DataServiceConfigWeb {
 		hibernateProp.put("hibernate.max_fetch_depth", 3);
 		hibernateProp.put("hibernate.jdbc.batch_size", 10);
 		hibernateProp.put("hibernate.jdbc.fetch_size", 50);
-		//hibernateProp.put("javax.persistence.schema-generation.database.action", "drop-and-create"); //mettere drop-and-create la prima volta
-		hibernateProp.put("javax.persistence.schema-generation.database.action", "none");
+		//mettere drop-and-create la prima volta (se non si ha il db), e avviare l'applicazione con WebimApplicationLoadData, mettere none se si ha gia il db, e avviare l'applicazione con WebimApplication
+		hibernateProp.put("javax.persistence.schema-generation.database.action", "drop-and-create");
+		//hibernateProp.put("javax.persistence.schema-generation.database.action", "none");
 		return hibernateProp;
 	}
 		   

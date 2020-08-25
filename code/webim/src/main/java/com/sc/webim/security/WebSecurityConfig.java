@@ -45,9 +45,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			antMatchers("/").permitAll().
 			antMatchers("/**").hasAnyRole("DRONE", "DIRETTORE").
 				and().formLogin().loginPage("/login").successHandler(customSuccessHandler)
-					//.defaultSuccessUrl("/direttore", true)
-					//.successForwardUrl("/direttore")
-					//.defaultSuccessUrl("/direttore")
 					.failureUrl("/login?error=true").permitAll().
 				and().logout().logoutSuccessUrl("/") // NB se commentiamo
 														// questa riga,

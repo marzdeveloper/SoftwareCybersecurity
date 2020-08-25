@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.web3j.abi.EventEncoder;
 import org.web3j.abi.EventValues;
 import org.web3j.protocol.core.DefaultBlockParameterName;
@@ -52,7 +53,6 @@ public class JournalController {
 	private ArrayList<Job> transactions;
     private JournalModel journalModel;
 	private final Path root = Paths.get("src/main/webapp/WEB-INF/uploads/");
-
 
     @Autowired
     QuorumConnection quorumConnection;
@@ -84,7 +84,7 @@ public class JournalController {
             Date date = new Date(time);
             SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss");  
 		    String data = formatter.format(date);
-            //Create new ThreadModel instance to save new thread details - contract address, participants
+            
             journalModel.addNewJob(worker, measure, images, data);
             int job_id = journalModel.getJobGenerated() - 1;
             transactions.add(journalModel.getJobById(job_id));
@@ -168,7 +168,7 @@ public class JournalController {
     public String newJob(Model model, @RequestParam(value = "msg", required = false) String msg, @RequestParam(value = "resp", required = false) String resp) {
     	ArrayList<Job> list_jobs = journalService.getAllJobsDB();
     	
-    	model.addAttribute("title", "journal");
+    	model.addAttribute("title", "Journal");
     	model.addAttribute("jobs", list_jobs);
     	model.addAttribute("alertMsg", msg);
     	model.addAttribute("typeMsg", resp);
@@ -186,12 +186,13 @@ public class JournalController {
 		return "journal/modal";
 	}
     
-    @RequestMapping(value="/createJournal", method=RequestMethod.POST, produces = "application/json", headers="Accept=application/json")
+    @SuppressWarnings({ "unused", "deprecation", "null" })
+	@RequestMapping(value="/createJournal", method=RequestMethod.POST, produces = "application/json", headers="Accept=application/json")
     public @ResponseBody String createJournal(Principal principal, Model model, @RequestParam("measure") String measure) {
         boolean error = false;
 		String msg = "Operation failed";
 		try {
-			//Verifico esitsa la misura
+			//Verifico esista la misura
 	        if(measure != null || !measure.trim().equals(""))
 	        {
 	        	//Controllo la misura esista nel DB
@@ -263,7 +264,7 @@ public class JournalController {
 	                    	
 	                    	m.setTransactionless(false);
 	            			measureService.update(m);
-	            			msg = "Operation success";
+	            			msg = "Operation succeded";
 	            		}
 	                }
 	        	} else {

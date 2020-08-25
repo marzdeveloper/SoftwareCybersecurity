@@ -1,11 +1,15 @@
 package com.sc.webim.services;
 
 import java.io.File;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import java.security.MessageDigest;
+
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +22,7 @@ import org.apache.sanselan.formats.jpeg.JpegImageMetadata;
 import org.apache.sanselan.formats.tiff.TiffField;
 import org.apache.sanselan.formats.tiff.TiffImageMetadata;
 import org.apache.sanselan.formats.tiff.constants.ExifTagConstants;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +59,6 @@ public class ImageServiceDefault implements ImageService {
 	public Image findById(int id) {
 		return this.imageRepository.findById(id);
 	}
-	
 	
 	@Transactional(readOnly=true)
 	@Override
