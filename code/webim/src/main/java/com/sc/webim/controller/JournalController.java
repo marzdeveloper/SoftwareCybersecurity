@@ -17,6 +17,8 @@ import java.util.Locale;
 
 import javax.xml.bind.DatatypeConverter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +48,7 @@ import com.sc.webim.services.MeasureService;
 @Controller
 @RequestMapping("/journal")
 public class JournalController {
+	private final Logger logger = LoggerFactory.getLogger(JournalController.class);
 	private ImageService imageService;
 	private MeasureService measureService;
 	private JournalService journalService;
@@ -59,6 +62,7 @@ public class JournalController {
 
     @RequestMapping(method = RequestMethod.GET)
 	public String showJournal(Locale locale, Model model, @RequestParam(value = "msg", required = false) String msg, @RequestParam(value = "resp", required = false) String resp) {
+    	logger.info("Show journal");
     	transactions = new ArrayList<Job>();
     	journalModel = new JournalModel();
     	
@@ -166,6 +170,7 @@ public class JournalController {
     
     @RequestMapping(value="/newJob", method=RequestMethod.GET)
     public String newJob(Model model, @RequestParam(value = "msg", required = false) String msg, @RequestParam(value = "resp", required = false) String resp) {
+    	logger.info("Show measure not in the journal");
     	ArrayList<Job> list_jobs = journalService.getAllJobsDB();
     	
     	model.addAttribute("title", "Journal");
@@ -177,6 +182,7 @@ public class JournalController {
     
     @RequestMapping(value = "/{name}/getDetails", method = RequestMethod.GET)
 	public String getDetails(Locale locale, Model model, @PathVariable("name") String name) {
+    	logger.info("Get details measure: " + name);
     	Job job = new Job();
     	Measure m = measureService.findByName(name);
     	if (m != null) {
@@ -189,7 +195,8 @@ public class JournalController {
     @SuppressWarnings({ "unused", "deprecation", "null" })
 	@RequestMapping(value="/createJournal", method=RequestMethod.POST, produces = "application/json", headers="Accept=application/json")
     public @ResponseBody String createJournal(Principal principal, Model model, @RequestParam("measure") String measure) {
-        boolean error = false;
+    	logger.info("Creating new journal");
+    	boolean error = false;
 		String msg = "Operation failed";
 		try {
 			//Verifico esista la misura

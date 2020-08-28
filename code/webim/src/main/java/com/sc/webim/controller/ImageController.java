@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,12 +25,15 @@ import com.sc.webim.services.MeasureService;
 @Controller
 @RequestMapping("/image")
 public class ImageController {
+	private final Logger logger = LoggerFactory.getLogger(ImageController.class);
+	
 	private ImageService imageService;
 	private MeasureService measureService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String images(Locale locale, Model model, @RequestParam(value = "msg", required = false) String msg, 
 			@RequestParam(value = "resp", required = false) String resp) {
+		logger.info("Show Images");
 		List<Image> list = imageService.findAllTransactionless();
 		
 		model.addAttribute("title", "Gestione immagini");
@@ -41,6 +46,7 @@ public class ImageController {
 	
 	@RequestMapping(value = "/getDetails/{id}", method = RequestMethod.GET)
 	public String getDetails(Locale locale, Model model, @PathVariable("id") int id) {
+		logger.info("Get details image: " + id);
 		Image img = imageService.findById(id);
 		model.addAttribute("name", img.getName());
 		return "image/modal";
@@ -48,15 +54,16 @@ public class ImageController {
 	
 	@RequestMapping(value = "/getMeasure/{id}", method = RequestMethod.GET)
 	public String getMeasure(Locale locale, Model model, @PathVariable("id") int id) {
+		logger.info("Get measureiImage: " + id);
 		Measure measure = measureService.findById(id);
 		model.addAttribute("name", measure.getName());
-		
 		return "image/modal_measure";
 	}
 	
 	
 	@RequestMapping(value = "/getMap/{id}", method = RequestMethod.GET)
 	public String getMap(Locale locale, Model model, @PathVariable("id") int id) {
+		logger.info("Get GPS image: " + id);
 		Image image = imageService.findById(id);
 		String[] gps = image.getGPS().split(",", 2);
 		String latitude = gps[0];
@@ -69,6 +76,7 @@ public class ImageController {
 	
 	@RequestMapping(value = "/deleteData", method = RequestMethod.POST, produces = "application/json", headers="Accept=application/json")
 	public @ResponseBody String deleteData(Locale locale, Model model, @RequestParam("id") int id) {
+		logger.info("Delete image: " + id);
 		boolean resp = false;
 		String msg = "";
 		try {
@@ -88,6 +96,7 @@ public class ImageController {
 	@RequestMapping(value = "/measureImages", method = RequestMethod.POST, produces = "application/json", headers="Accept=application/json")
 	public @ResponseBody String measureImages(Principal principal, Model uModel, @RequestParam("images") ArrayList<String> images, 
 			@RequestParam(value = "measure", required = false) MultipartFile measure) {
+		logger.info("Misurando le immagini");
 		boolean resp = false;
 		String msg = "Operation failed";
 		try {

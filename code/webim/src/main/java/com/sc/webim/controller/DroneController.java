@@ -6,6 +6,8 @@ import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/drone")
 public class DroneController {
+	private final Logger logger = LoggerFactory.getLogger(DroneController.class);
 	private ImageService imageService;
 
 	@RequestMapping()
@@ -34,6 +37,7 @@ public class DroneController {
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "/uploadImage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, headers="Accept=application/json")
 	public String uploadImage(Principal principal, @RequestParam("imageFiles") MultipartFile[] imageFiles, RedirectAttributes redirectAttributes) {
+		logger.info("Upload images");
 		String msg = "";
 		int resp = 0;
 		String msg_temp = "";
