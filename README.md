@@ -1,4 +1,4 @@
-# WebIm
+# OPEN WebIM
 
 ## Introduzione
 
