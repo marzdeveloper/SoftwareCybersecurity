@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.xml.bind.DatatypeConverter;
 
+import org.apache.sanselan.ImageInfo;
 import org.apache.sanselan.Sanselan;
 import org.apache.sanselan.common.IImageMetadata;
 import org.apache.sanselan.formats.jpeg.JpegImageMetadata;
@@ -110,13 +111,24 @@ public class ImageServiceDefault implements ImageService {
 		    String type = mimeType.split("/")[0];
 	        if(type.equals("image")) { //è una immagine
 	        	code = 1;
-	        	//Controllo l'immagine abbia metadata GPS
+	    	    //Controllo l'immagine abbia metadata GPS
 	    		IImageMetadata metadata =  Sanselan.getMetadata(image.getBytes());
 	    		
+	    	    //Prende altezza e larghezza delle immagini
+   			 	ImageInfo imageInfo = Sanselan.getImageInfo(image.getBytes());
+   			 	int imgWidth = imageInfo.getWidth();
+   			 	int imgHeight = imageInfo.getHeight();
+   			 	
 	    		if (metadata instanceof JpegImageMetadata) {
 	    			JpegImageMetadata jpegMetadata = (JpegImageMetadata) metadata;
 	    			TiffImageMetadata exifMetadata = jpegMetadata.getExif();
 	    			
+	    			//prendo l'autore dell'immagine
+	    			TiffField field1 = jpegMetadata.findEXIFValue(ExifTagConstants.EXIF_TAG_MAKE);
+	    			String author = field1.getValueDescription();
+	    			author = author.replace("'", "");
+	    			
+	    			//prendo la data in cui è stata scattata l'immagine
 	    			TiffField field = jpegMetadata.findEXIFValue(ExifTagConstants.EXIF_TAG_DATE_TIME_ORIGINAL);
 	    			String StringDataOriginale = field.getValueDescription();
 	    			StringDataOriginale = StringDataOriginale.replace("'", "");
@@ -158,7 +170,7 @@ public class ImageServiceDefault implements ImageService {
 	    					    Date dataCreazione = Utils.date(formatter.format(date));
 	    					    Date dataOriginale = formatter1.parse(StringDataOriginale);  
 	    					    
-	    						Image img = imageRepository.create(user, dataCreazione, hash, image_name, latitude + "," + longitude, dataOriginale, 0, 0, "Hello");
+	    						Image img = imageRepository.create(user, dataCreazione, hash, image_name, latitude + "," + longitude, dataOriginale, imgHeight, imgWidth, author);
 	    						imageRepository.update(img);
 	    						
 	    						Path path = Paths.get(root + "/" + image_name);

@@ -34,7 +34,7 @@ public class DataServiceConfigWeb {
 		try {DriverManagerDataSource ds = new DriverManagerDataSource();
 			ds.setDriverClassName(com.mysql.cj.jdbc.Driver.class.getName());
 		    ds.setUrl("jdbc:mysql://localhost:3306/WebIm?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Rome");
-		    ds.setUsername("root");
+		    ds.setUsername("Daniele");
 		    //ds.setPassword("p@ssw0rd");
 		    return ds;
 		} catch (Exception e) {

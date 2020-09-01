@@ -16,6 +16,7 @@
                 <th>Name</th>
                 <th>Date</th>
                 <th>GPS</th>
+                <th>Author</th>
                 <th style="text-align:center;">Measures <button onclick="setMeasure()" type="button" class="btn btn-primary btn-circle"><i class="fa fa-plus"></i>Measures</button></th>
                 <th></th>
             </tr>
@@ -26,6 +27,7 @@
 	                <td><button onclick="getDetails(${i.image_id})" type="button" class="btn btn-info btn-circle" data-toggle="modal" data-target="#viewModal"><i class="fa fa-eye"></i></button>${i.name}</td>
 	                <td>${i.data_caricamento}</td>
 	                <td><button onclick="getMap(${i.image_id})" type="button" class="btn btn-info btn-circle" data-toggle="modal" data-target="#mapModal"><i class="fa fa-eye"></i></button>${i.GPS}</td>
+	                <td>${i.maker}</td>
                 	<c:if test="${not empty i.measure_id.measure_id}">
 		                <td style="text-align:center;">
                 			<button onclick="getMeasure(${i.measure_id.measure_id})" type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#measureModal"><i class="fa fa-eye"></i></button>
@@ -43,6 +45,7 @@
                 <th>Name</th>
                 <th>Date</th>
                 <th>GPS</th>
+                <th>Author</th>
                 <th>Measures</th>
                 <th></th>
             </tr>
@@ -106,7 +109,7 @@
 	$(document).ready( function () {
 	    $('#tableImage').DataTable({
 	    	"columnDefs": [
-	    		{ "orderable": false, "targets": [3, 4] }
+	    		{ "orderable": false, "targets": [4, 5] }
 	    	  ]
 	    });
 	    
