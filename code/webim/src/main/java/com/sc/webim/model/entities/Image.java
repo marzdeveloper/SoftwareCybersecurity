@@ -29,6 +29,9 @@ public class Image implements Serializable{
     private String gps;
     private Measure measure_id;
     private Date data_originale;
+    private int height;
+    private int width;
+    private String maker;
 
     //Get and Set
     
@@ -98,13 +101,40 @@ public class Image implements Serializable{
 		this.data_originale = data_originale;
 	}
 	
+	@Column(name = "Height", nullable = false)
+	public int getHeight() {
+		return this.height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	
+	@Column(name = "Width", nullable = false)
+	public int getWidth() {
+		return this.width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	
+	@Column(name = "Maker", nullable = false)
+	public String getMaker() {
+		return this.maker;
+	}
+
+	public void setMaker(String maker) {
+		this.maker = maker;
+	}
+	
 	//toString
 	
 	@Override
 	public String toString() {
 		return "Image - Id: " + image_id + ", User - Id: " + user_id + ", Name: " + name
 				+ ", Data caricamento: " + data_caricamento + ", Hash immagine: " + image_hash
-				+ ", GPS: " + gps;
+				+ ", GPS: " + gps + ", Height: " + height + ", Width: " + width + ", Maker: " + maker;
 	}
 	
 	//Relationships

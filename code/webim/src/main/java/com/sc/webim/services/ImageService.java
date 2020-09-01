@@ -18,7 +18,7 @@ public interface ImageService {
 	
 	Image findByName(String name);
 
-	Image create(String user_id, Date data_caricamento, String image_hash, String name, String gps, Date data_originale);
+	Image create(String user_id, Date data_caricamento, String image_hash, String name, String gps, Date data_originale, int height, int width, String maker);
 	
 	Image update(Image image);
 	
