@@ -1,7 +1,6 @@
 pragma solidity >=0.6.0;  /*specifico versione */
 
 contract Journal{
-
   struct Job{
     address   worker;
     string   measure;

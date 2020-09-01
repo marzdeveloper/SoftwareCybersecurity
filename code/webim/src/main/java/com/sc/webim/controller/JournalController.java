@@ -224,8 +224,11 @@ public class JournalController {
 	        				msg = "The image on the server does not co-index with the one saved in the database";
 	        				break;
 	        			}
-	        			hash_images += hash +",";
+	        			hash_images += hash +","+img.getName()+","+img.getUser_id()+","+img.getData_caricamento()+","+img.getGPS()+","+img.getWidth()+","+img.getHeight()+",";
 	                }
+
+	        	
+	            
 	        		
 	                if (!error) {
 	                	if(hash_images != null) {
@@ -242,8 +245,8 @@ public class JournalController {
 	                    	error = true;
 	                    	msg =  "The measure on the server does not co-index with the one saved in the database";
 	            		} else {
-	            			String hash_measure = hash;
-	            			
+	            			String hash_measure = hash + ","+ m.getName();
+
 	            			//Scelgo i nodi
 	                    	List<String> privateFor = new ArrayList<String>();
 	                    	//aggiungo le public key di tutti i nodi
