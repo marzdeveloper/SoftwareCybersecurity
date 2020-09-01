@@ -170,7 +170,7 @@ public class ImageServiceDefault implements ImageService {
 	    					    Date dataCreazione = Utils.date(formatter.format(date));
 	    					    Date dataOriginale = formatter1.parse(StringDataOriginale);  
 	    					    
-	    						Image img = imageRepository.create(user, dataCreazione, hash, image_name, latitude + "," + longitude, dataOriginale, 0, 0, "Hello");
+	    						Image img = imageRepository.create(user, dataCreazione, hash, image_name, latitude + "," + longitude, dataOriginale, imgHeight, imgWidth, author);
 	    						imageRepository.update(img);
 	    						
 	    						Path path = Paths.get(root + "/" + image_name);
