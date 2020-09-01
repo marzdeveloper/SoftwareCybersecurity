@@ -51,6 +51,13 @@
 	</div>
 </div>
 
+<!-- Modal Map -->
+<div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    	<div class="modal-content modal-content-map"></div>
+  	</div>
+</div>
+
 <script type="text/javascript">
 	var quale_link = 1;
 	$(document).ready( function () {
@@ -65,6 +72,13 @@
     	$(".modal-content-job").empty();
        	$.get("<c:url value="/journal/"/>"+name + "/getDetails", function(data, status){
    	    	$(".modal-content-job").append(data);
+   	    });
+    }
+    
+    function getMap(name) {
+    	$(".modal-content-map").empty();
+       	$.get("<c:url value="/journal/"/>"+name+"/getMap", function(data, status){
+   	    	$(".modal-content-map").append(data);
    	    });
     }
 

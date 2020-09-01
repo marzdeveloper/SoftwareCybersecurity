@@ -27,17 +27,19 @@
 							    <c:when test="${loop.index == 0}">
 							        <div class="carousel-item active">
 										<img class="d-block img-fluid j-modal-img" src="../uploads/images/${img}" alt="${img}">
+										<button onclick="getMap('${img}')" type="button" class="btn btn-info btn-circle btn-relative-gps" data-toggle="modal" data-target="#mapModal"><i class="fa fa-eye"></i></button>
 									</div>
-							    </c:when>    
+							    </c:when>
 							    <c:otherwise>
 							        <div class="carousel-item">
 										<img class="d-block img-fluid j-modal-img" src="../uploads/images/${img}" alt="${img}">
+										<button onclick="getMap('${img}')" type="button" class="btn btn-info btn-circle btn-relative-gps" data-toggle="modal" data-target="#mapModal"><i class="fa fa-eye"></i></button>
 									</div>
 							    </c:otherwise>
 							</c:choose>
 						</c:forEach>
 					</div><!-- /.carousel-inner -->
-						
+					
 					<a href="#main-carousel-0" class="carousel-control-prev" data-slide="prev">
 						<span class="carousel-control-prev-icon"></span>
 						<span class="sr-only" aria-hidden="true">Prev</span>

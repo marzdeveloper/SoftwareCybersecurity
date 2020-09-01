@@ -192,6 +192,19 @@ public class JournalController {
 		return "journal/modal";
 	}
     
+    @RequestMapping(value = "/{name}/getMap", method = RequestMethod.GET)
+	public String getMap(Locale locale, Model model, @PathVariable("name") String name) {
+		logger.info("Get GPS image journal: " + name);
+		Image image = imageService.findByName(name);
+		String[] gps = image.getGPS().split(",", 2);
+		String latitude = gps[0];
+		String longitude = gps[1];
+		model.addAttribute("name", image.getName());
+		model.addAttribute("longitude", longitude);
+		model.addAttribute("latitude", latitude);
+		return "journal/modal_map";
+	}
+    
     @SuppressWarnings({ "unused", "deprecation", "null" })
 	@RequestMapping(value="/createJournal", method=RequestMethod.POST, produces = "application/json", headers="Accept=application/json")
     public @ResponseBody String createJournal(Principal principal, Model model, @RequestParam("measure") String measure) {

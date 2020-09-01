@@ -28,17 +28,19 @@
 								  <c:when test="${loop.index == 0}">
 								       <div class="carousel-item active">
 										<img class="d-block img-fluid" src="../uploads/images/${img}" alt="${img}">
+										<button onclick="getMap('${img}')" type="button" class="btn btn-info btn-circle btn-relative-gps" data-toggle="modal" data-target="#mapModal"><i class="fa fa-eye"></i></button>
 									</div>
 								   </c:when>    
 								   <c:otherwise>
 								       <div class="carousel-item">
 										<img class="d-block img-fluid" src="../uploads/images/${img}" alt="${img}">
+										<button onclick="getMap('${img}')" type="button" class="btn btn-info btn-circle btn-relative-gps" data-toggle="modal" data-target="#mapModal"><i class="fa fa-eye"></i></button>
 									</div>
 								   </c:otherwise>
 							</c:choose>
 						</c:forEach>
 					</div><!-- /.carousel-inner -->
-						
+					
 					<a href="#main-carousel-${j.getJobID()}" class="carousel-control-prev" data-slide="prev">
 						<span class="carousel-control-prev-icon"></span>
 						<span class="sr-only" aria-hidden="true">Prev</span>
@@ -58,3 +60,37 @@
 	<br />
 	<br />
 </c:forEach>
+
+<!-- Modal Map -->
+<div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    	<div class="modal-content modal-content-map"></div>
+  	</div>
+</div>
+
+<script type="text/javascript">
+	var quale_link = 1;
+	$(document).ready( function () {
+	    $('#tableImage').DataTable({
+	    	"columnDefs": [
+	    		{ "orderable": false, "targets": [4, 5] }
+	    	  ]
+	    });
+	    
+	    $("input:file").change(function(objEvent) {
+	        var file = $(this)[0].files[0];
+	        var nameFile = "Choose file";
+	        if (file) {
+	        	nameFile = file.name;
+	        }
+	        $('#upload-label').text(nameFile);
+	    });
+	} );
+
+    function getMap(name) {
+    	$(".modal-content-map").empty();
+    	$.get("<c:url value="/journal/"/>"+name+"/getMap", function(data, status){
+   	    	$(".modal-content-map").append(data);
+   	    });
+    }
+</script>

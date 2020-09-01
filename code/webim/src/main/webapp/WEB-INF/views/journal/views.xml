@@ -10,4 +10,6 @@
     	<put-attribute name="body" value="/WEB-INF/views/journal/newJob.jsp"></put-attribute></definition>
     <definition extends="none" name="journal/modal">
     	<put-attribute name="body" value="/WEB-INF/views/journal/modal.jsp"></put-attribute></definition>
+    <definition extends="none" name="journal/modal_map">
+    	<put-attribute name="body" value="/WEB-INF/views/journal/modal_map.jsp"></put-attribute></definition>
 </tiles-definitions>

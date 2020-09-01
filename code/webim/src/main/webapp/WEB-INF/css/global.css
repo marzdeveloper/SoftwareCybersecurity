@@ -194,6 +194,13 @@ a.article:hover {
     line-height: 1.42857;
 }
 
+.btn-relative-gps {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	z-index: 100;
+}
+
 /* ---------------------------------------------------
     LISTAS
 ----------------------------------------------------- */
