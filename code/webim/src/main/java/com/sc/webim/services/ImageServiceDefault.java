@@ -68,8 +68,8 @@ public class ImageServiceDefault implements ImageService {
 	}
 
 	@Override
-	public Image create(String user_id, Date data_caricamento, String measure_hash, String gps, String name, Date data_originale) {
-		return this.imageRepository.create(user_id, data_caricamento, measure_hash, gps, name, data_originale);
+	public Image create(String user_id, Date data_caricamento, String measure_hash, String gps, String name, Date data_originale, int height, int width, String maker) {
+		return this.imageRepository.create(user_id, data_caricamento, measure_hash, gps, name, data_originale, height, width, maker);
 	}
 
 	@Override
@@ -170,7 +170,7 @@ public class ImageServiceDefault implements ImageService {
 	    					    Date dataCreazione = Utils.date(formatter.format(date));
 	    					    Date dataOriginale = formatter1.parse(StringDataOriginale);  
 	    					    
-	    						Image img = imageRepository.create(user, dataCreazione, hash, image_name, latitude + "," + longitude, dataOriginale);
+	    						Image img = imageRepository.create(user, dataCreazione, hash, image_name, latitude + "," + longitude, dataOriginale, 0, 0, "Hello");
 	    						imageRepository.update(img);
 	    						
 	    						Path path = Paths.get(root + "/" + image_name);
