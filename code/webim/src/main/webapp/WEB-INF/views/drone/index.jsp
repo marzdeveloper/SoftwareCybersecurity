@@ -22,7 +22,7 @@
 	                <input id="upload" type="file" name="imageFiles" multiple class="form-control border-0">
 	                <label id="upload-label" for="upload" class="font-weight-light text-muted">Choose file</label>
 	                <div class="input-group-append">
-	                    
+	                    <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-close mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
 	                	<input type="submit" class="btn btn-light m-0 rounded-pill px-4" value="Upload" />
 	                </div>
 	            </div>

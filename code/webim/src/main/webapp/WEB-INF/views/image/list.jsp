@@ -81,8 +81,8 @@
 		                <input id="upload" type="file" name="measureFile" class="form-control border-0 custom-file-input">
 		                <label id="upload-label" for="upload" class="font-weight-light text-muted">Choose file</label>
 		                <div class="input-group-append">
-		                    
-	                	<button onclick="measureImages()" type="button" class="btn btn-primary">Upload</button>
+		                    <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-close mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
+	                		<button onclick="measureImages()" type="button" class="btn btn-primary">Upload</button>
 		                </div>
 		            </div>
 	            </form>
