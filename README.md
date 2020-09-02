@@ -23,25 +23,25 @@ Per problemi con l'aggiornamento del progetto provare ad eseguirne il "clean" o 
 
 1. Scaricare e installare docker-compose
 2. È necessaria una blockchain Quorum su cui testare il software, in questo caso è stata utilizzata Quorum-7-nodes
-3. Scaricare il progetto dalla branch MASTER ed importarlo su Eclipse
+3. Scaricare il progetto dalla branch MASTER ed importarlo come progetto Maven su Eclipse
 4. Controllare che si scarichino le varie dependencies
 5. Assicurarsi di usare Java OpenJDK 1.8
 6. Installare Spring Tools 4 su Eclipse tramite il Marketplace [link](https://marketplace.eclipse.org/content/spring-tools-4-aka-spring-tool-suite-4)
 7. Avviare Quorum-7-nodes all'interno di Docker tramite "sudo docker-compose up -d" dalla cartella di Quorum-7-nodes
-8. Assicurarsi che tutti i nodi siano healthy, è possibile controllare lo stato dei nodi della blockchain tramite il comando "sudo docker ps -a", per verificare lo stato dei blocchi e delle transazioni collegarsi all'indirizzo "http://localhost:<porta_cakeshop>", la porta cakeshop è visualizzabile tramite il comando precedente
+8. Assicurarsi che tutti i nodi siano healthy, è possibile controllare lo stato dei nodi della blockchain tramite il comando **sudo docker ps**, per verificare lo stato dei blocchi e delle transazioni collegarsi all'indirizzo **http://localhost:<porta_cakeshop>** (porta default: 8999), la porta cakeshop è visualizzabile tramite il comando precedente
 9. Scaricare e avviare Xampp, avviare i server MySQL Database e Apache Web Server
 10. Modificare nella classe di configurazione DataServiceConfigWeb.java, la password per la connsessione a PhpMyAdmin ed eventualmente username e numero di porta (default: 3306)
 
-Per il primo avvio (senza avere il database):
+## Per il primo avvio (senza avere il database):
 
 11. Effettuare il run della classe WebimApplicationLoadData.java del pacchetto com.sc.webim come Spring Boot App, che avvierà l'applicazione e creerà il database
-12. Connettersi all'applicazione web all'indirizzo "http://localhost:8080", eventualmente cambiando la porta se si usa una porta differente
+12. Connettersi all'applicazione web all'indirizzo **http://localhost:8080**, eventualmente cambiando la porta se si usa una porta differente
 
-Per gli avvii successivi (con il database già creato):
+## Per gli avvii successivi (con il database già creato):
 
-11. Modificare nella classe di configurazione DataServiceConfigWeb.java la proprietà "javax.persistence.schema-generation.database.action", mettendo "none" al posto di "drop-and-create"
+11. Modificare nella classe di configurazione **DataServiceConfigWeb.java** la proprietà **javax.persistence.schema-generation.database.action**, mettendo **none** al posto di **drop-and-create**
 12. Effettuare il run della classe WebimApplication.java del pacchetto com.sc.webim come Spring Boot App, che avvierà l'applicazione
-13. Connettersi all'applicazione web all'indirizzo "http://localhost:8080", eventualmente cambiando la porta se si usa una porta differente
+13. Connettersi all'applicazione web all'indirizzo **http://localhost:8080**, eventualmente cambiando la porta se si usa una porta differente
 
 ## Navigare all'interno dell'applicazione
 
