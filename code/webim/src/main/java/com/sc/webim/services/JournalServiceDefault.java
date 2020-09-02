@@ -16,10 +16,10 @@ import com.sc.webim.model.Job;
 @Transactional
 @Service("journalService")
 public class JournalServiceDefault implements JournalService {
-	private ImageDao imageRepository;
+	//private ImageDao imageRepository;
 	private MeasureDao measureRepository;
 	
-	@Override
+	/*@Override
 	public Job getJobByHash(Job job) {
 		ArrayList<String> list_img = new ArrayList<String>();
 		
@@ -39,7 +39,7 @@ public class JournalServiceDefault implements JournalService {
 		j.setdate(job.getDate());
 		
 		return j;
-	};
+	};*/
 	
 	@Override
 	public ArrayList<Job> getAllJobsDB() {
@@ -78,7 +78,7 @@ public class JournalServiceDefault implements JournalService {
 	
 	@Autowired
 	public void setImageRepository(ImageDao imageRepository, MeasureDao measureRepository) {
-		this.imageRepository = imageRepository;
+		//this.imageRepository = imageRepository;
 		this.measureRepository = measureRepository;
 	}
 }

@@ -1,6 +1,5 @@
 package com.sc.webim.model.dao;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,10 +47,10 @@ public class MeasureDaoDefault extends DefaultDao implements MeasureDao{
 
 	@Override
 	@Transactional
-	public Measure create(String user_id, Date data_caricamento, String measure_hash, String name, boolean transactionless) {
+	public Measure create(String user_id, String timestamp, String measure_hash, String name, boolean transactionless) {
 		Measure measure = new Measure();
 		measure.setUser_id(user_id);
-		measure.setData_caricamento(data_caricamento);
+		measure.setTimestamp(timestamp);
 		measure.setMeasure_hash(measure_hash);
 		measure.setName(name);
 		measure.setTransactionless(transactionless);

@@ -1,6 +1,5 @@
 package com.sc.webim.model.dao;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +22,7 @@ public interface MeasureDao {
 	
 	Measure findByName(String Name);
 
-	Measure create(String user_id, Date data_caricamento, String measure_hash, String name, boolean transactionless);
+	Measure create(String user_id, String timestamp, String measure_hash, String name, boolean transactionless);
 	
 	Measure update(Measure measure);
 	

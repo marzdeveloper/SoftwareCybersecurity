@@ -1,6 +1,5 @@
 package com.sc.webim.services;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +14,7 @@ public interface MeasureService {
 	
 	Measure findByName(String name);
 
-	Measure create(String user_id, Date data_caricamento, String measure_hash, String name, boolean transactionless);
+	Measure create(String user_id, String timestamp, String measure_hash, String name, boolean transactionless);
 	
 	Measure update(Measure measure);
 	

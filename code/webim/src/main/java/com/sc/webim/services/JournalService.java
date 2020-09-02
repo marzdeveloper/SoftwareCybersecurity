@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.sc.webim.model.Job;
 
 public interface JournalService {
-	Job getJobByHash(Job job);
+	//Job getJobByHash(Job job);
 	
 	ArrayList<Job> getAllJobsDB();
 	

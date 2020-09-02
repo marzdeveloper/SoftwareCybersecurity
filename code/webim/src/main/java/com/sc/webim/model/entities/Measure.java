@@ -2,7 +2,6 @@ package com.sc.webim.model.entities;
 
 import java.io.Serializable;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,8 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="Measure")
@@ -25,7 +22,7 @@ public class Measure implements Serializable{
 
 	private int measure_id;
 	private String measure_hash;
-	private Date data_caricamento;
+	private String timestamp;
 	private String user_id;
 	private String name;
 	private boolean transactionless;
@@ -54,14 +51,14 @@ public class Measure implements Serializable{
 		this.measure_hash = measure_hash;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "Data_caricamento", nullable = false)
-	public Date getData_caricamento() {
-		return this.data_caricamento;
+	//@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "Timestamp", nullable = false)
+	public String getTimestamp() {
+		return this.timestamp;
 	}
 
-	public void setData_caricamento(Date data_caricamento) {
-		this.data_caricamento = data_caricamento;
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
 	}
 
 	@Column(name = "User_id", nullable = false)
@@ -97,7 +94,7 @@ public class Measure implements Serializable{
 	@Override
 	public String toString() {
 		return "Measure - Id: " + measure_id + ", User - Id: " + user_id +
-				", Data caricamento: " + data_caricamento + ", Hash misura: " + measure_hash;
+				", Timestamp: " + timestamp + ", Hash misura: " + measure_hash;
 	}
 	
 	//Relationships

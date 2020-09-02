@@ -12,13 +12,13 @@
 </h2>
 <c:forEach var="j" items="${jobs}">
 	<div class="journal-div border border-primary rounded-lg">
-		<h4>Job ${j.getJobID()} - ${j.getDate()}</h4>
+		<h4>Job ${j.getJobID() + 1} - ${j.getDate()}</h4>
 		<div class="j-left">
 			<div class="container">
-				<div class="carousel slide" id="main-carousel-${j.getJobID()}">
+				<div class="carousel slide" id="main-carousel-${j.getJobID() + 1 }">
 					<ol class="carousel-indicators">
 						<c:forEach var="i" items="${j.getImages()}" varStatus="loop">
-							<li data-target="#main-carousel-${j.getJobID()}" data-slide-to="${loop.index}" class="active"></li>
+							<li data-target="#main-carousel-${j.getJobID() + 1}" data-slide-to="${loop.index}" class="active"></li>
 						</c:forEach>
 					</ol><!-- /.carousel-indicators -->
 						
@@ -41,11 +41,11 @@
 						</c:forEach>
 					</div><!-- /.carousel-inner -->
 					
-					<a href="#main-carousel-${j.getJobID()}" class="carousel-control-prev" data-slide="prev">
+					<a href="#main-carousel-${j.getJobID() + 1}" class="carousel-control-prev" data-slide="prev">
 						<span class="carousel-control-prev-icon"></span>
 						<span class="sr-only" aria-hidden="true">Prev</span>
 					</a>
-					<a href="#main-carousel-${j.getJobID()}" class="carousel-control-next" data-slide="next">
+					<a href="#main-carousel-${j.getJobID() + 1}" class="carousel-control-next" data-slide="next">
 						<span class="carousel-control-next-icon"></span>
 						<span class="sr-only" aria-hidden="true">Next</span>
 					</a>
@@ -93,4 +93,8 @@
    	    	$(".modal-content-map").append(data);
    	    });
     }
+    
+    document.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+    }, false);
 </script>

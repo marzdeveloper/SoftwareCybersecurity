@@ -89,84 +89,18 @@ public class JournalController {
             SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss");  
 		    String data = formatter.format(date);
             
-            journalModel.addNewJob(worker, measure, images, data);
-            int job_id = journalModel.getJobGenerated() - 1;
-            transactions.add(journalModel.getJobById(job_id));
+            Job job = journalModel.addNewJob(worker, measure, images, data);
+            transactions.add(job);
         });
-
-    	
-        ArrayList<Job> AllJob = new ArrayList<Job>();        
-        for (int i = 0; i < transactions.size(); i++) {
-        	Job j = transactions.get(i);
-          	AllJob.add(journalService.getJobByHash(j));
-        }
 		
-        model.addAttribute("jobs", AllJob);
+        Collections.reverse(transactions); //ordina i job dal più recente
+        model.addAttribute("jobs", transactions);
     	model.addAttribute("title", "Giornale dei lavori");
     	model.addAttribute("alertMsg", msg);
     	model.addAttribute("typeMsg", resp);
 		return "journal/list";
 	}
     
-    /*@RequestMapping(value="/journals", method=RequestMethod.GET)
-    public String showJournal(Model model) {
-        //String eventJobEventTopic = "0xe789b4eeafbb3620234d3bd2c4767fd4e3baf0f8291ee7cb387280ce129e41d1";
-        EthFilter filterToExtractNewJournals = new EthFilter(DefaultBlockParameterName.EARLIEST, DefaultBlockParameterName.LATEST, Collections.emptyList()).addSingleTopic(EventEncoder.encode(Journal.EVENTJOB_EVENT));
-
-        quorumConnection.getAdmin().ethLogFlowable(filterToExtractNewJournals).subscribe(messageLog -> {
-            //Extract sendContractAddress event parameters defined in Thread contract
-            EventValues sendContractAddressEventValues = staticExtractEventParameters(Journal.EVENTJOB_EVENT , messageLog);
-
-            //Create sendContractAddress event response object to store individual parameter values
-            Journal.EventJobEventResponse eventJobEventResponse = new Journal.EventJobEventResponse();
-            
-            eventJobEventResponse.worker = (String)sendContractAddressEventValues.getNonIndexedValues().get(0).getValue();
-            eventJobEventResponse.measure = (String)sendContractAddressEventValues.getNonIndexedValues().get(1).getValue();
-            eventJobEventResponse.images = (String)sendContractAddressEventValues.getNonIndexedValues().get(2).getValue();
-            eventJobEventResponse.time = (BigInteger)sendContractAddressEventValues.getNonIndexedValues().get(2).getValue();
-
-            String worker = eventJobEventResponse.worker.toString();
-            String measure = eventJobEventResponse.measure.toString();
-            String images = eventJobEventResponse.images.toString();
-            long time = eventJobEventResponse.time.longValue();
-            
-            Date date = new Date(time);
-
-            /*ArrayList<String> images = new ArrayList<String>();
-            for(String img:eventJobEventResponse.images) {
-                images.add(img.toString());  	//da ricontrollare
-            }
-
-            //Create new ThreadModel instance to save new thread details - contract address, participants
-            journalModel.addNewJob(worker, measure, images, date);
-            transactions= journalModel.getJobs();
-        });
-        
-        try {
-        	System.out.println(transactions.size());
-        	
-        	for (int i = 0; i < transactions.size(); i++) {
-        		System.out.println("Iterazione: " + i);
-        		ArrayList<String> images = transactions.get(i).getImages();
-        		String measure = transactions.get(i).getMeasure();
-        		String worker  = transactions.get(i).getWorker();
-        		Date date = transactions.get(i).getDate();
-        		
-        		System.out.println("	Tutte le immagini: " + images.toString());
-        		System.out.println("	Tutte le misure: " + measure.toString());
-        		System.out.println("	Tutti i workers: " + worker.toString());
-        		System.out.println("	date: " + date.toString());
-
-        	}
-        } catch (Exception e) {
-        	System.out.println("Errore:");
-        	e.printStackTrace();
-        }
-        
-        model.addAttribute("title", "journal");
-        model.addAttribute("threadModels", transactions);
-        return "journal/list2";
-    }*/
     
     @RequestMapping(value="/newJob", method=RequestMethod.GET)
     public String newJob(Model model, @RequestParam(value = "msg", required = false) String msg, @RequestParam(value = "resp", required = false) String resp) {
@@ -207,7 +141,7 @@ public class JournalController {
     
     @SuppressWarnings({ "unused", "deprecation", "null" })
 	@RequestMapping(value="/createJournal", method=RequestMethod.POST, produces = "application/json", headers="Accept=application/json")
-    public @ResponseBody String createJournal(Principal principal, Model model, @RequestParam("measure") String measure) {
+    public @ResponseBody String addJobToJournal(Principal principal, Model model, @RequestParam("measure") String measure) {
     	logger.info("Creating new journal");
     	boolean error = false;
 		String msg = "Operation failed";
@@ -237,13 +171,10 @@ public class JournalController {
 	        				msg = "The image on the server does not co-index with the one saved in the database";
 	        				break;
 	        			}
-	        			hash_images += hash +","+img.getName()+","+img.getUser_id()+","+img.getData_caricamento()+","+img.getGPS()+","+img.getWidth()+","+img.getHeight()+",";
+	        			hash_images += hash +","+img.getName()+","+img.getMaker()+","+img.getDataOriginale()+","+img.getGPS()+","+img.getWidth()+","+img.getHeight()+",";
 	                }
-
-	        	
-	            
-	        		
-	                if (!error) {
+          
+	        		if (!error) {
 	                	if(hash_images != null) {
 	                        hash_images = hash_images.substring(0, hash_images.length() -1);
 	                    }
@@ -258,7 +189,7 @@ public class JournalController {
 	                    	error = true;
 	                    	msg =  "The measure on the server does not co-index with the one saved in the database";
 	            		} else {
-	            			String hash_measure = hash + ","+ m.getName();
+	            			String hash_measure = hash + ","+ m.getName() + "," + m.getTimestamp(); //aggiungere il mokup
 
 	            			//Scelgo i nodi
 	                    	List<String> privateFor = new ArrayList<String>();
@@ -275,15 +206,15 @@ public class JournalController {
 	                    	ClientTransactionManager clientTransactionManager = new ClientTransactionManager(quorumConnection.getQuorum(), quorumConnection.getNodeAddress(), quorumConnection.getNodeKey(), privateFor, 100, 1000);
 
 	                    	//Deploy the new thread contract. This returns a thread contract object
-	            			Journal threadContract = Journal.deploy(quorumConnection.getQuorum(), clientTransactionManager, BigInteger.valueOf(0), BigInteger.valueOf(100000000)).send();
+	            			Journal journalContract = Journal.deploy(quorumConnection.getQuorum(), clientTransactionManager, BigInteger.valueOf(0), BigInteger.valueOf(100000000)).send();
 	                    	
 	                    	//Extract contract address from thread contract object obtained in 2.d
-	                    	String newThreadContractAddress = threadContract.getContractAddress();
+	                    	String newJournalContractAddress = journalContract.getContractAddress();
 	                    	
 	                    	//String listString = String.join(",", hash_im);
 	                    	
 	                    	//Call the sendContractAddress event in thread contract to inform participants of new thread contract address and participants
-	                    	TransactionReceipt startThreadTransactionReceipt = threadContract.addNewJob(hash_measure, hash_images).send();
+	                    	TransactionReceipt startJournalTransactionReceipt = journalContract.addNewJob(hash_measure, hash_images).send();
 	                    	
 	                    	m.setTransactionless(false);
 	            			measureService.update(m);
