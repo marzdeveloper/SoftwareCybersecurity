@@ -5,7 +5,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.sql.Timestamp;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.DatatypeConverter;
@@ -66,13 +67,15 @@ public class MeasureServiceDefault implements MeasureService {
 			Measure m = this.measureRepository.findByHash(hash);
 			if (m == null) {
 			    String timestamp = new Timestamp(System.currentTimeMillis()).toString();
+			    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+			    Date date = new Date();
 			    
 			    String s1 = measure.getOriginalFilename();
 			    String[] s = s1.split("\\.");
 
-			    m = create(autor, timestamp, hash, "m-" + timestamp + "." + s[s.length-1], true);
+			    m = create(autor, timestamp, hash, "m-" + formatter.format(date).toString() + "." + s[s.length-1], true);
 			    
-			    Path path = Paths.get(root + "/" + "m-" + timestamp + "." + s[s.length-1]);
+			    Path path = Paths.get(root + "/" + "m-" + formatter.format(date).toString() + "." + s[s.length-1]);
 				Files.write(path, bytes);
 			    
 				resp = m.getMeasure_id();
