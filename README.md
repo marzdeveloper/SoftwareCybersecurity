@@ -26,7 +26,7 @@ Per problemi con l'aggiornamento del progetto provare ad eseguirne il "clean" o 
 3. Scaricare il progetto dalla branch MASTER ed importarlo su Eclipse
 4. Controllare che si scarichino le varie dependencies
 5. Assicurarsi di usare Java OpenJDK 1.8
-6. Installare Spring Tools 4 su Eclipse tramite il Marketplace
+6. Installare Spring Tools 4 su Eclipse tramite il Marketplace [link](https://marketplace.eclipse.org/content/spring-tools-4-aka-spring-tool-suite-4)
 7. Avviare Quorum-7-nodes all'interno di Docker tramite "sudo docker-compose up -d" dalla cartella di Quorum-7-nodes
 8. Assicurarsi che tutti i nodi siano healthy, è possibile controllare lo stato dei nodi della blockchain tramite il comando "sudo docker ps -a", per verificare lo stato dei blocchi e delle transazioni collegarsi all'indirizzo "http://localhost:<porta_cakeshop>", la porta cakeshop è visualizzabile tramite il comando precedente
 9. Scaricare e avviare Xampp, avviare i server MySQL Database e Apache Web Server
