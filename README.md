@@ -46,6 +46,6 @@ Per problemi con l'aggiornamento del progetto provare ad eseguirne il "clean" o 
 
 ## Navigare all'interno dell'applicazione
 La guida all'uso dell'applicazione è nella sezione wiki di questo repository quindi si rimanda a tale guida, di seguito c'è un breve riassunto.
-L'utente con username **drone**, utilizzando come credenziali : username: **drone**, password:**P.4ssw0rd** potrà caricare le immagini all'interno del server locale ed autamaticamente verranno salvate le relative informazioni nel database.
-Il direttore dei lavori, utilizzando come credenziali : username: **direttore**, password:**P.4ssw0rd**, potrà richiamare il servizio di fotogrammetria per calcolare le misure  scegliendo le immagini caricate dal drone. Inoltre potrà aggiungere nuove transazioni nella blockchain Quorum, cioè il giornale dei lavori, ed è in grado di visualizzare tutti i lavori inseriti nel giornale.
+L'utente con username **drone**, utilizzando come credenziali : username: **drone**, password: **P.4ssw0rd** potrà caricare le immagini all'interno del server locale ed autamaticamente verranno salvate le relative informazioni nel database.
+Il direttore dei lavori, utilizzando come credenziali : username: **direttore**, password: **P.4ssw0rd**, potrà richiamare il servizio di fotogrammetria per calcolare le misure  scegliendo le immagini caricate dal drone. Inoltre potrà aggiungere nuove transazioni nella blockchain Quorum, cioè il giornale dei lavori, ed è in grado di visualizzare tutti i lavori inseriti nel giornale.
 Per eseguire lo shutdown della blockchain, eseguire il comando "sudo docker-compose down" dalla cartella di Quorum-7-nodes.
