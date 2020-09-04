@@ -45,6 +45,6 @@ Per problemi con l'aggiornamento del progetto provare ad eseguirne il "clean" o 
 
 ## Navigare all'interno dell'applicazione
 
-L'utente ha la possibilità di accedere come "drone", utilizzando come credenziali : username: "drone", password:"password". In tal caso, l'utente potrà caricare le immagini all'interno del server locale.
-L'utente ha poi la possibilità di accedere come "direttore", utilizzando come credenziali : username: "direttore", password:"password". L'utente può quindi aggiungere nuove misure scegliendo le immagini caricate dal drone su cui calcolare le misure, e successivamente salvare gli hash delle immagini e delle misure all'interno della blockchain Quorum. Il direttore inoltre è in grado di visualizzare tutti i lavori inseriti nel proprio giornale.
+L'utente ha la possibilità di accedere come "drone", utilizzando come credenziali : username: "drone", password:"P.4ssw0rd". In tal caso, l'utente potrà caricare le immagini all'interno del server locale.
+L'utente ha poi la possibilità di accedere come "direttore", utilizzando come credenziali : username: "direttore", password:"P.4ssw0rd". L'utente può quindi aggiungere nuove misure scegliendo le immagini caricate dal drone su cui calcolare le misure, e successivamente salvare gli hash delle immagini e delle misure all'interno della blockchain Quorum. Il direttore inoltre è in grado di visualizzare tutti i lavori inseriti nel proprio giornale.
 Per eseguire lo shutdown della blockchain, eseguire il comando "sudo docker-compose down" dalla cartella di Quorum-7-nodes.
