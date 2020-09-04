@@ -34,7 +34,7 @@ public class DataServiceConfigWeb {
 		try {DriverManagerDataSource ds = new DriverManagerDataSource();
 			ds.setDriverClassName(com.mysql.cj.jdbc.Driver.class.getName());
 		    ds.setUrl("jdbc:mysql://localhost:3306/WebIm?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Rome");
-		    ds.setUsername("Daniele");
+		    ds.setUsername("root");
 		    //ds.setPassword("p@ssw0rd");
 		    return ds;
 		} catch (Exception e) {
@@ -58,8 +58,8 @@ public class DataServiceConfigWeb {
 		hibernateProp.put("hibernate.jdbc.batch_size", 10);
 		hibernateProp.put("hibernate.jdbc.fetch_size", 50);
 		//mettere drop-and-create la prima volta (se non si ha il db), e avviare l'applicazione con WebimApplicationLoadData, mettere none se si ha gia il db, e avviare l'applicazione con WebimApplication
-		//hibernateProp.put("javax.persistence.schema-generation.database.action", "drop-and-create");
-		hibernateProp.put("javax.persistence.schema-generation.database.action", "none");
+		hibernateProp.put("javax.persistence.schema-generation.database.action", "drop-and-create");
+		//hibernateProp.put("javax.persistence.schema-generation.database.action", "none");
 		return hibernateProp;
 	}
 		   

@@ -19,9 +19,6 @@
         	<li>
             	<a href="<c:url value="/image" />">Gestione immagini</a>
         	</li>
-        	<!-- <li>
-            	<a href="<c:url value="/direttore" />">Temp</a>
-        	</li> -->
 	    </c:if>
 	</ul>
 </nav>

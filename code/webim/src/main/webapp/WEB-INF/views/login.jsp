@@ -25,8 +25,8 @@
 </div>
 
 <script>
-if(${isDirettore})
-	window.location.replace("/direttore");
-if(${isDrone})
-	window.location.replace("/drone");
+	if(${isDirettore})
+		window.location.replace("/direttore");
+	if(${isDrone})
+		window.location.replace("/drone");
 </script>

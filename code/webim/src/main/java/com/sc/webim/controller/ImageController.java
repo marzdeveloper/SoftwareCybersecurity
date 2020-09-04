@@ -60,7 +60,6 @@ public class ImageController {
 		return "image/modal_measure";
 	}
 	
-	
 	@RequestMapping(value = "/getMap/{id}", method = RequestMethod.GET)
 	public String getMap(Locale locale, Model model, @PathVariable("id") int id) {
 		logger.info("Get GPS image: " + id);

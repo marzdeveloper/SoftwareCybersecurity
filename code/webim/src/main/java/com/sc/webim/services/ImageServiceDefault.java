@@ -189,7 +189,7 @@ public class ImageServiceDefault implements ImageService {
 	        }
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			code = -9;
 		}
 		return code;

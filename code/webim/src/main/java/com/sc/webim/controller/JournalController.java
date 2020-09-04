@@ -211,8 +211,6 @@ public class JournalController {
 	                    	//Extract contract address from thread contract object obtained in 2.d
 	                    	String newJournalContractAddress = journalContract.getContractAddress();
 	                    	
-	                    	//String listString = String.join(",", hash_im);
-	                    	
 	                    	//Call the sendContractAddress event in thread contract to inform participants of new thread contract address and participants
 	                    	TransactionReceipt startJournalTransactionReceipt = journalContract.addNewJob(hash_measure, hash_images).send();
 	                    	

@@ -51,8 +51,9 @@ public class WebimApplicationLoadData {
 				session.beginTransaction();
 				
 				//creo degli users
-				User u1 = userDao.create("drone", "password", true, r1);				
-				User u2 = userDao.create("direttore", "password", true, r2);
+				String password = "P.4ssw0rd";
+				User u1 = userDao.create("drone", password, true, r1);				
+				User u2 = userDao.create("direttore", password, true, r2);
 				
 				userDao.update(u1);
 				userDao.update(u2);
@@ -96,9 +97,7 @@ public class WebimApplicationLoadData {
 				}
 				
 				System.out.println();
-				
-				System.out.println("La password per entrambi gli utenti è: password");
-				
+				System.out.println("La password per entrambi gli utenti è: " + password);
 				System.out.println();
 				
 				session.getTransaction().commit();

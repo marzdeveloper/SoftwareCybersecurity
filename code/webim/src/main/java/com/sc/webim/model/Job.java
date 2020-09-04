@@ -13,13 +13,6 @@ public class Job {
 	public Job() {
 		
 	}
-	
-	/* dentro _images dati sono salvati in questo ordine :
-	 * hash +","+img.getName()+","+img.getUser_id()+","+img.getData_caricamento()+","+img.getGPS()+
-	 * 	","+img.getWidth()+","+img.getHeight()+",";
-	 * dentro _measure
-	 * hash, nome, timestamp, mokup
-	 */
 
 	public Job(String _worker, String _measure,String _images, int _jobID, String _date) {
 		this.worker=_worker;

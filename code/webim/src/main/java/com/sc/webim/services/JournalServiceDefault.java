@@ -16,30 +16,7 @@ import com.sc.webim.model.Job;
 @Transactional
 @Service("journalService")
 public class JournalServiceDefault implements JournalService {
-	//private ImageDao imageRepository;
 	private MeasureDao measureRepository;
-	
-	/*@Override
-	public Job getJobByHash(Job job) {
-		ArrayList<String> list_img = new ArrayList<String>();
-		
-		String hash_m = job.getMeasure();
-		Measure m = measureRepository.findByHash(hash_m);
-		
-		ArrayList<String> list_hash_img = job.getImages();
-		for (String hash_img: list_hash_img) {
-			Image img = imageRepository.findByHash(hash_img);
-			list_img.add(img.getName());
-		}
-		
-		Job j = new Job();
-		j.setJobID(job.getJobID());
-		j.setMeasure(m.getName());
-		j.setImages(list_img);
-		j.setdate(job.getDate());
-		
-		return j;
-	};*/
 	
 	@Override
 	public ArrayList<Job> getAllJobsDB() {
@@ -78,7 +55,6 @@ public class JournalServiceDefault implements JournalService {
 	
 	@Autowired
 	public void setImageRepository(ImageDao imageRepository, MeasureDao measureRepository) {
-		//this.imageRepository = imageRepository;
 		this.measureRepository = measureRepository;
 	}
 }
