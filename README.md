@@ -34,17 +34,18 @@ Per problemi con l'aggiornamento del progetto provare ad eseguirne il "clean" o 
 
 ## Per il primo avvio (senza avere il database):
 
-11. Effettuare il run della classe WebimApplicationLoadData.java del pacchetto com.sc.webim come Spring Boot App, che avvierà l'applicazione e creerà il database
+11. Effettuare il run della classe WebimApplicationLoadData.java nel pacchetto com.sc.webim come Spring Boot App, che avvierà l'applicazione e creerà il database
 12. Connettersi all'applicazione web all'indirizzo **http://localhost:8080**, eventualmente cambiando la porta se si usa una porta differente
+11. Modificare nella classe di configurazione **DataServiceConfigWeb.java** la proprietà **javax.persistence.schema-generation.database.action**, commentando la riga **61** e decommentando la riga **62**
 
 ## Per gli avvii successivi (con il database già creato):
 
-11. Modificare nella classe di configurazione **DataServiceConfigWeb.java** la proprietà **javax.persistence.schema-generation.database.action**, mettendo **none** al posto di **drop-and-create**
+11. Modificare nella classe di configurazione **DataServiceConfigWeb.java** la proprietà **javax.persistence.schema-generation.database.action**, commentando la riga **61** e decommentando la riga **62**
 12. Effettuare il run della classe WebimApplication.java del pacchetto com.sc.webim come Spring Boot App, che avvierà l'applicazione
 13. Connettersi all'applicazione web all'indirizzo **http://localhost:8080**, eventualmente cambiando la porta se si usa una porta differente
 
 ## Navigare all'interno dell'applicazione
-
-L'utente ha la possibilità di accedere come "drone", utilizzando come credenziali : username: "drone", password:"P.4ssw0rd". In tal caso, l'utente potrà caricare le immagini all'interno del server locale.
-L'utente ha poi la possibilità di accedere come "direttore", utilizzando come credenziali : username: "direttore", password:"P.4ssw0rd". L'utente può quindi aggiungere nuove misure scegliendo le immagini caricate dal drone su cui calcolare le misure, e successivamente salvare gli hash delle immagini e delle misure all'interno della blockchain Quorum. Il direttore inoltre è in grado di visualizzare tutti i lavori inseriti nel proprio giornale.
+La guida all'uso dell'applicazione è nella sezione wiki di questo repository quindi si rimanda a tale guida, di seguito c'è un breve riassunto.
+L'utente con username **drone**, utilizzando come credenziali : username: **drone**, password:**P.4ssw0rd** potrà caricare le immagini all'interno del server locale ed autamaticamente verranno salvate le relative informazioni nel database.
+Il direttore dei lavori, utilizzando come credenziali : username: **direttore**, password:**P.4ssw0rd**, potrà richiamare il servizio di fotogrammetria per calcolare le misure  scegliendo le immagini caricate dal drone. Inoltre potrà aggiungere nuove transazioni nella blockchain Quorum, cioè il giornale dei lavori, ed è in grado di visualizzare tutti i lavori inseriti nel giornale.
 Per eseguire lo shutdown della blockchain, eseguire il comando "sudo docker-compose down" dalla cartella di Quorum-7-nodes.
