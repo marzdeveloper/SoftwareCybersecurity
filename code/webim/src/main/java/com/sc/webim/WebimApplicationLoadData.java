@@ -97,8 +97,6 @@ public class WebimApplicationLoadData {
 				}
 				
 				System.out.println();
-				System.out.println("La password per entrambi gli utenti è: " + password);
-				System.out.println();
 				
 				session.getTransaction().commit();
 				
