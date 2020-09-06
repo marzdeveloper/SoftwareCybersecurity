@@ -23,7 +23,7 @@ Per problemi con l'aggiornamento del progetto provare ad eseguirne il "clean" o 
 
 1. Scaricare e installare docker-compose
 2. È necessaria una blockchain Quorum su cui testare il software, in questo caso è stata utilizzata Quorum-7-nodes quindi scaricarla da link in alto
-3. Scaricare il progetto dalla branch MASTER  con il comando git https://github.com/marzdeveloper/SoftwareCybersecurity.git ed importarlo come progetto Maven su Eclipse
+3. Scaricare il progetto dalla branch MASTER  con il comando **git clone https://github.com/marzdeveloper/SoftwareCybersecurity.git** ed importarlo come progetto Maven su Eclipse
 4. Controllare che si scarichino le varie dependencies
 5. Assicurarsi di usare Java OpenJDK 1.8
 6. Installare Spring Tools 4 su Eclipse tramite il Marketplace [link](https://marketplace.eclipse.org/content/spring-tools-4-aka-spring-tool-suite-4)
