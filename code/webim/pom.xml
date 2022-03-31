@@ -96,7 +96,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>5.2.0.RELEASE</version><!--$NO-MVN-MAN-VER$-->
+			<version>5.3.18</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
